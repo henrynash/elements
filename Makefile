@@ -2,7 +2,7 @@ SHELL=/bin/bash
 
 AN_DIRS?=an
 AN_OUT=lib
-INPUT_DIRS=an
+INPUT_DIRS?=an
 PACKAGE=github.com/antha-lang/elements
 
 # Compile after downloading dependencies
