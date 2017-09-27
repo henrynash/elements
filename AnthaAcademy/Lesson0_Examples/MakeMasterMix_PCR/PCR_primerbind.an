@@ -146,25 +146,40 @@ Steps {
 
 	// initial Denaturation
 
-	r1 := Incubate(reaction, meltingTemp, InitDenaturationtime, false)
+	r1 := Incubate(reaction, IncubateOpt{
+		Temp: meltingTemp,
+		Time: InitDenaturationtime,
+	})
 
 	for i := 0; i < Numberofcycles; i++ {
 
 		// Denature
 
-		r1 = Incubate(r1, meltingTemp, Denaturationtime, false)
+		r1 = Incubate(r1, IncubateOpt{
+			Temp: meltingTemp,
+			Time: Denaturationtime,
+		})
 
 		// Anneal
-		r1 = Incubate(r1, AnnealingTemp, Annealingtime, false)
+		r1 = Incubate(r1, IncubateOpt{
+			Temp: AnnealingTemp,
+			Time: Annealingtime,
+		})
 
 		//extensiontime := TargetTemplatelengthinBP/PCRPolymerase.RateBPpers // we'll get type issues here so leave it out for now
 
 		// Extend
-		r1 = Incubate(r1, extensionTemp, Extensiontime, false)
+		r1 = Incubate(r1, IncubateOpt{
+			Temp: extensionTemp,
+			Time: Extensiontime,
+		})
 
 	}
 	// Final Extension
-	r1 = Incubate(r1, extensionTemp, Finalextensiontime, false)
+	r1 = Incubate(r1, IncubateOpt{
+		Temp: extensionTemp,
+		Time: Finalextensiontime,
+	})
 
 	// all done
 	Reaction = r1

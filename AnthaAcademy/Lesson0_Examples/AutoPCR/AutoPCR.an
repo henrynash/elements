@@ -102,7 +102,7 @@ Steps {
 		wellposition := allwellpositionsforplate[counter]
 
 		// Run PCR_vol element
-		result := RunSteps(PCR_vol_demo,
+		result := RunSteps(PCR_vol,
 			Parameters{
 				WaterVolume:           DefaultWaterVolume,
 				ReactionVolume:        DefaultReactionVolume,

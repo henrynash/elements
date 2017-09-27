@@ -1,28 +1,35 @@
-protocol PCR_vol
+// protocol for running pcr for one sample using a mastermix
+protocol PCR_vol_mmx
 
 import (
+	"fmt"
 	"github.com/antha-lang/antha/antha/AnthaStandardLibrary/Packages/enzymes"
 	"github.com/antha-lang/antha/antha/anthalib/mixer"
 	"github.com/antha-lang/antha/antha/anthalib/wtype"
+	"strings"
 )
 
 // Input parameters for this protocol (data)
 Parameters (
 	// PCRprep parameters:
-	WaterVolume Volume
-	ReactionVolume Volume
-	BufferConcinX int
+
+	// Total volume for a single reaction; the reaction will be topped up with ReactionBuffer (usually water) to reach this volume
+	TotalReactionVolume Volume
+	MasterMixVolume Volume
+	PrimersalreadyAddedtoMasterMix bool
+	PolymeraseAlreadyaddedtoMastermix bool
 	FwdPrimerVol Volume
 	RevPrimerVol Volume
-	AdditiveVols []Volume
 	Templatevolume Volume
 	PolymeraseVolume Volume
-	DNTPVol Volume
 	ReactionName string
 	TemplateName string
 	FwdPrimerName string
 	RevPrimerName string
 	WellPosition string
+	Targetsequence DNASequence
+	FwdPrimerSeq DNASequence
+	RevPrimerSeq DNASequence
 	/*
 		// let's be ambitious and try this as part of type polymerase Polymeraseconc Volume
 
@@ -41,25 +48,23 @@ Parameters (
 	AnnealingTemp Temperature // Should be calculated from primer and template binding
 	Extensiontime Time        // should be calculated from template length and polymerase rate
 	Finalextensiontime Time
-	Hotstart bool
-	AddPrimerstoMasterMix bool
 )
 
 // Data which is returned from this protocol, and data types
 Data (
-	Status string
+	FWDPrimerBindingSiteinTemplate int
+	RevPrimerBindingSiteinTemplate int
 )
 
 // Physical Inputs to this protocol with types
 Inputs (
+	// Buffer to use to top up the reaction to TotalReactionVolume. Typical buffer for this would be water.
+	ReactionBuffer *LHComponent
 	FwdPrimer *LHComponent
 	RevPrimer *LHComponent
-	DNTPS *LHComponent
+	MasterMix *LHComponent
 	PCRPolymerase *LHComponent
-	Buffer *LHComponent
-	Water *LHComponent
 	Template *LHComponent
-	Additives []*LHComponent // e.g. DMSO
 	OutPlate *LHPlate
 )
 
@@ -85,76 +90,70 @@ Steps {
 	FwdPrimer.CName = FwdPrimerName
 	RevPrimer.CName = RevPrimerName
 
-	bufferVolume := (wunit.CopyVolume(ReactionVolume))
-	bufferVolume.DivideBy(float64(BufferConcinX))
+	var allVolumes []Volume
+
+	allVolumes = append(allVolumes, MasterMixVolume, Templatevolume)
+
+	if !PrimersalreadyAddedtoMasterMix {
+		allVolumes = append(allVolumes, FwdPrimerVol, RevPrimerVol)
+	}
+
+	if !PolymeraseAlreadyaddedtoMastermix {
+		allVolumes = append(allVolumes, PolymeraseVolume)
+	}
+
+	// calculate volume of water to add
+	waterVol := wunit.SubtractVolumes(TotalReactionVolume, allVolumes)
+
+	var mastermix *LHComponent
+	// Top up with reaction buffer if necessary.
+	if waterVol.GreaterThan(wunit.NewVolume(0.5, "ul")) {
+		waterSample := mixer.Sample(ReactionBuffer, waterVol)
+		mastermix = MixInto(OutPlate, WellPosition, waterSample)
+	}
 
 	// Make a mastermix
-	samples := make([]*LHComponent, 0)
-	waterSample := mixer.Sample(Water, WaterVolume)
-	bufferSample := mixer.Sample(Buffer, bufferVolume)
-	samples = append(samples, waterSample, bufferSample)
 
-	dntpSample := mixer.Sample(DNTPS, DNTPVol)
-	samples = append(samples, dntpSample)
-
-	if len(Additives) != len(AdditiveVols) {
-		Errorf("Bad things are going to happen if you have different numbers of additives and additivevolumes")
-	}
-
-	for i := range Additives {
-		additiveSample := mixer.Sample(Additives[i], AdditiveVols[i])
-		samples = append(samples, additiveSample)
-	}
-
-	if Hotstart == false {
-		polySample := mixer.Sample(PCRPolymerase, PolymeraseVolume)
-		samples = append(samples, polySample)
-	}
-
-	// if this is true do stuff inside {}
-	if AddPrimerstoMasterMix {
-
-		FwdPrimerSample := mixer.Sample(FwdPrimer, FwdPrimerVol)
-		samples = append(samples, FwdPrimerSample)
-		RevPrimerSample := mixer.Sample(RevPrimer, RevPrimerVol)
-		samples = append(samples, RevPrimerSample)
-
-	}
+	mmxSample := mixer.Sample(MasterMix, MasterMixVolume)
 
 	// pipette out to make mastermix
-	var mastermix *LHComponent
-	for j := range samples {
-		if j == 0 {
-			mastermix = MixInto(OutPlate, WellPosition, samples[j])
-		} else {
-			mastermix = Mix(mastermix, samples[j])
-		}
+	if mastermix != nil {
+		mastermix = Mix(mastermix, mmxSample)
+	} else {
+		mastermix = MixInto(OutPlate, WellPosition, mmxSample)
 	}
 
-	// reset samples to zero
-	samples = make([]*LHComponent, 0)
+	// rest samples to zero
+	samples := make([]*LHComponent, 0)
 
 	// if this is false do stuff inside {}
-	if !AddPrimerstoMasterMix {
 
+	// add primers
+
+	if !PrimersalreadyAddedtoMasterMix {
 		FwdPrimerSample := mixer.Sample(FwdPrimer, FwdPrimerVol)
 		samples = append(samples, FwdPrimerSample)
 		RevPrimerSample := mixer.Sample(RevPrimer, RevPrimerVol)
 		samples = append(samples, RevPrimerSample)
-
 	}
 
+	// add template
 	templateSample := mixer.Sample(Template, Templatevolume)
 	samples = append(samples, templateSample)
 
 	for j := range samples {
+		if !PolymeraseAlreadyaddedtoMastermix && j == len(samples)-1 {
+			samples[j].Type = wtype.LTPostMix
+		}
 		mastermix = Mix(mastermix, samples[j])
 	}
 	reaction := mastermix
 
 	// this needs to go after an initial denaturation!
-	if Hotstart {
+	if !PolymeraseAlreadyaddedtoMastermix {
+
 		polySample := mixer.Sample(PCRPolymerase, PolymeraseVolume)
+		polySample.Type = wtype.LTPostMix
 
 		reaction = Mix(reaction, polySample)
 	}
@@ -166,49 +165,36 @@ Steps {
 	extensionTemp := enzymes.DNApolymerasetemps[polymerase]["extensiontemp"]
 	meltingTemp := enzymes.DNApolymerasetemps[polymerase]["meltingtemp"]
 
-	// initial Denaturation
+	var pcrSteps []string
 
-	r1 := Incubate(reaction, IncubateOpt{
-		Temp: meltingTemp,
-		Time: InitDenaturationtime,
-	})
+	initialDenat := fmt.Sprint("Initial Denaturation: ", meltingTemp.ToString(), " for ", InitDenaturationtime.ToString())
 
-	for i := 0; i < Numberofcycles; i++ {
+	cycles := fmt.Sprint(Numberofcycles, " cycles of : ")
 
-		// Denature
+	spacer := "***"
 
-		r1 = Incubate(r1, IncubateOpt{
-			Temp: meltingTemp,
-			Time: Denaturationtime,
-		})
+	denat := fmt.Sprint("Denature: ", meltingTemp.ToString(), " for ", Denaturationtime.ToString())
 
-		// Anneal
-		r1 = Incubate(r1, IncubateOpt{
-			Temp: AnnealingTemp,
-			Time: Annealingtime,
-		})
+	anneal := fmt.Sprint("Anneal: ", AnnealingTemp.ToString(), " for ", Annealingtime.ToString())
 
-		//extensiontime := TargetTemplatelengthinBP/PCRPolymerase.RateBPpers // we'll get type issues here so leave it out for now
+	extend := fmt.Sprint("Extension: ", extensionTemp.ToString(), " for ", Extensiontime.ToString())
 
-		// Extend
-		r1 = Incubate(r1, IncubateOpt{
-			Temp: extensionTemp,
-			Time: Extensiontime,
-		})
+	spacer = "***"
 
-	}
-	// Final Extension
-	r1 = Incubate(r1, IncubateOpt{
-		Temp: extensionTemp,
-		Time: Finalextensiontime,
-	})
+	finalExtension := fmt.Sprint(" Then Final Extension: ", extensionTemp.ToString(), " for ", Finalextensiontime.ToString())
 
 	// all done
-	Reaction = r1
+	Reaction = reaction //r1
 
 	Reaction.CName = ReactionName
 
-	Status = "Success"
+	message := "Put Reactions in ThermoCycler with following cycle conditions. Return to deck once PCR has finished if running DNA_Gel"
+
+	pcrSteps = append(pcrSteps, initialDenat, cycles, spacer, denat, anneal, extend, spacer, finalExtension, message)
+
+	thermocycleMessage := strings.Join(pcrSteps, ";")
+
+	Reaction = MixerPrompt(Reaction, thermocycleMessage)
 }
 
 // Run after controls and a steps block are completed to
