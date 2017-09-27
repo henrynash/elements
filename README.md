@@ -17,6 +17,19 @@ make
 make current
 ```
 
+To specify a target directory from which to build elements prefix the make or make current command with 
+
+```sh
+AN_DIRS=
+```
+
+e.g. to build a local directory ~/go/src/antha-elements
+
+```sh
+AN_DIRS=~/go/src/antha-elements make
+```
+
+
 or run this command from anywhere:
 ```sh
 make -C "$(go list -f '{{.Dir}}' github.com/antha-lang/elements)"
@@ -68,5 +81,5 @@ antharun --help
 ```
 
 ## Academy
-Go to the [Antha Academy](https://github.com/antha-lang/elements/tree/master/an/AnthaAcademy) page to be guided through how to use antha in more detail.
+Go to the [Antha Academy](https://github.com/antha-lang/elements/tree/master/AnthaAcademy) page to be guided through how to use antha in more detail.
 
