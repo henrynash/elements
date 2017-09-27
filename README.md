@@ -29,6 +29,11 @@ e.g. to build a local directory ~/go/src/antha-elements
 AN_DIRS=~/go/src/antha-elements make
 ```
 
+To build AnthaAcademy elements:
+
+```sh
+AN_DIRS=AnthaAcademy
+```
 
 or run this command from anywhere:
 ```sh

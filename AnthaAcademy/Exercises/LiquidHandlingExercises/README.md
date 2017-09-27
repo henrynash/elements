@@ -140,6 +140,13 @@ The Bundle file should look like this:
 ### Important!
 To use anthabuild to compile the antha file the an file will need to be within the antha-lang/elements/an folder. 
 
+Otherwise the anthabuild command should be appended with AN_DIRS=<targetdirectory>.
+
+e.g. 
+```sh
+anthabuild AN_DIRS=$GOPATH/src/github.com/antha-lang/elements/AnthaAcademy
+```
+
 ## Excercises
 
 ### 1. Using what you've learnt in Lesson 1, adapt the protocol to Split an input solution into two output solutions. 

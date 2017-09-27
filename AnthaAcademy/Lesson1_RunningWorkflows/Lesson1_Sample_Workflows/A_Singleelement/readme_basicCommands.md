@@ -20,6 +20,16 @@ Whenever you change the source code of an antha element you must run anthabuild 
 
 If you haven't set up the anthabuild alias you can do so by following the instructions [here](../../../../../README.md)
 
+### Important!
+To use anthabuild to compile the antha file the an file will need to be within the antha-lang/elements/an folder. 
+
+Otherwise the anthabuild command should be appended with AN_DIRS=<targetdirectory>.
+
+e.g. 
+```sh
+anthabuild AN_DIRS=$GOPATH/src/github.com/antha-lang/elements/AnthaAcademy
+```
+
 ## Excercises
 
 1. Modify the A_Sample.an file you modified previously so that a additional Sample output is created called Sample2
