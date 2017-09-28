@@ -49,7 +49,6 @@ Parameters (
 Data (
 	ThermoCycleConditionsUsed map[string]string // a reaction by reaction description of all sets of conditions suggested for each reaction.
 	Amplicons map[string]DNASequence            // amplicon expected for each reaction
-	Errors []error                              // return an error message if an error is encountered
 )
 
 // Physical Inputs to this protocol with types
@@ -223,7 +222,7 @@ Steps {
 	//MixerPrompt(Reactions[0], "Put Reactions in ThermoCylcer and return to deck once PCR has finished if running DNA_Gel")
 
 	// once all values of loop have been completed, export the plate contents as a csv file
-	Errors = append(Errors, wtype.ExportPlateCSV(Projectname+".csv", Plate, Projectname+"outputPlate", welllocations, Reactions, volumes))
+	wtype.ExportPlateCSV(Projectname+".csv", Plate, Projectname+"outputPlate", welllocations, Reactions, volumes)
 
 }
 

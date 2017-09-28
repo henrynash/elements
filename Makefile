@@ -1,6 +1,6 @@
 SHELL=/bin/bash
 
-AN_DIRS?=an
+AN_DIRS?=an AnthaAcademy
 AN_OUT=lib
 INPUT_DIRS?=an
 PACKAGE=github.com/antha-lang/elements

@@ -27,7 +27,7 @@ Otherwise the anthabuild command should be appended with AN_DIRS=<targetdirector
 
 e.g. 
 ```sh
-anthabuild AN_DIRS=$GOPATH/src/github.com/antha-lang/elements/AnthaAcademy
+anthabuild AN_DIRS=$HOME/my-antha-elements
 ```
 
 ## Excercises

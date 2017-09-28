@@ -128,7 +128,7 @@ Sample = Mix(Sample)
 (a) Compile the changes to the source code:
 
 ```bash
-anthabuild AN_DIRS=AnthaAcademy
+anthabuild
 ```
 
 (b) Now run protocol (this will use the workflow.json file and parameters in the parameters.json file)

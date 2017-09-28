@@ -144,7 +144,7 @@ Otherwise the anthabuild command should be appended with AN_DIRS=<targetdirector
 
 e.g. 
 ```sh
-anthabuild AN_DIRS=$GOPATH/src/github.com/antha-lang/elements/AnthaAcademy
+anthabuild AN_DIRS=$GOPATH/src/github.com/my-antha-elements
 ```
 
 ## Excercises
