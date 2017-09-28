@@ -1,5 +1,5 @@
-// protocol LessonSplitSample performs something.
-protocol LessonSplitSample
+// protocol LessonExercise_SplitSample performs something.
+protocol LessonExercise_SplitSample
 
 // Place golang packages to import here
 import (
