@@ -2,7 +2,7 @@
   "connections": [],
   "processes": {
     "AliquotParams2": {
-      "component": "Aliquot_SpecificPlate"
+      "component": "Lesson2_Aliquot_SpecificPlate"
     }
   }
 }

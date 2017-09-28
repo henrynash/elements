@@ -2,7 +2,7 @@
   "connections": [],
   "processes": {
     "sampleTotal": {
-      "component": "SampleForTotalVolume"
+      "component": "Lesson1_SampleForTotalVolume"
     }
   }
 }

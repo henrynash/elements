@@ -1,6 +1,6 @@
 // Make a general mastermix comprising of a list of components, list of volumes
 // and specifying the number of reactions required
-protocol Mastermix_one
+protocol Lesson0_MasterMix
 
 import (
 	"fmt"
@@ -8,7 +8,7 @@ import (
 	"github.com/antha-lang/antha/antha/anthalib/wtype"
 )
 
-// Input parameters for this protocol (data)
+// Input parameters for this protocol Lesson(data)
 Parameters (
 	Reactionspermastermix int
 	ComponentVolumesperReaction []Volume
@@ -19,14 +19,14 @@ Data (
 	Status string
 )
 
-// Physical Inputs to this protocol with types
+// Physical Inputs to this protocol Lessonwith types
 Inputs (
 	//TopUpBuffer *LHComponent // optional if nil this is ignored
 	Components []*LHComponent
 	OutPlate *LHPlate
 )
 
-// Physical outputs from this protocol with types
+// Physical outputs from this protocol Lessonwith types
 Outputs (
 	Mastermix *LHComponent
 )

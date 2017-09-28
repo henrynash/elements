@@ -1239,7 +1239,7 @@
   "connections": [],
   "processes": {
     "Pipette1": {
-      "component": "PipetteImage_fromPalette"
+      "component": "LessonPipetteImage_fromPalette"
     }
   }
 }

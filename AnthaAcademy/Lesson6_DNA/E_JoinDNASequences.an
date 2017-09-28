@@ -1,10 +1,10 @@
-// Demo protocol of how to create an array of dna types from parsing user inputs of various types
+// Demo protocol Lesson of how to create an array of dna types from parsing user inputs of various types
 // scenarios handled:
 // Biobrick IDS
 // genbank files
 // raw sequence
 // inventory lookup
-protocol JoinDNASequences
+protocol Lesson6_JoinDNASequences
 
 import (
 	"strings"
@@ -32,7 +32,7 @@ Requirements {
 
 }
 
-// Actions to perform before protocol itself
+// Actions to perform before protocol Lessonitself
 Setup {
 
 }

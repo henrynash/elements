@@ -1,4 +1,4 @@
-protocol PCR_vol
+protocol Lesson0_PCR
 
 import (
 	"github.com/antha-lang/antha/antha/AnthaStandardLibrary/Packages/enzymes"
@@ -6,7 +6,7 @@ import (
 	"github.com/antha-lang/antha/antha/anthalib/wtype"
 )
 
-// Input parameters for this protocol (data)
+// Input parameters for this protocol Lesson(data)
 Parameters (
 	// PCRprep parameters:
 	WaterVolume Volume
@@ -50,7 +50,7 @@ Data (
 	Status string
 )
 
-// Physical Inputs to this protocol with types
+// Physical Inputs to this protocol Lessonwith types
 Inputs (
 	FwdPrimer *LHComponent
 	RevPrimer *LHComponent
@@ -63,7 +63,7 @@ Inputs (
 	OutPlate *LHPlate
 )
 
-// Physical outputs from this protocol with types
+// Physical outputs from this protocol Lessonwith types
 Outputs (
 	Reaction *LHComponent
 )

@@ -1,5 +1,5 @@
-// Protocol for creating a DNASequence from a sequence file format. // Supported formats: .gdx .fasta .gb
-protocol NewDNASequence_fromfile
+// protocol Lessonfor creating a DNASequence from a sequence file format. // Supported formats: .gdx .fasta .gb
+protocol Lesson6_NewDNASequence_fromfile
 
 import (
 	"fmt"
@@ -35,7 +35,7 @@ Requirements {
 
 }
 
-// Actions to perform before protocol itself
+// Actions to perform before protocol Lessonitself
 Setup {
 
 }

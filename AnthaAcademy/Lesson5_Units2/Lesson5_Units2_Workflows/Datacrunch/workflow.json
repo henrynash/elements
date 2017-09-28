@@ -2,7 +2,7 @@
   "connections": [],
   "processes": {
     "Datacrunch": {
-      "component": "Datacrunch"
+      "component": "Lesson5_Datacrunch"
     }
   }
 }

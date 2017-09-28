@@ -1,5 +1,5 @@
-// demo protocol of how to create a dna type from user inputs
-protocol NewDNASequence
+// demo protocol Lessonof how to create a dna type from user inputs
+protocol Lesson6_NewDNASequence
 
 import (
 	"fmt"
@@ -35,7 +35,7 @@ Requirements {
 
 }
 
-// Actions to perform before protocol itself
+// Actions to perform before protocol Lessonitself
 Setup {
 
 }

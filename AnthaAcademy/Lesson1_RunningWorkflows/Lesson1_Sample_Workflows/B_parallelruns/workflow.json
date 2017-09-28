@@ -2,13 +2,13 @@
   "connections": [],
   "processes": {
     "sampleDoubleconc": {
-      "component": "SampleForTotalVolume"
+      "component": "Lesson1_SampleForTotalVolume"
     },
     "sampleTotal": {
-      "component": "SampleForTotalVolume"
+      "component": "Lesson1_SampleForTotalVolume"
     },
     "samplehalfConc": {
-      "component": "SampleForTotalVolume"
+      "component": "Lesson1_SampleForTotalVolume"
     }
   }
 }

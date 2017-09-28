@@ -1,5 +1,5 @@
 // demo of how to create units from raw values and unit strings
-protocol Units_New
+protocol Lesson4_Units_New
 
 import (
 	"github.com/antha-lang/antha/antha/anthalib/wunit"
@@ -26,7 +26,7 @@ Requirements {
 
 }
 
-// Actions to perform before protocol itself
+// Actions to perform before protocol Lessonitself
 Setup {
 
 }
@@ -36,7 +36,7 @@ Steps {
 	// this is importing the NewVolume function from the wunit package
 	MyVolume = wunit.NewVolume(MyValue, MyUnit)
 
-	// Exercise: adjust the protocol to make a concentration instead
+	// Exercise: adjust the protocol Lessonto make a concentration instead
 }
 
 // Actions to perform after steps block to analyze data

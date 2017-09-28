@@ -1,5 +1,5 @@
 // Perform multiple PCR reactions with common default parameters
-protocol AutoPCR_demo
+protocol Lesson0_PCR_Multi
 
 import (
 	"fmt"
@@ -7,7 +7,7 @@ import (
 	"github.com/antha-lang/antha/inventory"
 )
 
-// Input parameters for this protocol (data)
+// Input parameters for this protocol Lesson(data)
 Parameters (
 	// PCRprep parameters
 	Projectname string
@@ -28,7 +28,7 @@ Data (
 	Errors []error // return an error message if an error is encountered
 )
 
-// Physical Inputs to this protocol with types
+// Physical Inputs to this protocol Lessonwith types
 Inputs (
 	FwdPrimertype *LHComponent
 	RevPrimertype *LHComponent
@@ -40,7 +40,7 @@ Inputs (
 	Plate *LHPlate
 )
 
-// Physical outputs from this protocol with types
+// Physical outputs from this protocol Lessonwith types
 Outputs (
 	Reactions []*LHComponent
 	ReactionMap map[string]*LHComponent
@@ -102,7 +102,7 @@ Steps {
 		wellposition := allwellpositionsforplate[counter]
 
 		// Run PCR_vol element
-		result := RunSteps(PCR_vol,
+		result := RunSteps(Lesson0_PCR,
 			Parameters{
 				WaterVolume:           DefaultWaterVolume,
 				ReactionVolume:        DefaultReactionVolume,
@@ -158,10 +158,12 @@ Steps {
 		counter++
 
 	}
-
+	_, err := wtype.ExportPlateCSV(Projectname+".csv", Plate, Projectname+"outputPlate", welllocations, Reactions, volumes)
 	// once all values of loop have been completed, export the plate contents as a csv file
-	Errors = append(Errors, wtype.ExportPlateCSV(Projectname+".csv", Plate, Projectname+"outputPlate", welllocations, Reactions, volumes))
 
+	if err != nil {
+		Errors = append(Errors, err)
+	}
 }
 
 // Run after controls and a steps block are completed to

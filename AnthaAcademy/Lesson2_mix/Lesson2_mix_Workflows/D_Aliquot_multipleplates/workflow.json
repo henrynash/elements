@@ -2,7 +2,7 @@
   "connections": [],
   "processes": {
     "AliquotParams4": {
-      "component": "Aliquot_SamePositionsMultipleplates"
+      "component": "Lesson2_Aliquot_SamePositionsMultipleplates"
     }
   }
 }

@@ -13,16 +13,16 @@
   ],
   "processes": {
     "sample": {
-      "component": "Sample"
+      "component": "Lesson1_Sample"
     },
     "sampleAll": {
-      "component": "SampleAll"
+      "component": "Lesson1_SampleAll"
     },
     "sampleTotal": {
-      "component": "SampleForTotalVolume"
+      "component": "Lesson1_SampleForTotalVolume"
     },
     "samplealone": {
-      "component": "Sample"
+      "component": "Lesson1_Sample"
     }
   }
 }

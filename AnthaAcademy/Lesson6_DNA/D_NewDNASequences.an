@@ -1,9 +1,9 @@
-// Demo protocol of how to create an array of dna types from parsing user inputs of various types
+// Demo protocol Lessonof how to create an array of dna types from parsing user inputs of various types
 // scenarios handled:
 // Biobrick IDS
 // raw sequence
 // inventory lookup
-protocol NewDNASequences
+protocol Lesson6_NewDNASequences
 
 import (
 	inventory "github.com/antha-lang/antha/antha/AnthaStandardLibrary/Packages/Inventory"
@@ -39,7 +39,7 @@ Requirements {
 
 }
 
-// Actions to perform before protocol itself
+// Actions to perform before protocol Lessonitself
 Setup {
 
 }
@@ -94,7 +94,7 @@ Steps {
 			}
 			if pass && BlastSeqswithNoName {
 				// run a blast search on the sequence to get the name
-				blastsearch := RunSteps(BlastSearch_wtype,
+				blastsearch := RunSteps(Lesson6_BlastSearch,
 					Parameters{
 						DNA: partDNA,
 					}, Inputs{})

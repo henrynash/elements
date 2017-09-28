@@ -52,13 +52,13 @@
   },
   "processes": {
     "Process1": {
-      "component": "SplitSample"
+      "component": "LessonSplitSample"
     },
     "Process2": {
-      "component": "SplitSample"
+      "component": "LessonSplitSample"
     },
     "Process3": {
-      "component": "SplitSample"
+      "component": "LessonSplitSample"
     }
   }
 }

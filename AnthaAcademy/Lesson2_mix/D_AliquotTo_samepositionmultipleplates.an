@@ -1,12 +1,12 @@
-// example protocol showing how the MixTo command can be used to specify different plates of the same type  i.e. plate 1 ,2, 3 of type greiner384
-protocol Aliquot_SamePositionsMultipleplates
+// example protocol Lessonshowing how the MixTo command can be used to specify different plates of the same type  i.e. plate 1 ,2, 3 of type greiner384
+protocol Lesson2_Aliquot_SamePositionsMultipleplates
 
 import (
 	"github.com/antha-lang/antha/antha/anthalib/mixer"
 	"github.com/antha-lang/antha/antha/anthalib/wtype"
 )
 
-// Input parameters for this protocol (data)
+// Input parameters for this protocol Lesson(data)
 Parameters (
 	SolutionVolume Volume
 	VolumePerAliquot Volume
@@ -18,12 +18,12 @@ Parameters (
 // Data which is returned from this protocol, and data types
 Data ()
 
-// Physical Inputs to this protocol with types
+// Physical Inputs to this protocol Lessonwith types
 Inputs (
 	Solution *LHComponent
 )
 
-// Physical outputs from this protocol with types
+// Physical outputs from this protocol Lessonwith types
 Outputs (
 	Aliquots []*LHComponent
 )

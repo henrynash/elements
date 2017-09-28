@@ -2,16 +2,16 @@
   "connections": [],
   "processes": {
     "1": {
-      "component": "Units_New"
+      "component": "Lesson4_Units_New"
     },
     "SI": {
-      "component": "Units_SI"
+      "component": "Lesson4_Units_SI"
     },
     "sum": {
-      "component": "Units_Sum"
+      "component": "Lesson4_Units_Sum"
     },
     "two": {
-      "component": "Units_ToString"
+      "component": "Lesson4_Units_ToString"
     }
   }
 }

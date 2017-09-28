@@ -13,10 +13,10 @@
   ],
   "processes": {
     "MMX": {
-      "component": "Mastermix_one"
+      "component": "Lesson0_MasterMix"
     },
     "PCR": {
-      "component": "AutoPCR_mmx_demo"
+      "component": "Lesson0_PCR_MMX_Multi"
     }
   }
 }

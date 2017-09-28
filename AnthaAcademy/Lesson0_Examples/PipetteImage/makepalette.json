@@ -43,7 +43,7 @@
   "connections": [],
   "processes": {
     "MakePalette1": {
-      "component": "MakePalette_2"
+      "component": "LessonMakePalette_2"
     }
   }
 }

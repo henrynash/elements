@@ -1,4 +1,4 @@
-protocol NewDNASequence_fromLookup
+protocol Lesson6_NewDNASequence_fromLookup
 
 import (
 	"fmt"
@@ -36,7 +36,7 @@ Requirements {
 
 }
 
-// Actions to perform before protocol itself
+// Actions to perform before protocol Lessonitself
 Setup {
 
 }

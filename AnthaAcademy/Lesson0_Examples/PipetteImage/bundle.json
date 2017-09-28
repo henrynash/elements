@@ -97,10 +97,10 @@
   ],
   "processes": {
     "MakePalette1": {
-      "component": "MakePalette_2"
+      "component": "LessonMakePalette_2"
     },
     "Pipette1": {
-      "component": "PipetteImage_fromPalette"
+      "component": "LessonPipetteImage_fromPalette"
     }
   }
 }

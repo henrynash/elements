@@ -1,5 +1,5 @@
-// example protocol showing the highest level antha mix command which does not specify a plate type, therefore leaving it up to the scheduler to decide
-protocol Aliquot_somewhere
+// example protocol Lessonshowing the highest level antha mix command which does not specify a plate type, therefore leaving it up to the scheduler to decide
+protocol Lesson2_Aliquot_somewhere
 
 // we can import code libraries and use functions and types from these libraries
 import (
@@ -8,7 +8,7 @@ import (
 	"github.com/antha-lang/antha/antha/anthalib/wutil"
 )
 
-// Input parameters for this protocol (data)
+// Input parameters for this protocol Lesson(data)
 Parameters (
 	SolutionVolume Volume
 	VolumePerAliquot Volume
@@ -18,12 +18,12 @@ Parameters (
 // Data which is returned from this protocol, and data types
 Data ()
 
-// Physical Inputs to this protocol with types
+// Physical Inputs to this protocol Lessonwith types
 Inputs (
 	Solution *LHComponent
 )
 
-// Physical outputs from this protocol with types
+// Physical outputs from this protocol Lessonwith types
 Outputs (
 	Aliquots []*LHComponent
 )

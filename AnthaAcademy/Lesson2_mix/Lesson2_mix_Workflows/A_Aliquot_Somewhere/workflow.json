@@ -2,7 +2,7 @@
   "connections": [],
   "processes": {
     "AliquotParams": {
-      "component": "Aliquot_somewhere"
+      "component": "Lesson2_Aliquot_somewhere"
     }
   }
 }

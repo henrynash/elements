@@ -1,8 +1,8 @@
-// The lowest level example protocol showing The MixTo command being used to specify the specific wells to be aliquoted to;
+// The lowest level example protocol Lessonshowing The MixTo command being used to specify the specific wells to be aliquoted to;
 // By doing this we are able to specify whether the aliqouts are pipetted by row or by column.
 // In this case the user is still not specifying the well location (i.e. A1) in the parameters, although that would be possible to specify.
 // We don't generally encourage this since Antha is designed to be prodiminantly a high level language which avoids the user specifying well locations but this possibility is there if necessary.
-protocol AliquotTo
+protocol Lesson2_AliquotTo
 
 import (
 	"github.com/antha-lang/antha/antha/anthalib/mixer"
@@ -11,7 +11,7 @@ import (
 	"strconv"
 )
 
-// Input parameters for this protocol (data)
+// Input parameters for this protocol Lesson(data)
 Parameters (
 	SolutionVolume Volume
 	VolumePerAliquot Volume
@@ -22,13 +22,13 @@ Parameters (
 // Data which is returned from this protocol, and data types
 Data ()
 
-// Physical Inputs to this protocol with types
+// Physical Inputs to this protocol Lessonwith types
 Inputs (
 	Solutions []*LHComponent // we're now going to aliquot multiple solutions at the same time (but not mixing them)
 	OutPlate *LHPlate
 )
 
-// Physical outputs from this protocol with types
+// Physical outputs from this protocol Lessonwith types
 Outputs (
 	Aliquots []*LHComponent
 )
@@ -103,7 +103,7 @@ Steps {
 			aliquotSample := mixer.Sample(Solution, VolumePerAliquot)
 
 			// this time we're using counter as an index to go through the wellpositionarray one position at a time and ensuring the next free position is chosen
-			// the platenumber is hardcoded to 1 here so if we tried to specify too many aliquots in the parameters the protocol would fail
+			// the platenumber is hardcoded to 1 here so if we tried to specify too many aliquots in the parameters the protocol Lessonwould fail
 			// it would be better to create a platenumber variable of type int and use an if statement to increase platenumber by 1 if all well positions are filled up i.e.
 			// if counter == len(wellpositionarray) {
 			// 		platenumber++

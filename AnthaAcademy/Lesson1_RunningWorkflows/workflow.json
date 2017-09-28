@@ -2,7 +2,7 @@
   "connections": [],
   "processes": {
     "MyFirstProtocol": {
-      "component": "Sample"
+      "component": "Lesson1_Sample"
     }
   }
 }

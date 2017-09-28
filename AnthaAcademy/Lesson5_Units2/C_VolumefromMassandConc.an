@@ -1,5 +1,5 @@
 // example of how to convert a concentration and mass to a volume
-protocol VolumeFromMassandConc
+protocol Lesson5_VolumeFromMassandConc
 
 import (
 	"github.com/antha-lang/antha/antha/anthalib/wunit"
@@ -27,7 +27,7 @@ Requirements {
 
 }
 
-// Actions to perform before protocol itself
+// Actions to perform before protocol Lessonitself
 Setup {
 
 }

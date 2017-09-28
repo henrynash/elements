@@ -1,27 +1,5 @@
-// Protocol SplitSample performs something.
-//
-// All of this text should be used to describe what this protocol does.  It
-// should begin with a one sentence summary begining with "Protocol X...". If
-// neccessary, a empty line with a detailed description can follow (like this
-// description does).
-//
-// Spend some time thinking of a good protocol name as this is the name by
-// which this protocol will be referred. It should convey the purpose and scope
-// of the protocol to an outsider and should suggest an obvious
-// parameterization.
-//
-// Protocol names are also case-sensitive, so try to use a consistent casing
-// scheme.
-//
-// Examples of bad names:
-//   - MyProtocol
-//   - GeneAssembly
-//   - WildCAPSsmallANDLARGE
-//
-// Better names:
-//   - Aliquot
-//   - TypeIIsConstructAssembly
-protocol SplitSample
+// protocol LessonSplitSample performs something.
+protocol LessonSplitSample
 
 // Place golang packages to import here
 import (

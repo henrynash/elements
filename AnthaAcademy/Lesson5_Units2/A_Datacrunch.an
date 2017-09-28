@@ -3,13 +3,10 @@
 // Calculating [S] and V from g/l concentration and looking up molecular weight of named substrate
 // Calculating [S] and V from g/l concentration of DNA of known sequence
 // Calculating [S] and V from g/l concentration of Protein product of DNA of known sequence
-
-protocol Datacrunch
+protocol Lesson5_Datacrunch
 
 import (
 	"fmt"
-	//"math"
-	//"github.com/antha-lang/antha/antha/anthalib/wunit"
 	"github.com/antha-lang/antha/antha/AnthaStandardLibrary/Packages/Pubchem"
 	"github.com/antha-lang/antha/antha/AnthaStandardLibrary/Packages/sequences"
 )
@@ -54,7 +51,7 @@ Requirements {
 
 }
 
-// Actions to perform before protocol itself
+// Actions to perform before protocol Lessonitself
 Setup {
 
 }

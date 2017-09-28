@@ -1,5 +1,5 @@
-// demo protocol of how to convert units to string
-protocol Units_ToString
+// demo protocol Lessonof how to convert units to string
+protocol Lesson4_Units_ToString
 
 import (
 	"github.com/antha-lang/antha/antha/anthalib/wunit"
@@ -36,7 +36,7 @@ Requirements {
 
 }
 
-// Actions to perform before protocol itself
+// Actions to perform before protocol Lessonitself
 Setup {
 
 }

@@ -1,5 +1,5 @@
 // combine up to 8 sequences into array; for convenience in using workflow editor
-protocol MakeSequenceArray
+protocol Lesson6_MakeSequenceArray
 
 import (
 	"github.com/antha-lang/antha/antha/anthalib/wtype"
@@ -32,7 +32,7 @@ Requirements {
 
 }
 
-// Actions to perform before protocol itself
+// Actions to perform before protocol Lessonitself
 Setup {
 
 }

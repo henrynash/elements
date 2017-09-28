@@ -1,5 +1,5 @@
 // example of how to convert a density and mass to a volume
-protocol MasstoVolume
+protocol Lesson5_MassToVolume
 
 import (
 	"github.com/antha-lang/antha/antha/anthalib/wunit"
@@ -27,7 +27,7 @@ Requirements {
 
 }
 
-// Actions to perform before protocol itself
+// Actions to perform before protocol Lessonitself
 Setup {
 
 }

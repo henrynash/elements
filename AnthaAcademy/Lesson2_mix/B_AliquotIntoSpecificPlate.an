@@ -1,6 +1,6 @@
-// example protocol showing The MixInto command which allows a specifc plate to be specified. i.e. plate with ID blahblahblah
+// example protocol Lessonshowing The MixInto command which allows a specifc plate to be specified. i.e. plate with ID blahblahblah
 // if no specific plate is specified a plate type can be
-protocol Aliquot_SpecificPlate
+protocol Lesson2_Aliquot_SpecificPlate
 
 import (
 	"github.com/antha-lang/antha/antha/anthalib/mixer"
@@ -8,7 +8,7 @@ import (
 	"github.com/antha-lang/antha/antha/anthalib/wutil"
 )
 
-// Input parameters for this protocol (data)
+// Input parameters for this protocol Lesson(data)
 Parameters (
 	SolutionVolume Volume
 	VolumePerAliquot Volume
@@ -18,14 +18,14 @@ Parameters (
 // Data which is returned from this protocol, and data types
 Data ()
 
-// Physical Inputs to this protocol with types
+// Physical Inputs to this protocol Lessonwith types
 Inputs (
 	Solution *LHComponent
 	OutPlate *LHPlate // this time we're specifying what plate we're using
 
 )
 
-// Physical outputs from this protocol with types
+// Physical outputs from this protocol Lessonwith types
 Outputs (
 	Aliquots []*LHComponent
 )

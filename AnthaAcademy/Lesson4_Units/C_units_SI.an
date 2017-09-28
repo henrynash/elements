@@ -1,4 +1,4 @@
-protocol Units_SI
+protocol Lesson4_Units_SI
 
 import (
 	"github.com/antha-lang/antha/antha/anthalib/wunit"
@@ -27,7 +27,7 @@ Requirements {
 
 }
 
-// Actions to perform before protocol itself
+// Actions to perform before protocol Lessonitself
 Setup {
 
 }

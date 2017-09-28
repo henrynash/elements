@@ -2,7 +2,7 @@
   "connections": [],
   "processes": {
     "MMX": {
-      "component": "Mastermix_one"
+      "component": "Lesson0_MasterMix"
     }
   }
 }

@@ -2,10 +2,10 @@
   "connections": [],
   "processes": {
     "NewDNASequenceandBlast1": {
-      "component": "NewDNASequence"
+      "component": "Lesson6_NewDNASequence"
     },
     "NewDNASequenceandBlast2": {
-      "component": "NewDNASequence"
+      "component": "Lesson6_NewDNASequence"
     }
   }
 }

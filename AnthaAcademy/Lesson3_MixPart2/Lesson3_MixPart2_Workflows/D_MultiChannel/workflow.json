@@ -2,7 +2,7 @@
   "connections": [],
   "processes": {
     "MultiChannelTest": {
-      "component": "MultichannelTestProtocol"
+      "component": "LessonMultichannelTestProtocol"
     }
   }
 }

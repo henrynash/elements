@@ -1,4 +1,4 @@
-// Demo protocol of how to create an array of dna types from parsing user inputs of various types
+// Demo protocol Lessonof how to create an array of dna types from parsing user inputs of various types
 // scenarios handled:
 // Biobrick IDS
 // raw sequence
@@ -27,17 +27,17 @@ import (
 
 // Physical outputs from this protocol
 
-func _NewDNASequencesRequirements() {
+func _Lesson6_NewDNASequencesRequirements() {
 
 }
 
-// Actions to perform before protocol itself
-func _NewDNASequencesSetup(_ctx context.Context, _input *NewDNASequencesInput) {
+// Actions to perform before protocol Lessonitself
+func _Lesson6_NewDNASequencesSetup(_ctx context.Context, _input *Lesson6_NewDNASequencesInput) {
 
 }
 
 // Core process of the protocol: steps to be performed for each input
-func _NewDNASequencesSteps(_ctx context.Context, _input *NewDNASequencesInput, _output *NewDNASequencesOutput) {
+func _Lesson6_NewDNASequencesSteps(_ctx context.Context, _input *Lesson6_NewDNASequencesInput, _output *Lesson6_NewDNASequencesOutput) {
 
 	// set warnings reported back to user to none initially
 	warnings := make([]string, 0)
@@ -86,7 +86,7 @@ func _NewDNASequencesSteps(_ctx context.Context, _input *NewDNASequencesInput, _
 			}
 			if pass && _input.BlastSeqswithNoName {
 				// run a blast search on the sequence to get the name
-				blastsearch := BlastSearchRunSteps(_ctx, &BlastSearchInput{DNA: partDNA})
+				blastsearch := Lesson6_BlastSearchRunSteps(_ctx, &Lesson6_BlastSearchInput{DNA: partDNA})
 				partDNA.Nm = blastsearch.Data.AnthaSeq.Nm
 			}
 
@@ -101,25 +101,25 @@ func _NewDNASequencesSteps(_ctx context.Context, _input *NewDNASequencesInput, _
 }
 
 // Actions to perform after steps block to analyze data
-func _NewDNASequencesAnalysis(_ctx context.Context, _input *NewDNASequencesInput, _output *NewDNASequencesOutput) {
+func _Lesson6_NewDNASequencesAnalysis(_ctx context.Context, _input *Lesson6_NewDNASequencesInput, _output *Lesson6_NewDNASequencesOutput) {
 
 }
 
-func _NewDNASequencesValidation(_ctx context.Context, _input *NewDNASequencesInput, _output *NewDNASequencesOutput) {
+func _Lesson6_NewDNASequencesValidation(_ctx context.Context, _input *Lesson6_NewDNASequencesInput, _output *Lesson6_NewDNASequencesOutput) {
 
 }
-func _NewDNASequencesRun(_ctx context.Context, input *NewDNASequencesInput) *NewDNASequencesOutput {
-	output := &NewDNASequencesOutput{}
-	_NewDNASequencesSetup(_ctx, input)
-	_NewDNASequencesSteps(_ctx, input, output)
-	_NewDNASequencesAnalysis(_ctx, input, output)
-	_NewDNASequencesValidation(_ctx, input, output)
+func _Lesson6_NewDNASequencesRun(_ctx context.Context, input *Lesson6_NewDNASequencesInput) *Lesson6_NewDNASequencesOutput {
+	output := &Lesson6_NewDNASequencesOutput{}
+	_Lesson6_NewDNASequencesSetup(_ctx, input)
+	_Lesson6_NewDNASequencesSteps(_ctx, input, output)
+	_Lesson6_NewDNASequencesAnalysis(_ctx, input, output)
+	_Lesson6_NewDNASequencesValidation(_ctx, input, output)
 	return output
 }
 
-func NewDNASequencesRunSteps(_ctx context.Context, input *NewDNASequencesInput) *NewDNASequencesSOutput {
-	soutput := &NewDNASequencesSOutput{}
-	output := _NewDNASequencesRun(_ctx, input)
+func Lesson6_NewDNASequencesRunSteps(_ctx context.Context, input *Lesson6_NewDNASequencesInput) *Lesson6_NewDNASequencesSOutput {
+	soutput := &Lesson6_NewDNASequencesSOutput{}
+	output := _Lesson6_NewDNASequencesRun(_ctx, input)
 	if err := inject.AssignSome(output, &soutput.Data); err != nil {
 		panic(err)
 	}
@@ -129,19 +129,19 @@ func NewDNASequencesRunSteps(_ctx context.Context, input *NewDNASequencesInput) 
 	return soutput
 }
 
-func NewDNASequencesNew() interface{} {
-	return &NewDNASequencesElement{
+func Lesson6_NewDNASequencesNew() interface{} {
+	return &Lesson6_NewDNASequencesElement{
 		inject.CheckedRunner{
 			RunFunc: func(_ctx context.Context, value inject.Value) (inject.Value, error) {
-				input := &NewDNASequencesInput{}
+				input := &Lesson6_NewDNASequencesInput{}
 				if err := inject.Assign(value, input); err != nil {
 					return nil, err
 				}
-				output := _NewDNASequencesRun(_ctx, input)
+				output := _Lesson6_NewDNASequencesRun(_ctx, input)
 				return inject.MakeValue(output), nil
 			},
-			In:  &NewDNASequencesInput{},
-			Out: &NewDNASequencesOutput{},
+			In:  &Lesson6_NewDNASequencesInput{},
+			Out: &Lesson6_NewDNASequencesOutput{},
 		},
 	}
 }
@@ -152,24 +152,24 @@ var (
 	_ = wunit.Make_units
 )
 
-type NewDNASequencesElement struct {
+type Lesson6_NewDNASequencesElement struct {
 	inject.CheckedRunner
 }
 
-type NewDNASequencesInput struct {
+type Lesson6_NewDNASequencesInput struct {
 	BlastSeqswithNoName bool
 	PartPrefix          string
 	Seqsinorder         []string
 	Vectors             bool
 }
 
-type NewDNASequencesOutput struct {
+type Lesson6_NewDNASequencesOutput struct {
 	Parts    []wtype.DNASequence
 	Status   string
 	Warnings []string
 }
 
-type NewDNASequencesSOutput struct {
+type Lesson6_NewDNASequencesSOutput struct {
 	Data struct {
 		Parts    []wtype.DNASequence
 		Status   string
@@ -180,11 +180,11 @@ type NewDNASequencesSOutput struct {
 }
 
 func init() {
-	if err := addComponent(component.Component{Name: "NewDNASequences",
-		Constructor: NewDNASequencesNew,
+	if err := addComponent(component.Component{Name: "Lesson6_NewDNASequences",
+		Constructor: Lesson6_NewDNASequencesNew,
 		Desc: component.ComponentDesc{
-			Desc: "Demo protocol of how to create an array of dna types from parsing user inputs of various types\nscenarios handled:\nBiobrick IDS\nraw sequence\ninventory lookup\n",
-			Path: "src/github.com/antha-lang/elements/an/NewDNASequences/element.an",
+			Desc: "Demo protocol Lessonof how to create an array of dna types from parsing user inputs of various types\nscenarios handled:\nBiobrick IDS\nraw sequence\ninventory lookup\n",
+			Path: "src/github.com/antha-lang/elements/AnthaAcademy/Lesson6_DNA/D_NewDNASequences.an",
 			Params: []component.ParamDesc{
 				{Name: "BlastSeqswithNoName", Desc: "", Kind: "Parameters"},
 				{Name: "PartPrefix", Desc: "", Kind: "Parameters"},

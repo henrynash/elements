@@ -2,13 +2,13 @@
   "connections": [],
   "processes": {
     "fasta": {
-      "component": "NewDNASequence_fromfile"
+      "component": "Lesson6_NewDNASequence_fromfile"
     },
     "gdx": {
-      "component": "NewDNASequence_fromfile"
+      "component": "Lesson6_NewDNASequence_fromfile"
     },
     "genbank": {
-      "component": "NewDNASequence_fromfile"
+      "component": "Lesson6_NewDNASequence_fromfile"
     }
   }
 }

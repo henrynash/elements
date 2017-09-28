@@ -2,13 +2,13 @@
   "connections": [],
   "processes": {
     "BiobrickSequence": {
-      "component": "NewDNASequence_fromLookup"
+      "component": "Lesson6_NewDNASequence_fromLookup"
     },
     "BiobrickSequenceRecursive": {
-      "component": "NewDNASequence_fromLookup"
+      "component": "Lesson6_NewDNASequence_fromLookup"
     },
     "EntrezSequence": {
-      "component": "NewDNASequence_fromLookup"
+      "component": "Lesson6_NewDNASequence_fromLookup"
     }
   }
 }

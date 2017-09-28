@@ -1,12 +1,12 @@
-// example protocol demonstrating the use of the SampleForTotalVolume function
-protocol SampleForTotalVolume
+// example protocol Lessondemonstrating the use of the SampleForTotalVolume function
+protocol Lesson1_SampleForTotalVolume
 
 import (
 	"github.com/antha-lang/antha/antha/anthalib/mixer"
 	"github.com/antha-lang/antha/antha/anthalib/wtype"
 )
 
-// Input parameters for this protocol (data)
+// Input parameters for this protocol Lesson(data)
 Parameters (
 	SolutionVolume Volume // e.g. 2ul
 	TotalVolume Volume    // e.g. 20ul
@@ -15,13 +15,13 @@ Parameters (
 // Data which is returned from this protocol, and data types
 Data ()
 
-// Physical Inputs to this protocol with types
+// Physical Inputs to this protocol Lessonwith types
 Inputs (
 	Solution *LHComponent
 	Diluent *LHComponent
 )
 
-// Physical outputs from this protocol with types
+// Physical outputs from this protocol Lessonwith types
 Outputs (
 	DilutedSample *LHComponent
 )

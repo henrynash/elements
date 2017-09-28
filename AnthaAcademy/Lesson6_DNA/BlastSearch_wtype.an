@@ -1,6 +1,5 @@
 // Example element demonstrating how to perform a BLAST search using the megablast algorithm
-
-protocol BlastSearch_wtype
+protocol Lesson6_BlastSearch
 
 import (
 	"fmt"
@@ -18,7 +17,6 @@ Parameters (
 // Data which is returned from this protocol; output data
 Data (
 	Hitssummary string
-	//AllHits []biogo.Hit
 	ExactHits []biogo.Hit
 	BestHit biogo.Hit
 	Identity float64
@@ -37,7 +35,7 @@ Requirements {
 
 }
 
-// Actions to perform before protocol itself
+// Actions to perform before protocol Lessonitself
 Setup {
 
 }

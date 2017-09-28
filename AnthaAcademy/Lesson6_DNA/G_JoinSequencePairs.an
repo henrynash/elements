@@ -1,4 +1,4 @@
-protocol JoinDNASequences_map
+protocol Lesson6_JoinDNASequences_map
 
 import (
 	"fmt"
@@ -27,7 +27,7 @@ Requirements {
 
 }
 
-// Actions to perform before protocol itself
+// Actions to perform before protocol Lessonitself
 Setup {
 
 }
@@ -49,7 +49,7 @@ Steps {
 	for key, values := range Pairs {
 
 		// this is how we call an antha element from within an element
-		seqs := RunSteps(NewDNASequences,
+		seqs := RunSteps(Lesson6_NewDNASequences,
 			Parameters{
 				Seqsinorder:         values,
 				BlastSeqswithNoName: BlastSeqswithNoName,

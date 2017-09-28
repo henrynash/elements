@@ -1,4 +1,4 @@
-protocol Units_Sum
+protocol Lesson4_Units_Sum
 
 import (
 	"github.com/antha-lang/antha/antha/anthalib/wunit"
@@ -25,7 +25,7 @@ Requirements {
 
 }
 
-// Actions to perform before protocol itself
+// Actions to perform before protocol Lessonitself
 Setup {
 
 }

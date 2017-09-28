@@ -2,7 +2,7 @@
   "connections": [],
   "processes": {
     "PCR": {
-      "component": "AutoPCR_demo"
+      "component": "Lesson0_PCR_Multi"
     }
   }
 }

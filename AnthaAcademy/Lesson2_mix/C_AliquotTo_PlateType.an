@@ -1,5 +1,5 @@
-// example protocol showing The MixTo command which allows a specifc plate type to be specified. i.e. platetype pcrplate_skirted
-protocol Aliquot_PlateType
+// example protocol Lessonshowing The MixTo command which allows a specifc plate type to be specified. i.e. platetype pcrplate_skirted
+protocol Lesson2_Aliquot_PlateType
 
 import (
 	"github.com/antha-lang/antha/antha/anthalib/mixer"
@@ -7,7 +7,7 @@ import (
 	"github.com/antha-lang/antha/antha/anthalib/wutil"
 )
 
-// Input parameters for this protocol (data)
+// Input parameters for this protocol Lesson(data)
 Parameters (
 	SolutionVolume Volume
 	VolumePerAliquot Volume
@@ -18,12 +18,12 @@ Parameters (
 // Data which is returned from this protocol, and data types
 Data ()
 
-// Physical Inputs to this protocol with types
+// Physical Inputs to this protocol Lessonwith types
 Inputs (
 	Solution *LHComponent
 )
 
-// Physical outputs from this protocol with types
+// Physical outputs from this protocol Lessonwith types
 Outputs (
 	Aliquots []*LHComponent
 )

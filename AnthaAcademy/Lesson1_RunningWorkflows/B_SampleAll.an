@@ -1,12 +1,12 @@
-// example protocol demonstrating the use of the SampleAll function
-protocol SampleAll
+// example protocol Lessondemonstrating the use of the SampleAll function
+protocol Lesson1_SampleAll
 
 import (
 	"github.com/antha-lang/antha/antha/anthalib/mixer"
 	"github.com/antha-lang/antha/antha/anthalib/wtype"
 )
 
-// Input parameters for this protocol (data)
+// Input parameters for this protocol Lesson(data)
 Parameters (
 	Sampleall bool // the bool type is a "boolean": which essentially means true or false
 )
@@ -16,12 +16,12 @@ Data (
 	Status string
 )
 
-// Physical Inputs to this protocol with types
+// Physical Inputs to this protocol Lessonwith types
 Inputs (
 	Solution *LHComponent
 )
 
-// Physical outputs from this protocol with types
+// Physical outputs from this protocol Lessonwith types
 Outputs (
 	Sample *LHComponent
 )
