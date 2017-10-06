@@ -1,9 +1,0 @@
-{
-  "defaults": {
-    "NumberofAliquots": 96,
-    "Solution": "water",
-    "SolutionVolume": "4000ul",
-    "VolumePerAliquot": "25ul"
-  },
-  "name": "Aliquot_somewhere"
-}

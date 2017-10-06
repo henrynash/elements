@@ -155,7 +155,6 @@ Setup {
 // The core process for this protocol, with the steps to be performed
 // for every input
 Steps {
-
 	// rename components
 	Template.CName = TemplateSequence.Name()
 	FwdPrimer.CName = FwdPrimerSeq.Name()
@@ -331,15 +330,3 @@ Analysis {
 // dipstick basis
 Validation {
 }
-
-/*type Polymerase struct {
-	LHComponent
-	Rate_BPpers float64
-	Fidelity_errorrate float64 // could dictate how many colonies are checked in validation!
-	Extensiontemp Temperature
-	Hotstart bool
-	StockConcentration Concentration // this is normally in U?
-	TargetConcentration Concentration
-	// this is also a glycerol solution rather than a watersolution!
-}
-*/

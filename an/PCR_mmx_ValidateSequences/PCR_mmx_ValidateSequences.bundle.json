@@ -15,7 +15,7 @@
       "FinalExtensionTime": "600s",
       "FwdPrimer": "PrimerFw",
       "FwdPrimerSeq": {
-        "jm": "fwdprimer1",
+        "nm": "fwdprimer1",
         "seq": "TACGGAGATGGGATGAGATCACTTATACT"
       },
       "FwdPrimerVol": "1ul",
@@ -32,13 +32,13 @@
       "ReactionName": "GFP amplification",
       "RevPrimer": "PrimerRev",
       "RevPrimerSeq": {
-        "jm": "revprimer1",
+        "nm": "revprimer1",
         "seq": "AGTCCGCGTGTGTCCGTCGACGTACAA"
       },
       "RevPrimerVol": "1ul",
       "Template": "dna_part",
       "TemplateSequence": {
-        "jm": "template",
+        "nm": "template",
         "seq": "GCTCTTCATAGTATGGGGAAAACCTTTTAACTCCATGATAGGGGCATTACGGAGATGGGATGAGATCACTTATACTCGTGTAATAGTAAGTTCCCGCAGTCCCTCTAACTCACAGCGGTTGTACGTCGACGGACACACGCGGACTGAAGAGC"
       },
       "Templatevolume": "2ul"

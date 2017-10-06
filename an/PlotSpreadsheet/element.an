@@ -8,11 +8,11 @@ import (
 	"unicode"
 
 	"github.com/antha-lang/antha/antha/anthalib/wutil"
-	"github.com/gonum/plot"
-	"github.com/gonum/plot/plotter"
-	"github.com/gonum/plot/plotutil"
-	"github.com/gonum/plot/vg"
 	"github.com/tealeg/xlsx"
+	"gonum.org/v1/plot"
+	"gonum.org/v1/plot/plotter"
+	"gonum.org/v1/plot/plotutil"
+	"gonum.org/v1/plot/vg"
 )
 
 // Input parameters for this protocol (data)
