@@ -1,0 +1,480 @@
+// Perform a single pcr reaction per element and validate that the primers will be expected to bind once each to the template sequence. Exact primer matches only.
+// Thermocycle conditions are calculated from the input sequences and polymerase name.
+// Valid Polymerases for calculation of properties are "Q5Polymerase" and "Taq".
+package lib
+
+import (
+	"context"
+	"fmt"
+	"math"
+	"strings"
+
+	"github.com/antha-lang/antha/antha/AnthaStandardLibrary/Packages/enzymes"
+	"github.com/antha-lang/antha/antha/AnthaStandardLibrary/Packages/sequences"
+	"github.com/antha-lang/antha/antha/AnthaStandardLibrary/Packages/sequences/oligos"
+	"github.com/antha-lang/antha/antha/AnthaStandardLibrary/Packages/text"
+	"github.com/antha-lang/antha/antha/anthalib/mixer"
+	"github.com/antha-lang/antha/antha/anthalib/wtype"
+	"github.com/antha-lang/antha/antha/anthalib/wunit"
+	"github.com/antha-lang/antha/component"
+	"github.com/antha-lang/antha/execute"
+	"github.com/antha-lang/antha/inject"
+)
+
+// Input parameters for this protocol (data)
+
+// PCRprep parameters:
+
+// DNA sequence of template from which amplicon will be amplified
+
+// Forward primer sequence
+
+// Reverse primer sequence
+
+// Total volume for a single reaction; the reaction will be topped up with ReactionBuffer (usually water) to reach this volume
+
+// Volume of mastermix to add to the reaction
+
+// Select this if the primers have already been added to the mastermix.
+// If this is selected no primers will be added to any reactions.
+// Should only be used if all reactions share the same primers.
+
+// Select this if the polymerase has already been added to the mastermix.
+
+// Volume of forward primer to add. Will only be used if PrimersalreadyAddedtoMasterMix is not selected.
+
+// Volume of reverse primer to add. Will only be used if PrimersalreadyAddedtoMasterMix is not selected.
+
+// Volume of template to add
+
+// Volume of polymerase enzyme to add per reaction. Will only be used if PolymeraseAlreadyaddedtoMastermix is not selected.
+
+// Optionally specify a specific well position here or leave blank for Antha to decide
+
+// Reaction parameters: (could be a entered as thermocycle parameters type possibly?)
+
+// Initial denaturation time prior to starting cycles
+
+// Denaturation time per cycle
+
+// Annealing time per cycle
+
+// Time that extension conditions will be held for following completion of all cycles.
+
+// Degrees C below lowest MeltingTemp to set annealing Temperature.
+
+// Data which is returned from this protocol, and data types
+
+// Sequence of the expected product of the PCR reaction
+
+// All exact binding site of the fwd primer found in the template
+
+// All exact binding site of the rev primer found in the template
+
+// Melting temperature calculated for the forward primer
+
+// Melting temperature calculated for the reverse primer
+
+// Annealing temperature used based upon calculated primer melting temperatures and AnnealingTempOffset.
+
+// Extension time calculated based upon Polymerase properties and length of amplicon
+
+// Extension time calculated based upon Polymerase properties
+
+// Melting temperature calculated based on lowest of primer melting temperatures.
+
+// A textual description of the conditions suggested for this sample
+
+// Physical Inputs to this protocol with types
+
+// Actual FWD primer component to use. Will only be used if PrimersalreadyAddedtoMasterMix is not selected.
+
+// Actual REV primer component to use. Will only be used if PrimersalreadyAddedtoMasterMix is not selected.
+
+// Actual Master mix to use
+
+// Valid options are Q5Polymerase and Taq. Will only be used if PolymeraseAlreadyaddedtoMastermix is not selected.
+
+// Actual Template component to use
+
+// Buffer to use to top up the reaction to TotalReactionVolume. Typical buffer for this would be water.
+
+// Type of plate to set up reaction on. Recommended plate is pcrplate
+
+// Physical outputs from this protocol with types
+
+// The output PCR reaction
+
+func _PCR_mmx_ValidateSequences_WaitDataRequirements() {
+
+}
+
+// Conditions to run on startup
+func _PCR_mmx_ValidateSequences_WaitDataSetup(_ctx context.Context, _input *PCR_mmx_ValidateSequences_WaitDataInput) {
+}
+
+// The core process for this protocol, with the steps to be performed
+// for every input
+func _PCR_mmx_ValidateSequences_WaitDataSteps(_ctx context.Context, _input *PCR_mmx_ValidateSequences_WaitDataInput, _output *PCR_mmx_ValidateSequences_WaitDataOutput) {
+
+	// rename components
+	_input.Template.CName = _input.TemplateSequence.Name()
+	_input.FwdPrimer.CName = _input.FwdPrimerSeq.Name()
+	_input.RevPrimer.CName = _input.RevPrimerSeq.Name()
+
+	// check for non-specific binding. Exact matches only.
+	_output.FwdPrimerSites = sequences.FindSeq(&_input.TemplateSequence, &_input.FwdPrimerSeq)
+
+	_output.RevPrimerSites = sequences.FindSeq(&_input.TemplateSequence, &_input.RevPrimerSeq)
+
+	if len(_output.FwdPrimerSites.Positions) != 1 || len(_output.RevPrimerSites.Positions) != 1 {
+
+		errordescription := fmt.Sprint(
+			fmt.Sprintln("Unexpected number of primer binding sites found in template."),
+			text.Print("FwdPrimerSitesfound:", fmt.Sprint(_output.FwdPrimerSites)),
+			text.Print("RevPrimerSitesfound:", fmt.Sprint(_output.RevPrimerSites)),
+		)
+
+		execute.Errorf(_ctx, errordescription)
+	}
+
+	startposition, _ := _output.FwdPrimerSites.Positions[0].Coordinates()
+
+	_, endposition := _output.RevPrimerSites.Positions[0].Coordinates()
+
+	// work out what the pcr product will be
+	_output.Amplicon = oligos.DNAregion(_input.TemplateSequence, startposition, endposition)
+
+	var allVolumes []wunit.Volume
+
+	allVolumes = append(allVolumes, _input.MasterMixVolume, _input.Templatevolume)
+
+	if !_input.PrimersalreadyAddedtoMasterMix {
+		allVolumes = append(allVolumes, _input.FwdPrimerVol, _input.RevPrimerVol)
+	}
+
+	if !_input.PolymeraseAlreadyaddedtoMastermix {
+		allVolumes = append(allVolumes, _input.PolymeraseVolume)
+	}
+
+	// calculate volume of water to add
+	waterVol := wunit.SubtractVolumes(_input.TotalReactionVolume, allVolumes)
+
+	var mastermix *wtype.LHComponent
+	// Top up with reaction buffer if necessary.
+	if waterVol.GreaterThan(wunit.NewVolume(0.5, "ul")) {
+		waterSample := mixer.Sample(_input.ReactionBuffer, waterVol)
+		mastermix = execute.MixInto(_ctx, _input.OutPlate, _input.OptionalWellPosition, waterSample)
+	}
+
+	// Make a mastermix
+	mmxSample := mixer.Sample(_input.MasterMix, _input.MasterMixVolume)
+
+	// pipette out to make mastermix
+	if mastermix != nil {
+		mastermix = execute.Mix(_ctx, mastermix, mmxSample)
+		// Manually inserting Wait Data
+		err := execute.WaitData(_ctx, _input.OutPlate, wtype.MetaData{
+			Tag: _input.OutPlate.ID,
+		})
+		if err != nil {
+			execute.Errorf(_ctx, "Error Calling Wait Data from Element Bundle")
+		}
+
+	} else {
+		mastermix = execute.MixInto(_ctx, _input.OutPlate, _input.OptionalWellPosition, mmxSample)
+	}
+
+	// rest samples to zero
+	samples := make([]*wtype.LHComponent, 0)
+
+	// add primers
+	if !_input.PrimersalreadyAddedtoMasterMix {
+		FwdPrimerSample := mixer.Sample(_input.FwdPrimer, _input.FwdPrimerVol)
+		samples = append(samples, FwdPrimerSample)
+		RevPrimerSample := mixer.Sample(_input.RevPrimer, _input.RevPrimerVol)
+		samples = append(samples, RevPrimerSample)
+	}
+
+	// add template
+	templateSample := mixer.Sample(_input.Template, _input.Templatevolume)
+	samples = append(samples, templateSample)
+
+	for j := range samples {
+		mastermix = execute.Mix(_ctx, mastermix, samples[j])
+	}
+	reaction := mastermix
+
+	// Manually inserting Wait Data
+	var err error
+	err = execute.WaitData(_ctx, _input.OutPlate, wtype.MetaData{
+		Tag: _input.OutPlate.ID,
+	})
+	if err != nil {
+		execute.Errorf(_ctx, "Error Calling Wait Data from Element Bundle")
+	}
+
+	// this needs to go after an initial denaturation!
+	if !_input.PolymeraseAlreadyaddedtoMastermix {
+		polySample := mixer.Sample(_input.PCRPolymerase, _input.PolymeraseVolume)
+
+		reaction = execute.Mix(_ctx, reaction, polySample)
+	}
+
+	// thermocycle parameters called from enzyme lookup:
+	polymerase := _input.PCRPolymerase.CName
+
+	polymeraseproperties, polymerasefound := enzymes.DNApolymerasetemps[polymerase]
+
+	if !polymerasefound {
+		validoptions := make([]string, 0)
+		for polymerasename := range enzymes.DNApolymerasetemps {
+			validoptions = append(validoptions, polymerasename)
+		}
+
+		execute.Errorf(_ctx, "No Properties for %s found. Valid options are: %s", polymerase, strings.Join(validoptions, ","))
+	}
+
+	var found bool
+
+	_output.ExtensionTemp, found = polymeraseproperties["extensiontemp"]
+	if !found {
+		execute.Errorf(_ctx, "No extension temp found for polymerase %s", polymerase)
+	}
+	_output.MeltingTemp, found = polymeraseproperties["meltingtemp"]
+	if !found {
+		execute.Errorf(_ctx, "No melting temp found for polymerase %s", polymerase)
+	}
+
+	_output.ExtensionTime, err = enzymes.CalculateExtensionTime(_input.PCRPolymerase, _output.Amplicon)
+
+	if err != nil {
+		execute.Errorf(_ctx, "Can't calculate extension time of polymerase: %s", err.Error())
+	}
+
+	// work out annealing temperature
+	_output.FwdPrimerMeltingTemp = oligos.BasicMeltingTemp(_input.FwdPrimerSeq)
+
+	_output.RevPrimerMeltingTemp = oligos.BasicMeltingTemp(_input.RevPrimerSeq)
+
+	// check which primer has the lowest melting temperature
+	lowest := math.Min(_output.FwdPrimerMeltingTemp.SIValue(), _output.RevPrimerMeltingTemp.SIValue())
+
+	// start PCR AnnealingTempOffset degrees below lowest melting temp
+	_output.AnnealingTemp = wunit.NewTemperature(lowest-_input.AnnealingTempOffset.SIValue(), "C")
+
+	var pcrSteps []string
+
+	initialDenat := fmt.Sprint("Initial Denaturation: ", _output.MeltingTemp.ToString(), " for ", _input.InitDenaturationTime.ToString())
+
+	cycles := fmt.Sprint(_input.NumberOfCycles, " cycles of : ")
+
+	spacer := "***"
+
+	denat := fmt.Sprint("Denature: ", _output.MeltingTemp.ToString(), " for ", _input.DenaturationTime.ToString())
+
+	anneal := fmt.Sprint("Anneal: ", _output.AnnealingTemp.ToString(), " for ", _input.AnnealingTime.ToString())
+
+	extend := fmt.Sprint("Extension: ", _output.ExtensionTemp.ToString(), " for ", _output.ExtensionTime.ToString())
+
+	spacer = "***"
+
+	finalExtension := fmt.Sprint(" Then Final Extension: ", _output.ExtensionTemp.ToString(), " for ", _input.FinalExtensionTime.ToString())
+
+	message := "Put Reactions in ThermoCycler with following cycle conditions. Return to deck once PCR has finished if running DNA_Gel"
+
+	pcrSteps = append(pcrSteps, initialDenat, cycles, spacer, denat, anneal, extend, spacer, finalExtension, message)
+
+	thermocycleMessage := strings.Join(pcrSteps, "; ")
+
+	_output.ThermoCycleConditionsUsed = thermocycleMessage
+
+	// all done
+	_output.Reaction = reaction //r1
+
+	_output.Reaction.CName = _input.ReactionName
+
+	_output.Reaction = execute.MixerPrompt(_ctx, _output.Reaction, thermocycleMessage)
+}
+
+// Run after controls and a steps block are completed to
+// post process any data and provide downstream results
+func _PCR_mmx_ValidateSequences_WaitDataAnalysis(_ctx context.Context, _input *PCR_mmx_ValidateSequences_WaitDataInput, _output *PCR_mmx_ValidateSequences_WaitDataOutput) {
+}
+
+// A block of tests to perform to validate that the sample was processed correctly
+// Optionally, destructive tests can be performed to validate results on a
+// dipstick basis
+func _PCR_mmx_ValidateSequences_WaitDataValidation(_ctx context.Context, _input *PCR_mmx_ValidateSequences_WaitDataInput, _output *PCR_mmx_ValidateSequences_WaitDataOutput) {
+}
+func _PCR_mmx_ValidateSequences_WaitDataRun(_ctx context.Context, input *PCR_mmx_ValidateSequences_WaitDataInput) *PCR_mmx_ValidateSequences_WaitDataOutput {
+	output := &PCR_mmx_ValidateSequences_WaitDataOutput{}
+	_PCR_mmx_ValidateSequences_WaitDataSetup(_ctx, input)
+	_PCR_mmx_ValidateSequences_WaitDataSteps(_ctx, input, output)
+	_PCR_mmx_ValidateSequences_WaitDataAnalysis(_ctx, input, output)
+	_PCR_mmx_ValidateSequences_WaitDataValidation(_ctx, input, output)
+	return output
+}
+
+func PCR_mmx_ValidateSequences_WaitDataRunSteps(_ctx context.Context, input *PCR_mmx_ValidateSequences_WaitDataInput) *PCR_mmx_ValidateSequences_WaitDataSOutput {
+	soutput := &PCR_mmx_ValidateSequences_WaitDataSOutput{}
+	output := _PCR_mmx_ValidateSequences_WaitDataRun(_ctx, input)
+	if err := inject.AssignSome(output, &soutput.Data); err != nil {
+		panic(err)
+	}
+	if err := inject.AssignSome(output, &soutput.Outputs); err != nil {
+		panic(err)
+	}
+	return soutput
+}
+
+func PCR_mmx_ValidateSequences_WaitDataNew() interface{} {
+	return &PCR_mmx_ValidateSequences_WaitDataElement{
+		inject.CheckedRunner{
+			RunFunc: func(_ctx context.Context, value inject.Value) (inject.Value, error) {
+				input := &PCR_mmx_ValidateSequences_WaitDataInput{}
+				if err := inject.Assign(value, input); err != nil {
+					return nil, err
+				}
+				output := _PCR_mmx_ValidateSequences_WaitDataRun(_ctx, input)
+				return inject.MakeValue(output), nil
+			},
+			In:  &PCR_mmx_ValidateSequences_WaitDataInput{},
+			Out: &PCR_mmx_ValidateSequences_WaitDataOutput{},
+		},
+	}
+}
+
+var (
+	_ = execute.MixInto
+	_ = wtype.FALSE
+	_ = wunit.Make_units
+)
+
+type PCR_mmx_ValidateSequences_WaitDataElement struct {
+	inject.CheckedRunner
+}
+
+type PCR_mmx_ValidateSequences_WaitDataInput struct {
+	AnnealingTempOffset               wunit.Temperature
+	AnnealingTime                     wunit.Time
+	DenaturationTime                  wunit.Time
+	FinalExtensionTime                wunit.Time
+	FwdPrimer                         *wtype.LHComponent
+	FwdPrimerSeq                      wtype.DNASequence
+	FwdPrimerVol                      wunit.Volume
+	InitDenaturationTime              wunit.Time
+	MasterMix                         *wtype.LHComponent
+	MasterMixVolume                   wunit.Volume
+	NumberOfCycles                    int
+	OptionalWellPosition              string
+	OutPlate                          *wtype.LHPlate
+	PCRPolymerase                     *wtype.LHComponent
+	PolymeraseAlreadyaddedtoMastermix bool
+	PolymeraseVolume                  wunit.Volume
+	PrimersalreadyAddedtoMasterMix    bool
+	ReactionBuffer                    *wtype.LHComponent
+	ReactionName                      string
+	RevPrimer                         *wtype.LHComponent
+	RevPrimerSeq                      wtype.DNASequence
+	RevPrimerVol                      wunit.Volume
+	Template                          *wtype.LHComponent
+	TemplateSequence                  wtype.DNASequence
+	Templatevolume                    wunit.Volume
+	TotalReactionVolume               wunit.Volume
+}
+
+type PCR_mmx_ValidateSequences_WaitDataOutput struct {
+	Amplicon                  wtype.DNASequence
+	AnnealingTemp             wunit.Temperature
+	ExtensionTemp             wunit.Temperature
+	ExtensionTime             wunit.Time
+	FwdPrimerMeltingTemp      wunit.Temperature
+	FwdPrimerSites            sequences.SearchResult
+	MeltingTemp               wunit.Temperature
+	Reaction                  *wtype.LHComponent
+	RevPrimerMeltingTemp      wunit.Temperature
+	RevPrimerSites            sequences.SearchResult
+	ThermoCycleConditionsUsed string
+}
+
+type PCR_mmx_ValidateSequences_WaitDataSOutput struct {
+	Data struct {
+		Amplicon                  wtype.DNASequence
+		AnnealingTemp             wunit.Temperature
+		ExtensionTemp             wunit.Temperature
+		ExtensionTime             wunit.Time
+		FwdPrimerMeltingTemp      wunit.Temperature
+		FwdPrimerSites            sequences.SearchResult
+		MeltingTemp               wunit.Temperature
+		RevPrimerMeltingTemp      wunit.Temperature
+		RevPrimerSites            sequences.SearchResult
+		ThermoCycleConditionsUsed string
+	}
+	Outputs struct {
+		Reaction *wtype.LHComponent
+	}
+}
+
+func init() {
+	if err := addComponent(component.Component{Name: "PCR_mmx_ValidateSequences_WaitData",
+		Constructor: PCR_mmx_ValidateSequences_WaitDataNew,
+		Desc: component.ComponentDesc{
+			Desc: "Perform a single pcr reaction per element and validate that the primers will be expected to bind once each to the template sequence. Exact primer matches only.\nThermocycle conditions are calculated from the input sequences and polymerase name.\nValid Polymerases for calculation of properties are \"Q5Polymerase\" and \"Taq\".\n",
+			Path: "src/github.com/antha-lang/elements/an/PCR_mmx_ValidateSequences_WaitData/element.an",
+			Params: []component.ParamDesc{
+				{Name: "AnnealingTempOffset", Desc: "Degrees C below lowest MeltingTemp to set annealing Temperature.\n", Kind: "Parameters"},
+				{Name: "AnnealingTime", Desc: "Annealing time per cycle\n", Kind: "Parameters"},
+				{Name: "DenaturationTime", Desc: "Denaturation time per cycle\n", Kind: "Parameters"},
+				{Name: "FinalExtensionTime", Desc: "Time that extension conditions will be held for following completion of all cycles.\n", Kind: "Parameters"},
+				{Name: "FwdPrimer", Desc: "Actual FWD primer component to use. Will only be used if PrimersalreadyAddedtoMasterMix is not selected.\n", Kind: "Inputs"},
+				{Name: "FwdPrimerSeq", Desc: "Forward primer sequence\n", Kind: "Parameters"},
+				{Name: "FwdPrimerVol", Desc: "Volume of forward primer to add. Will only be used if PrimersalreadyAddedtoMasterMix is not selected.\n", Kind: "Parameters"},
+				{Name: "InitDenaturationTime", Desc: "Initial denaturation time prior to starting cycles\n", Kind: "Parameters"},
+				{Name: "MasterMix", Desc: "Actual Master mix to use\n", Kind: "Inputs"},
+				{Name: "MasterMixVolume", Desc: "Volume of mastermix to add to the reaction\n", Kind: "Parameters"},
+				{Name: "NumberOfCycles", Desc: "", Kind: "Parameters"},
+				{Name: "OptionalWellPosition", Desc: "Optionally specify a specific well position here or leave blank for Antha to decide\n", Kind: "Parameters"},
+				{Name: "OutPlate", Desc: "Type of plate to set up reaction on. Recommended plate is pcrplate\n", Kind: "Inputs"},
+				{Name: "PCRPolymerase", Desc: "Valid options are Q5Polymerase and Taq. Will only be used if PolymeraseAlreadyaddedtoMastermix is not selected.\n", Kind: "Inputs"},
+				{Name: "PolymeraseAlreadyaddedtoMastermix", Desc: "Select this if the polymerase has already been added to the mastermix.\n", Kind: "Parameters"},
+				{Name: "PolymeraseVolume", Desc: "Volume of polymerase enzyme to add per reaction. Will only be used if PolymeraseAlreadyaddedtoMastermix is not selected.\n", Kind: "Parameters"},
+				{Name: "PrimersalreadyAddedtoMasterMix", Desc: "Select this if the primers have already been added to the mastermix.\nIf this is selected no primers will be added to any reactions.\nShould only be used if all reactions share the same primers.\n", Kind: "Parameters"},
+				{Name: "ReactionBuffer", Desc: "Buffer to use to top up the reaction to TotalReactionVolume. Typical buffer for this would be water.\n", Kind: "Inputs"},
+				{Name: "ReactionName", Desc: "PCRprep parameters:\n", Kind: "Parameters"},
+				{Name: "RevPrimer", Desc: "Actual REV primer component to use. Will only be used if PrimersalreadyAddedtoMasterMix is not selected.\n", Kind: "Inputs"},
+				{Name: "RevPrimerSeq", Desc: "Reverse primer sequence\n", Kind: "Parameters"},
+				{Name: "RevPrimerVol", Desc: "Volume of reverse primer to add. Will only be used if PrimersalreadyAddedtoMasterMix is not selected.\n", Kind: "Parameters"},
+				{Name: "Template", Desc: "Actual Template component to use\n", Kind: "Inputs"},
+				{Name: "TemplateSequence", Desc: "DNA sequence of template from which amplicon will be amplified\n", Kind: "Parameters"},
+				{Name: "Templatevolume", Desc: "Volume of template to add\n", Kind: "Parameters"},
+				{Name: "TotalReactionVolume", Desc: "Total volume for a single reaction; the reaction will be topped up with ReactionBuffer (usually water) to reach this volume\n", Kind: "Parameters"},
+				{Name: "Amplicon", Desc: "Sequence of the expected product of the PCR reaction\n", Kind: "Data"},
+				{Name: "AnnealingTemp", Desc: "Annealing temperature used based upon calculated primer melting temperatures and AnnealingTempOffset.\n", Kind: "Data"},
+				{Name: "ExtensionTemp", Desc: "Extension time calculated based upon Polymerase properties\n", Kind: "Data"},
+				{Name: "ExtensionTime", Desc: "Extension time calculated based upon Polymerase properties and length of amplicon\n", Kind: "Data"},
+				{Name: "FwdPrimerMeltingTemp", Desc: "Melting temperature calculated for the forward primer\n", Kind: "Data"},
+				{Name: "FwdPrimerSites", Desc: "All exact binding site of the fwd primer found in the template\n", Kind: "Data"},
+				{Name: "MeltingTemp", Desc: "Melting temperature calculated based on lowest of primer melting temperatures.\n", Kind: "Data"},
+				{Name: "Reaction", Desc: "The output PCR reaction\n", Kind: "Outputs"},
+				{Name: "RevPrimerMeltingTemp", Desc: "Melting temperature calculated for the reverse primer\n", Kind: "Data"},
+				{Name: "RevPrimerSites", Desc: "All exact binding site of the rev primer found in the template\n", Kind: "Data"},
+				{Name: "ThermoCycleConditionsUsed", Desc: "A textual description of the conditions suggested for this sample\n", Kind: "Data"},
+			},
+		},
+	}); err != nil {
+		panic(err)
+	}
+}
+
+/*type Polymerase struct {
+	LHComponent
+	Rate_BPpers float64
+	Fidelity_errorrate float64 // could dictate how many colonies are checked in validation!
+	Extensiontemp Temperature
+	Hotstart bool
+	StockConcentration Concentration // this is normally in U?
+	TargetConcentration Concentration
+	// this is also a glycerol solution rather than a watersolution!
+}
+*/
