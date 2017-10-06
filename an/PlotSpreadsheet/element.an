@@ -16,7 +16,7 @@ import (
 )
 
 // Input parameters for this protocol (data)
-Parameters (
+Parameters {
 	XlsFile File
 	// Which sheet to load from XlsFile. 0 is the first sheet.
 	Sheet int
@@ -31,13 +31,13 @@ Parameters (
 	PlotWidth string
 	// Plot height with units. Default is "10cm".
 	PlotHeight string
-)
+}
 
 // Data which is returned from this protocol, and data types
-Data (
+Data {
 	// Generated plot
 	Plot File
-)
+}
 
 Requirements {
 

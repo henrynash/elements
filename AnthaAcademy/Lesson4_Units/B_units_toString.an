@@ -6,7 +6,7 @@ import (
 )
 
 // Input parameters for this protocol
-Parameters (
+Parameters {
 	MyVolume Volume
 	MyTemperature Temperature
 	MyConc Concentration
@@ -14,23 +14,23 @@ Parameters (
 	MyTime Time
 	MyMass Mass
 	MyFlowrate FlowRate
-)
+}
 
 // Data which is returned from this protocol
-Data (
+Data {
 	VolumeasString string
 	TempasString string
 	ConcasString string
 	MolesasString string
 	MassasString string
 	FlowrateString string
-)
+}
 
 // Physical inputs to this protocol
-Inputs ()
+Inputs {}
 
 // Physical outputs from this protocol
-Outputs ()
+Outputs {}
 
 Requirements {
 

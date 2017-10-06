@@ -15,7 +15,7 @@ import (
 )
 
 // Input parameters for this protocol
-Parameters (
+Parameters {
 	Km float64    //Amount
 	Kmunit string // i.e. Moles, M
 
@@ -35,20 +35,20 @@ Parameters (
 	DNA_seq string
 	Gene_name string
 	ProteinConc Concentration
-)
+}
 
 // Data which is returned from this protocol
-Data (
+Data {
 	V float64
 	Orftrue bool
 	Status string
-)
+}
 
 // Physical inputs to this protocol
-Inputs ()
+Inputs {}
 
 // Physical outputs from this protocol
-Outputs ()
+Outputs {}
 
 Requirements {
 

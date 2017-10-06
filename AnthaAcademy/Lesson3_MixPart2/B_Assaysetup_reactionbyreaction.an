@@ -11,30 +11,30 @@ import (
 )
 
 // Input parameters for this protocol (data)
-Parameters (
+Parameters {
 	TotalVolume Volume
 	EnzymeVolume Volume
 	SubstrateVolume Volume
 	NumberofReactions int
-)
+}
 
 // Data which is returned from this protocol, and data types
-Data (
+Data {
 	Status string
-)
+}
 
 // Physical Inputs to this protocol with types
-Inputs (
+Inputs {
 	Buffer *LHComponent
 	Substrate *LHComponent
 	Enzyme *LHComponent
 	OutPlate *LHPlate
-)
+}
 
 // Physical outputs from this protocol with types
-Outputs (
+Outputs {
 	Reactions []*LHComponent
-)
+}
 
 Requirements {
 }

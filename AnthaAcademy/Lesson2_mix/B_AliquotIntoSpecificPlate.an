@@ -9,26 +9,26 @@ import (
 )
 
 // Input parameters for this protocol (data)
-Parameters (
+Parameters {
 	SolutionVolume Volume
 	VolumePerAliquot Volume
 	NumberofAliquots int
-)
+}
 
 // Data which is returned from this protocol, and data types
-Data ()
+Data {}
 
 // Physical Inputs to this protocol with types
-Inputs (
+Inputs {
 	Solution *LHComponent
 	OutPlate *LHPlate // this time we're specifying what plate we're using
 
-)
+}
 
 // Physical outputs from this protocol with types
-Outputs (
+Outputs {
 	Aliquots []*LHComponent
-)
+}
 
 Requirements {
 

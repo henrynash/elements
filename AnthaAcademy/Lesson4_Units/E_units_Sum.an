@@ -5,21 +5,21 @@ import (
 )
 
 // Input parameters for this protocol
-Parameters (
+Parameters {
 	MyVolume Volume
 	MyOtherVolume Volume
-)
+}
 
 // Data which is returned from this protocol
-Data (
+Data {
 	SumOfVolumes Volume
-)
+}
 
 // Physical inputs to this protocol
-Inputs ()
+Inputs {}
 
 // Physical outputs from this protocol
-Outputs ()
+Outputs {}
 
 Requirements {
 

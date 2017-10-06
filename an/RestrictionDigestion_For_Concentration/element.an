@@ -8,44 +8,44 @@ import (
 )
 
 // Input parameters for this protocol (data)
-Parameters (
-	ReactionVolume Volume
-	BufferConcX int
-	DNAConc Concentration
+Parameters {
+	ReactionVolume     Volume
+	BufferConcX        int
+	DNAConc            Concentration
 	DNAMassperReaction Mass
-	DNAName string
-	EnzymeNames []string
-	BSAvol Volume
+	DNAName            string
+	EnzymeNames        []string
+	BSAvol             Volume
 
 	StockReConcinUperml []int
 	DesiredConcinUperml []int
 
-	ReactionTemp Temperature
-	ReactionTime Time
+	ReactionTemp     Temperature
+	ReactionTime     Time
 	InactivationTemp Temperature
 	InactivationTime Time
-)
+}
 
 // Physical Inputs to this protocol with types
-Inputs (
-	DNASolution *LHComponent
+Inputs {
+	DNASolution  *LHComponent
 	EnzSolutions []*LHComponent
-	BSAoptional *LHComponent
-	Buffer *LHComponent
-	Water *LHComponent
+	BSAoptional  *LHComponent
+	Buffer       *LHComponent
+	Water        *LHComponent
 
 	OutPlate *LHPlate
-)
+}
 
 // Physical outputs from this protocol with types
-Outputs (
+Outputs {
 	Reaction *LHComponent
-)
+}
 
 // Data which is returned from this protocol, and data types
-Data (
+Data {
 	Status string
-)
+}
 
 Requirements {}
 

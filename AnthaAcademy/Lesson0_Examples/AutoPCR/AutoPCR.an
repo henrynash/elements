@@ -8,7 +8,7 @@ import (
 )
 
 // Input parameters for this protocol (data)
-Parameters (
+Parameters {
 	// PCRprep parameters
 	Projectname string
 	Reactiontotemplate map[string]string      // map of which reaction uses which template e.g. ["left homology arm"]:"templatename"
@@ -21,15 +21,15 @@ Parameters (
 	DefaultPolymeraseVolume Volume
 	DefaultDNTPVol Volume
 	AdditiveToAdditiveVolume map[string]Volume // look up table of additives to volumes of each additive; e.g. ["DMSO"]:"3ul"
-)
+}
 
 // Data which is returned from this protocol, and data types
-Data (
+Data {
 	Errors []error // return an error message if an error is encountered
-)
+}
 
 // Physical Inputs to this protocol with types
-Inputs (
+Inputs {
 	FwdPrimertype *LHComponent
 	RevPrimertype *LHComponent
 	Templatetype *LHComponent
@@ -38,13 +38,13 @@ Inputs (
 	DefaultDNTPS *LHComponent
 	DefaultWater *LHComponent
 	Plate *LHPlate
-)
+}
 
 // Physical outputs from this protocol with types
-Outputs (
+Outputs {
 	Reactions []*LHComponent
 	ReactionMap map[string]*LHComponent
-)
+}
 
 Requirements {
 }

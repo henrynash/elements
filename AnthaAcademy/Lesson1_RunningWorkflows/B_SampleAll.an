@@ -7,24 +7,24 @@ import (
 )
 
 // Input parameters for this protocol (data)
-Parameters (
+Parameters {
 	Sampleall bool // the bool type is a "boolean": which essentially means true or false
-)
+}
 
 // Data which is returned from this protocol, and data types
-Data (
+Data {
 	Status string
-)
+}
 
 // Physical Inputs to this protocol with types
-Inputs (
+Inputs {
 	Solution *LHComponent
-)
+}
 
 // Physical outputs from this protocol with types
-Outputs (
+Outputs {
 	Sample *LHComponent
-)
+}
 
 Requirements {
 

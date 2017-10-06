@@ -10,26 +10,26 @@ import (
 )
 
 // Input parameters for this protocol
-Parameters (
+Parameters {
 	DNA DNASequence
-)
+}
 
 // Data which is returned from this protocol; output data
-Data (
+Data {
 	Hitssummary string
-	ExactHits []biogo.Hit
-	BestHit biogo.Hit
-	Identity float64
-	Coverage float64
-	AnthaSeq DNASequence
-	Warning error
-)
+	ExactHits   []biogo.Hit
+	BestHit     biogo.Hit
+	Identity    float64
+	Coverage    float64
+	AnthaSeq    DNASequence
+	Warning     error
+}
 
 // Physical inputs to this protocol
-Inputs ()
+Inputs{}
 
 // Physical outputs from this protocol
-Outputs ()
+Outputs{}
 
 Requirements {
 

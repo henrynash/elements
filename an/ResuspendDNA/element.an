@@ -9,7 +9,7 @@ import (
 )
 
 // Input parameters for this protocol (data)
-Parameters (
+Parameters {
 
 	// Mass of DNA to Resuspend
 	DNAMass Mass
@@ -28,24 +28,24 @@ Parameters (
 
 	// If no Policy is specified the default policy will be MegaMix which mixes the sample 10 times.
 	OverRideLiquidPolicy PolicyName
-)
+}
 
-Data (
+Data {
 	Warnings []string
-)
+}
 
-Inputs (
+Inputs {
 
 	// Diluent to use to resuspend the DNA
 	Diluent *LHComponent
 
 	// Type of plate DNA sample is on.
 	DNAPlate *LHPlate
-)
+}
 
-Outputs (
+Outputs {
 	ResuspendedDNA *LHComponent
-)
+}
 
 Requirements {
 }
