@@ -9,36 +9,36 @@ import (
 )
 
 // Input parameters for this protocol (data)
-Parameters (
+Parameters {
 	// antha, like golang is a strongly typed language in which the type of a variable must be declared.
 	// In this case we're creating a variable called SampleVolume which is of type Volume;
 	// the type system allows the antha compiler to catch many types of common errors before the programme is run
 	// the antha type system extends this to biological types such as volumes here.
 	// functions require inputs of particular types to be adhered to
 	SampleVolume Volume
-)
+}
 
 // Data which is returned from this protocol, and data types
-Data (
+Data {
 	// Antha inherits all standard primitives valid in golang;
 	//for example the string type shown here used to return a textual message
 	Status string
-)
+}
 
 // Physical Inputs to this protocol with types
-Inputs (
+Inputs {
 	// the LHComponent is the principal liquidhandling type in antha
 	// the * signifies that this is a pointer to the component rather than the component itself
 	// most key antha functions such as Sample and Mix use *LHComponent rather than LHComponent
 	// since the type is imported from the wtype package we need to use  *LHComponent rather than simply *LHComponent
 	Solution *LHComponent
-)
+}
 
 // Physical outputs from this protocol with types
-Outputs (
+Outputs {
 	// An output LHComponent variable is created called Sample
 	Sample *LHComponent
-)
+}
 
 Requirements {
 

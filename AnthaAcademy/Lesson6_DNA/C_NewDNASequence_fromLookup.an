@@ -10,27 +10,27 @@ import (
 )
 
 // Input parameters for this protocol
-Parameters (
+Parameters {
 	ID string
 	BiobrickID bool
 	EntrezID bool
 	DNAID bool
 	AddORFS bool
-)
+}
 
 // Data which is returned from this protocol
-Data (
+Data {
 	DNA DNASequence
 	Status string
 	Warnings error
 	Description string
-)
+}
 
 // Physical inputs to this protocol
-Inputs ()
+Inputs {}
 
 // Physical outputs from this protocol
-Outputs ()
+Outputs {}
 
 Requirements {
 

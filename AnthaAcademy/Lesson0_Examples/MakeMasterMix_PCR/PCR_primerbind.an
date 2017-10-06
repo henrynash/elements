@@ -11,7 +11,7 @@ import (
 )
 
 // Input parameters for this protocol (data)
-Parameters (
+Parameters {
 	// PCRprep parameters:
 	MasterMixVolume Volume
 	PrimersalreadyAddedtoMasterMix bool
@@ -46,28 +46,28 @@ Parameters (
 	AnnealingTemp Temperature // Should be calculated from primer and template binding
 	Extensiontime Time        // should be calculated from template length and polymerase rate
 	Finalextensiontime Time
-)
+}
 
 // Data which is returned from this protocol, and data types
-Data (
+Data {
 	FwdPrimerSites []search.Thingfound
 	RevPrimerSites []search.Thingfound
-)
+}
 
 // Physical Inputs to this protocol with types
-Inputs (
+Inputs {
 	FwdPrimer *LHComponent
 	RevPrimer *LHComponent
 	MasterMix *LHComponent
 	PCRPolymerase *LHComponent
 	Template *LHComponent
 	OutPlate *LHPlate
-)
+}
 
 // Physical outputs from this protocol with types
-Outputs (
+Outputs {
 	Reaction *LHComponent
-)
+}
 
 Requirements {
 

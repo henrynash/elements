@@ -6,26 +6,26 @@ import (
 )
 
 // Input parameters for this protocol (data)
-Parameters (
-	Recoveryvolume Volume
-	Recoverytime Time // e.g. = 2 hours
-	Recoverytemp Temperature
+Parameters {
+	Recoveryvolume        Volume
+	Recoverytime          Time // e.g. = 2 hours
+	Recoverytemp          Temperature
 	TransformedcellVolume Volume
-)
+}
 
 // Data which is returned from this protocol, and data types
-Data ()
+Data{}
 
 // Physical Inputs to this protocol with types
-Inputs (
+Inputs {
 	Transformedcells *LHComponent
-	Recoverymedium *LHComponent
-)
+	Recoverymedium   *LHComponent
+}
 
 // Physical outputs from this protocol with types
-Outputs (
+Outputs {
 	RecoveredCells *LHComponent
-)
+}
 
 Requirements {
 }

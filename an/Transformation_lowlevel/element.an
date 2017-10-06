@@ -6,33 +6,33 @@ import (
 )
 
 // Input parameters for this protocol (data)
-Parameters (
+Parameters {
 	//CompetentCellvolumeperassembly Volume //= 50.(uL)
-	Reactionvolume Volume
+	Reactionvolume  Volume
 	Postplasmidtime Time
 	Postplasmidtemp Temperature
-	Recoverytime Time
-	Recoverytemp Temperature
+	Recoverytime    Time
+	Recoverytemp    Temperature
 	//Coolplatepositions []string
 	//HotplatePositions []string
 	//RecoveryPositions []string
 
-)
+}
 
 // Data which is returned from this protocol, and data types
-Data ()
+Data{}
 
 // Physical Inputs to this protocol with types
-Inputs (
-	Reactions []*LHComponent
-	ReadyCompCells []*LHComponent
+Inputs {
+	Reactions             []*LHComponent
+	ReadyCompCells        []*LHComponent
 	RecoveryMediaAliquots []*LHComponent
-)
+}
 
 // Physical outputs from this protocol with types
-Outputs (
+Outputs {
 	Transformedcells []*LHComponent
-)
+}
 
 Requirements {
 }

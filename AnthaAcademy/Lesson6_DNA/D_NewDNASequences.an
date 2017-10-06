@@ -15,25 +15,25 @@ import (
 )
 
 // Input parameters for this protocol
-Parameters (
+Parameters {
 	Seqsinorder []string
 	PartPrefix string
 	BlastSeqswithNoName bool
 	Vectors bool
-)
+}
 
 // Data which is returned from this protocol
-Data (
+Data {
 	Parts []DNASequence
 	Status string
 	Warnings []string
-)
+}
 
 // Physical inputs to this protocol
-Inputs ()
+Inputs {}
 
 // Physical outputs from this protocol
-Outputs ()
+Outputs {}
 
 Requirements {
 

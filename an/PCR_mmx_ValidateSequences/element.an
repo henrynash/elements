@@ -16,7 +16,7 @@ import (
 )
 
 // Input parameters for this protocol (data)
-Parameters (
+Parameters {
 	// PCRprep parameters:
 	ReactionName string
 
@@ -76,10 +76,10 @@ Parameters (
 
 	// Degrees C below lowest MeltingTemp to set annealing Temperature.
 	AnnealingTempOffset Temperature
-)
+}
 
 // Data which is returned from this protocol, and data types
-Data (
+Data {
 
 	// Sequence of the expected product of the PCR reaction
 	Amplicon DNASequence
@@ -110,10 +110,10 @@ Data (
 
 	// A textual description of the conditions suggested for this sample
 	ThermoCycleConditionsUsed string
-)
+}
 
 // Physical Inputs to this protocol with types
-Inputs (
+Inputs {
 
 	// Actual FWD primer component to use. Will only be used if PrimersalreadyAddedtoMasterMix is not selected.
 	FwdPrimer *LHComponent
@@ -135,14 +135,14 @@ Inputs (
 
 	// Type of plate to set up reaction on. Recommended plate is pcrplate
 	OutPlate *LHPlate
-)
+}
 
 // Physical outputs from this protocol with types
-Outputs (
+Outputs {
 
 	// The output PCR reaction
 	Reaction *LHComponent
-)
+}
 
 Requirements {
 
@@ -155,7 +155,6 @@ Setup {
 // The core process for this protocol, with the steps to be performed
 // for every input
 Steps {
-
 	// rename components
 	Template.CName = TemplateSequence.Name()
 	FwdPrimer.CName = FwdPrimerSeq.Name()
@@ -331,15 +330,3 @@ Analysis {
 // dipstick basis
 Validation {
 }
-
-/*type Polymerase struct {
-	LHComponent
-	Rate_BPpers float64
-	Fidelity_errorrate float64 // could dictate how many colonies are checked in validation!
-	Extensiontemp Temperature
-	Hotstart bool
-	StockConcentration Concentration // this is normally in U?
-	TargetConcentration Concentration
-	// this is also a glycerol solution rather than a watersolution!
-}
-*/

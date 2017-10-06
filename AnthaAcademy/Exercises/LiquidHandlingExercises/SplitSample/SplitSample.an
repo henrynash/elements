@@ -30,7 +30,7 @@ import (
 )
 
 // Parameters to this protocol
-Parameters (
+Parameters {
 	VolumeA Volume
 	VolumeB Volume
 	Platetype string
@@ -38,21 +38,21 @@ Parameters (
 	WellB string
 	PlateNameA string
 	PlateNameB string
-)
+}
 
 // Output data of this protocol
-Data ()
+Data {}
 
 // Physical inputs to this protocol
-Inputs (
+Inputs {
 	InputSolution *LHComponent
-)
+}
 
 // Physical outputs to this protocol
-Outputs (
+Outputs {
 	ComponentA *LHComponent
 	ComponentB *LHComponent
-)
+}
 
 // Conditions to run on startup
 Setup {

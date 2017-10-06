@@ -5,22 +5,22 @@ import (
 )
 
 // Input parameters for this protocol
-Parameters (
+Parameters {
 	MyConc Concentration
 	MolecularWeight float64
-)
+}
 
 // Data which is returned from this protocol
-Data (
+Data {
 	ConcinMperL Concentration
 	ConcinGperL Concentration
-)
+}
 
 // Physical inputs to this protocol
-Inputs ()
+Inputs {}
 
 // Physical outputs from this protocol
-Outputs ()
+Outputs {}
 
 Requirements {
 

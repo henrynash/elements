@@ -8,7 +8,7 @@ import (
 )
 
 // Input parameters for this protocol (data)
-Parameters (
+Parameters {
 	// PCRprep parameters:
 	WaterVolume Volume
 	ReactionVolume Volume
@@ -35,15 +35,15 @@ Parameters (
 	Finalextensiontime Time
 	Hotstart bool
 	AddPrimerstoMasterMix bool
-)
+}
 
 // Data which is returned from this protocol, and data types
-Data (
+Data {
 	Status string
-)
+}
 
 // Physical Inputs to this protocol with types
-Inputs (
+Inputs {
 	FwdPrimer *LHComponent
 	RevPrimer *LHComponent
 	DNTPS *LHComponent
@@ -53,12 +53,12 @@ Inputs (
 	Template *LHComponent    // the name of the LHComponent; any LHComponent coming in from the parameters file must be a valid LHComponent so Antha knows how to handle it
 	Additives []*LHComponent // e.g. DMSO
 	OutPlate *LHPlate
-)
+}
 
 // Physical outputs from this protocol with types
-Outputs (
+Outputs {
 	Reaction *LHComponent
-)
+}
 
 Requirements {
 }

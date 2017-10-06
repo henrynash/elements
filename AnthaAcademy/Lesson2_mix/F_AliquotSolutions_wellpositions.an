@@ -13,7 +13,7 @@ import (
 )
 
 // Input parameters for this protocol (data)
-Parameters (
+Parameters {
 	SolutionVolume Volume
 	VolumePerAliquot Volume
 	NumberofAliquots int
@@ -21,23 +21,23 @@ Parameters (
 	StartColumn int // starts at 0
 	ByRow bool
 	PreMix bool
-)
+}
 
 // Data which is returned from this protocol, and data types
-Data (
+Data {
 	WellPositions []string // plate name as key to return []wells used
-)
+}
 
 // Physical Inputs to this protocol with types
-Inputs (
+Inputs {
 	Solutions []*LHComponent // we're now going to aliquot multiple solutions at the same time (but not mixing them)
 	OutPlate *LHPlate
-)
+}
 
 // Physical outputs from this protocol with types
-Outputs (
+Outputs {
 	Aliquots []*LHComponent
-)
+}
 
 Requirements {
 

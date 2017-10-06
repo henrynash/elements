@@ -7,24 +7,24 @@ import (
 )
 
 // Input parameters for this protocol (data)
-Parameters (
+Parameters {
 	SolutionVolume Volume // e.g. 2ul
 	TotalVolume Volume    // e.g. 20ul
-)
+}
 
 // Data which is returned from this protocol, and data types
-Data ()
+Data {}
 
 // Physical Inputs to this protocol with types
-Inputs (
+Inputs {
 	Solution *LHComponent
 	Diluent *LHComponent
-)
+}
 
 // Physical outputs from this protocol with types
-Outputs (
+Outputs {
 	DilutedSample *LHComponent
-)
+}
 
 Requirements {
 

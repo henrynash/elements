@@ -6,7 +6,7 @@ import (
 )
 
 // Input parameters for this protocol
-Parameters (
+Parameters {
 	Seq1 DNASequence
 	Seq2 DNASequence
 	Seq3 DNASequence
@@ -15,18 +15,18 @@ Parameters (
 	Seq6 DNASequence
 	Seq7 DNASequence
 	Seq8 DNASequence
-)
+}
 
 // Data which is returned from this protocol
-Data (
+Data {
 	Seqs []DNASequence
-)
+}
 
 // Physical inputs to this protocol
-Inputs ()
+Inputs {}
 
 // Physical outputs from this protocol
-Outputs ()
+Outputs {}
 
 Requirements {
 

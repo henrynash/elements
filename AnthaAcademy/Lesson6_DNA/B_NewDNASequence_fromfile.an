@@ -10,26 +10,26 @@ import (
 )
 
 // Input parameters for this protocol
-Parameters (
+Parameters {
 	SequenceFile File
 	Gene_name string
 	Plasmid bool
 	Linear bool
 	SingleStranded bool
-)
+}
 
 // Data which is returned from this protocol
-Data (
+Data {
 	DNA DNASequence
 	Status string
 	Warnings error
-)
+}
 
 // Physical inputs to this protocol
-Inputs ()
+Inputs {}
 
 // Physical outputs from this protocol
-Outputs ()
+Outputs {}
 
 Requirements {
 

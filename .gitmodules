@@ -1,0 +1,3 @@
+[submodule "vendor/github.com/antha-lang/antha"]
+	path = vendor/github.com/antha-lang/antha
+	url = https://github.com/antha-lang/antha

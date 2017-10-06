@@ -6,21 +6,21 @@ import (
 )
 
 // Input parameters for this protocol
-Parameters (
+Parameters {
 	MyValue float64
 	MyUnit string
-)
+}
 
 // Data which is returned from this protocol
-Data (
+Data {
 	MyVolume Volume
-)
+}
 
 // Physical inputs to this protocol
-Inputs ()
+Inputs {}
 
 // Physical outputs from this protocol
-Outputs ()
+Outputs {}
 
 Requirements {
 
