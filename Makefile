@@ -1,9 +1,10 @@
 SHELL=/bin/bash
 
-AN_DIRS=an
-AN_OUT=lib
-INPUT_DIRS=an
-PACKAGE=github.com/antha-lang/elements
+AN_DIRS?=an
+
+INPUT_DIRS=$(AN_DIRS) defaults
+PACKAGE=$(shell go list .)
+ELEMENT_PACKAGE=repos.antha.com/elements
 
 # Compile after downloading dependencies
 all: update_deps fmt_json compile
@@ -11,38 +12,29 @@ all: update_deps fmt_json compile
 # Compile using current state of working directories
 current: fmt_json compile
 
-gen_comp: anthac anthafmt
-	anthafmt -w $(AN_DIRS)
-	antha -outdir=$(AN_OUT) $(AN_DIRS)
-	gofmt -w -s lib
+clean:
+	rm -rf .staging
 
-test: check_json gen_comp
-	go test `go list ./... | grep -v vendor`
-
-check: check_json check_elements
-
-check_elements: anthac
-	antha -outdir= $(AN_DIRS)
-
-check_json:
-	go run cmd/format-json/main.go $(INPUT_DIRS) > /dev/null
+test: fmt_json compile
+	go test -v `go list ./... | grep -v vendor`
 
 fmt_json:
 	go run cmd/format-json/main.go -inPlace $(INPUT_DIRS)
 
 update_deps:
-	go list -f '{{join .Deps "\n"}}' $(PACKAGE)/cmd/antharun \
-	  | grep -v vendor \
-	  | grep -v $(PACKAGE) \
-	  | xargs go list -f '{{if .Standard}}{{else}}{{.ImportPath}}{{end}}' \
-	  | xargs go get -f -u -d -v
+	go get -f -u -d -v ./cmd/antha
 
-anthac:
-	go install -v github.com/antha-lang/antha/cmd/antha
-
-anthafmt:
-	go install -v github.com/antha-lang/antha/cmd/anthafmt
+antha:
+	mkdir -p .staging
+	go build -o .staging/antha-s1 ./vendor/github.com/antha-lang/antha/cmd/antha
 
 compile: gen_comp
-	go install -v $(PACKAGE)/cmd/antharun
-	antharun list elements > /dev/null
+	go install $(PACKAGE)/cmd/antha
+
+gen_comp: antha
+	rm -rf "vendor/$(ELEMENT_PACKAGE)"
+	./.staging/antha-s1 format -w $(AN_DIRS)
+	./.staging/antha-s1 compile \
+	  --outdir=vendor/$(ELEMENT_PACKAGE) \
+	  --outputPackage $(ELEMENT_PACKAGE) \
+	  $(AN_DIRS)

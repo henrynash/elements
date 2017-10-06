@@ -26,21 +26,21 @@ import (
 	"fmt"
 	"os"
 
-	"github.com/antha-lang/antha/cmd/antharun/cmd"
-	"github.com/antha-lang/antha/component"
-	"github.com/antha-lang/elements/lib"
+	"github.com/antha-lang/antha/cmd/antha/cmd"
+	lib "repos.antha.com/elements/_lib"
 )
 
-var (
-	library []component.Component
-)
+func run() error {
+	comps, err := lib.GetComponents()
+	if err != nil {
+		return err
+	}
 
-func init() {
-	library = append(library, lib.GetComponents()...)
+	return cmd.Execute(comps)
 }
 
 func main() {
-	if err := cmd.Execute(library); err != nil {
+	if err := run(); err != nil {
 		fmt.Fprintf(os.Stderr, err.Error())
 		os.Exit(1)
 	}

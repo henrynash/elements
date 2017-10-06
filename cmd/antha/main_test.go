@@ -17,6 +17,7 @@ import (
 	"github.com/antha-lang/antha/target"
 	"github.com/antha-lang/antha/target/human"
 	"github.com/antha-lang/antha/workflowtest"
+	lib "repos.antha.com/elements/_lib"
 )
 
 const (
@@ -24,8 +25,13 @@ const (
 )
 
 func makeContext() (context.Context, error) {
+	comps, err := lib.GetComponents()
+	if err != nil {
+		return nil, err
+	}
+
 	ctx := inject.NewContext(context.Background())
-	for _, desc := range library {
+	for _, desc := range comps {
 		obj := desc.Constructor()
 		runner, ok := obj.(inject.Runner)
 		if !ok {
@@ -78,9 +84,10 @@ func runTestInput(t *testing.T, ctx context.Context, input *executeutil.TestInpu
 	}()
 
 	var err error
-
 	select {
+
 	case err = <-errs:
+
 	case <-time.After(testTimeout):
 		err = fmt.Errorf("timeout after %ds", testTimeout/time.Second)
 		if inputMatches(input, string(filepath.Separator)+"long") {
@@ -88,8 +95,7 @@ func runTestInput(t *testing.T, ctx context.Context, input *executeutil.TestInpu
 		}
 	}
 
-	if err == nil {
-	} else {
+	if err != nil {
 		t.Errorf("error running %s: %s", inputLabel(input), err)
 	}
 }
