@@ -7,10 +7,10 @@ PACKAGE=$(shell go list .)
 ELEMENT_PACKAGE=repos.antha.com/elements
 
 # Compile after downloading dependencies
-all: update_deps fmt_json compile
+all: compile_with_deps fmt_json
 
 # Compile using current state of working directories
-current: fmt_json compile
+current: compile fmt_json
 
 clean:
 	rm -rf .staging
@@ -21,27 +21,26 @@ test: all
 fmt_json:
 	go run cmd/format-json/main.go -inPlace $(INPUT_DIRS)
 
-update_deps:
-	mkdir -p .staging
-	go build -o .staging/antha-s1 ./vendor/github.com/antha-lang/antha/cmd/antha
-	go get -f -u -d -v ./cmd/... || true
-	./.staging/antha-s1 compile \
-	  --outdir=vendor/$(ELEMENT_PACKAGE) \
-	  --outputPackage $(ELEMENT_PACKAGE) \
-	  $(AN_DIRS)
-	go get -f -u -d -v ./cmd/... || true
-
-antha:
-	mkdir -p .staging
-	go build -o .staging/antha-s1 ./vendor/github.com/antha-lang/antha/cmd/antha
-
-compile: gen_comp
-	go install $(PACKAGE)/cmd/antha
-
-gen_comp: antha
+compile:
 	rm -rf "vendor/$(ELEMENT_PACKAGE)"
+	mkdir -p .staging
+	go build -o .staging/antha-s1 ./vendor/github.com/antha-lang/antha/cmd/antha
 	./.staging/antha-s1 format -w $(AN_DIRS)
 	./.staging/antha-s1 compile \
 	  --outdir=vendor/$(ELEMENT_PACKAGE) \
 	  --outputPackage $(ELEMENT_PACKAGE) \
 	  $(AN_DIRS)
+	go install $(PACKAGE)/cmd/antha
+
+compile_with_deps:
+	go get -d ./cmd/... || true
+	rm -rf "vendor/$(ELEMENT_PACKAGE)"
+	mkdir -p .staging
+	go build -o .staging/antha-s1 ./vendor/github.com/antha-lang/antha/cmd/antha
+	./.staging/antha-s1 format -w $(AN_DIRS)
+	./.staging/antha-s1 compile \
+	  --outdir=vendor/$(ELEMENT_PACKAGE) \
+	  --outputPackage $(ELEMENT_PACKAGE) \
+	  $(AN_DIRS)
+	go get -f -u -d ./cmd/... || true
+	go install $(PACKAGE)/cmd/antha

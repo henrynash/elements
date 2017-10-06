@@ -8,6 +8,10 @@ This repo is for storing and running Antha protocols.
 ## Installation
 Main instructions are in [antha-lang/antha](https://github.com/antha-lang/antha).
 
+## Update submodels
+```sh
+git submodule update --init
+```
 
 ## Build
 To build or update elements:
@@ -55,18 +59,17 @@ make test
 To run examples manually:
 ```sh
 make
-cd examples/X/Y && antharun
+cd examples/X/Y && antha run
 ```
 ## Run 
 ```sh
-antharun --parameters myparameters.json --workflow workflowfile.json
+antha run --parameters myparameters.json --workflow workflowfile.json
 ```
 
 ## Help
 ```sh
-antharun --help
+antha --help
 ```
 
 ## Academy
 Go to the [Antha Academy](https://github.com/antha-lang/elements/tree/master/an/AnthaAcademy) page to be guided through how to use antha in more detail.
-
