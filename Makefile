@@ -15,14 +15,21 @@ current: fmt_json compile
 clean:
 	rm -rf .staging
 
-test: fmt_json compile
+test: all
 	go test -v `go list ./... | grep -v vendor`
 
 fmt_json:
 	go run cmd/format-json/main.go -inPlace $(INPUT_DIRS)
 
 update_deps:
-	go get -f -u -d -v ./cmd/antha
+	mkdir -p .staging
+	go build -o .staging/antha-s1 ./vendor/github.com/antha-lang/antha/cmd/antha
+	go get -f -u -d -v ./cmd/... || true
+	./.staging/antha-s1 compile \
+	  --outdir=vendor/$(ELEMENT_PACKAGE) \
+	  --outputPackage $(ELEMENT_PACKAGE) \
+	  $(AN_DIRS)
+	go get -f -u -d -v ./cmd/... || true
 
 antha:
 	mkdir -p .staging
