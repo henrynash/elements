@@ -1,0 +1,28 @@
+{
+  "connections": [
+    {
+      "source": {
+        "port": "Sample",
+        "process": "sample"
+      },
+      "target": {
+        "port": "Solution",
+        "process": "sampleAll"
+      }
+    }
+  ],
+  "processes": {
+    "sample": {
+      "component": "Lesson1A_Sample"
+    },
+    "sampleAll": {
+      "component": "Lesson1F_SampleAll"
+    },
+    "sampleTotal": {
+      "component": "Lesson1G_SampleForTotalVolume"
+    },
+    "samplealone": {
+      "component": "Lesson1A_Sample"
+    }
+  }
+}

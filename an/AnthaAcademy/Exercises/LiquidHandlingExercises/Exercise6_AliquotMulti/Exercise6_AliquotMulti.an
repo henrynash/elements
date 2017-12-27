@@ -1,0 +1,59 @@
+// protocol Exercise6_AliquotMulti is a user exercise.
+//
+// Read through Lesson1L_RunSteps, Lesson2A_Aliquot and golang book chapter 6 on maps before trying this.
+// https://www.golang-book.com/books/intro/6#section3
+/*
+6. Make a new protocol called Aliquot_multi based around the Aliquot protocol which will take in a slice of solutions and Aliquot them all
+
+Do this by recursively using the Aliquot element from within the Aliquot_multi element in a similar way to the Lesson1L_RunSteps element.
+*/
+protocol Exercise6_AliquotMulti
+
+// Place golang packages to import here
+import ()
+
+// Parameters to this protocol
+Parameters {
+	SolutionToVolumeMap     map[string]Volume
+	SolutionToReplicatesMap map[string]int
+}
+
+// Output data of this protocol
+Data {
+	Warning Warning
+	Diluted bool
+}
+
+// Physical inputs to this protocol
+Inputs {
+	InputSolutions []*wtype.LHComponent
+}
+
+// Physical outputs to this protocol
+Outputs {
+	OutputSolutionsSlice []*LHComponent
+	OutputSolutionsMap   map[string][]*wtype.LHComponent // as a potentially more convenient output we can also return a map of the solutions using the name of the component as a key
+}
+
+// Conditions to run on startup
+Setup {
+
+}
+
+// The core process for this protocol. These steps are executed for each input.
+Steps {
+
+}
+
+// Run after controls and a steps block are completed to post process any data
+// and provide downstream results
+Analysis {
+
+}
+
+// A block of tests to perform to validate that the sample was processed
+// correctly. Optionally, destructive tests can be performed to validate
+// results on a dipstick basis
+Validation {
+
+}

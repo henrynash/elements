@@ -1,0 +1,115 @@
+// Lesson showing Hello World in Antha
+protocol Lesson0B_HelloWorldMix
+
+import (
+	"github.com/antha-lang/antha/antha/AnthaStandardLibrary/Packages/download"
+	"github.com/antha-lang/antha/antha/anthalib/wunit"
+)
+
+// Input parameters for this protocol (data)
+Parameters {
+	// This time we'll add an input parameter to give the user the option
+	// whether to print a physical HelloWorld.
+	// We'll do this with another golang primitive type: the bool type.
+	// This is shorthand for boolean and has two options: true and false.
+	// The AnthaOS will turn inputs of this type into a check box.
+	PrintPhysicalHelloWorld bool
+}
+
+// Data which is returned from this protocol, and data types
+Data {
+	// Antha inherits all standard primitives valid in golang;
+	// for example the string type shown here used to return a textual message
+	MessageForWorld string
+}
+
+// Physical Inputs to this protocol with types
+Inputs {
+}
+
+// Physical outputs from this protocol with types
+Outputs {
+	// This time we might make some physical outputs as well as data outputs
+	// In Antha the standard type for a physical solution is an *LHComponent.
+	// This is shorthand for Liquid Handling Component
+	// This time we're making a physical LHComponent for each pixel in the image.
+	// The [] indicates that this is a set of LHComponents rather than just one.
+	Pixels []*LHComponent
+}
+
+Requirements {
+
+}
+
+// Conditions to run on startup
+Setup {
+
+}
+
+// The core process for this protocol, with the steps to be performed
+// for every input
+Steps {
+
+	MessageForWorld = "Hello World!"
+
+	// If PrintPhysicalHelloWorld is true then we'll run the code in the { }
+	if PrintPhysicalHelloWorld {
+
+		// Download a hello world image.
+		// The type of a new variable can be inferred by using :=
+		helloWorldFile, err := download.File("https://upload.wikimedia.org/wikipedia/commons/thumb/2/28/HelloWorld.svg/1200px-HelloWorld.svg.png", "helloWorld.png")
+
+		// Errorf will terminate the run and report an error message
+		// if an error occurs when downloading the file.
+		if err != nil {
+			Errorf(err.Error())
+		}
+
+		// Antha also has typed values for all common measurement formats
+		// such as Time, Temperature, Concentration and Volume.
+		// This makes sure the correct measurement type can be explicitely asked for and dimensional conversions can be handled robustly.
+
+		// In this case we'll need a Volume for one of the inputs to the PipetteImage element.
+		// assigning a variable of type Volume looks like this:
+		var pixelVolume Volume
+
+		// In the code, we can set the value of a volume using the NewVolume function
+		// This is imported from an Antha package called wunit.
+		// NewVolume requires two arguments, a value and a valid unit.
+		// If an invalid unit is specified the program will terminate with an error message.
+		// In the AnthaOS, if a parameter with a Volume type is set an input box will be
+		// generated for that input which performs validation and prevents invalid volumes being set.
+		pixelVolume = wunit.NewVolume(1.0, "ul")
+
+		// We can run another Antha element like this.
+		// In this case we're running the PipetteImage element which will resize the image to fit on a plate.
+		pipettedOutImage := RunSteps(PipetteImage,
+			Parameters{ // Parameters are data inputs.
+				VolumePerWell:  pixelVolume,                  // set the volume to pipette for each pixel.
+				InputFile:      helloWorldFile,               // use the image file we've downloaded.
+				NotThisColour:  "black",                      // skip any black pixels.
+				PaletteName:    "ProteinPaintboxVisible",     // use Atum's Protein Paintbox of E.coli expressing coloured and fluorescent proteins.
+				AutoRotate:     true,                         // AutoRotate image to orientate correctly on the plate.
+				UseLiquidClass: wtype.PolicyName("plateout"), // over-ride the default liquid class with one for plating out.
+			},
+			Inputs{ // Inputs are physical inputs.
+				OutPlate: NewPlate("Agarplateforpicking768_riser20"), // choose an agar plate with 768 pixel resolution.
+			})
+
+		// set the Pixels which we defined in Outputs to be set to the Pixels output of the PipetteImage element.
+		Pixels = pipettedOutImage.Outputs.Pixels
+	}
+
+}
+
+// Run after controls and a steps block are completed to
+// post process any data and provide downstream results
+Analysis {
+}
+
+// A block of tests to perform to validate that the sample was processed
+//correctly. Optionally, destructive tests can be performed to validate
+//results on a dipstick basis
+Validation {
+
+}

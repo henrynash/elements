@@ -1,0 +1,91 @@
+// Lesson showing how to plot a graph in Antha.
+protocol Lesson5E_PlotData
+
+import (
+	"fmt"
+	"github.com/antha-lang/antha/antha/AnthaStandardLibrary/Packages/plot"
+	"path/filepath"
+	"strings"
+)
+
+// Input parameters for this protocol (data)
+Parameters {
+	Xvalues          []float64
+	Yvaluearray      [][]float64
+	XAxisTitle       string
+	YAxisTitle       string
+	GraphTitle       string
+	Exportedfilename string
+	PlotHeight       Length
+	PlotWidth        Length
+}
+
+// Data which is returned from this protocol, and data types
+Data {
+	OutputPlot File
+}
+
+// Physical Inputs to this protocol with types
+Inputs{}
+
+// Physical outputs from this protocol with types
+Outputs{}
+
+Requirements {
+
+}
+
+// Conditions to run on startup
+Setup {
+
+}
+
+// The core process for this protocol, with the steps to be performed
+// for every input
+Steps {
+
+	// now plot the graph
+
+	// the data points
+
+	graph, err := plot.Plot(Xvalues, Yvaluearray)
+
+	if err != nil {
+		Errorf(err.Error())
+	}
+
+	plot.AddAxisTitles(graph, XAxisTitle, YAxisTitle)
+
+	graph.Title.Text = GraphTitle
+
+	if filepath.Ext(Exportedfilename) == "" {
+		Exportedfilename = Exportedfilename + ".png"
+	}
+
+	OutputPlot, err = plot.Export(graph, toCentimeters(PlotHeight), toCentimeters(PlotWidth), Exportedfilename)
+
+	if err != nil {
+		Errorf(err.Error())
+	}
+
+}
+
+func toCentimeters(length wunit.Length) string {
+	return removeSpace(fmt.Sprint(length.SIValue()*100.0, "cm"))
+}
+
+func removeSpace(s string) string {
+	return strings.Replace(s, " ", "", -1)
+}
+
+// Run after controls and a steps block are completed to
+// post process any data and provide downstream results
+Analysis {
+}
+
+// A block of tests to perform to validate that the sample was processed correctly
+// Optionally, destructive tests can be performed to validate results on a
+// dipstick basis
+Validation {
+
+}

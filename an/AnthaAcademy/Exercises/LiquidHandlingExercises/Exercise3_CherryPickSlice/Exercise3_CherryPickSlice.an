@@ -1,0 +1,58 @@
+// Protocol Exercise3_CherryPickSlice is an exercise for the user to work on.
+// see https://repos.antha.com/antha-ninja/elements-westeros/tree/wip/AnthaAcademy/AnthaAcademy/Exercises/LiquidHandlingExercises
+
+/*
+// Complete exercise2_CherryPick and read https://play.golang.org/p/re7IZUkW7k on using loops before trying this.
+A) Modify CherryPick into a protocol called CherryPickSlice to take in a slice of positions to CherryPick
+
+B) read Lesson 1L_RunSteps and refactor the code to range through PositionsInSlice
+// and iteratively RunSteps of the CherryPick element in each loop.
+*/
+protocol Exercise3_CherryPickSlice
+
+// Place golang packages to import here
+import ()
+
+// Parameters to this protocol
+Parameters {
+	PositionsInSlice []int
+	MixToNewLocation bool
+	SolutionVolume   Volume
+}
+
+// Output data of this protocol
+Data {
+}
+
+// Physical inputs to this protocol
+Inputs {
+	InputSolutions []*LHComponent
+}
+
+// Physical outputs to this protocol
+Outputs {
+	OutputSolutions []*LHComponent
+}
+
+// Conditions to run on startup
+Setup {
+
+}
+
+// The core process for this protocol. These steps are executed for each input.
+Steps {
+
+}
+
+// Run after controls and a steps block are completed to post process any data
+// and provide downstream results
+Analysis {
+
+}
+
+// A block of tests to perform to validate that the sample was processed
+// correctly. Optionally, destructive tests can be performed to validate
+// results on a dipstick basis
+Validation {
+
+}

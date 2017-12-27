@@ -1,0 +1,108 @@
+// Example protocol demonstrating the use of the Prompt function.
+//
+// Concepts covered:
+// Prompt
+// MixerPrompt
+// else if
+// else
+// fmt.Sprint
+// fmt.Println
+// text package.
+protocol Lesson1H_Prompt // this is the name of the protocol Lessonthat will be called in a workflow or other antha element
+
+// the fmt package is imported this time to use the fmt.Sprint function
+import (
+	"fmt"
+	"github.com/antha-lang/antha/antha/AnthaStandardLibrary/Packages/text"
+)
+
+// Input parameters for this protocol (data)
+Parameters {
+	// Message to be added to prompt user with
+	PromptMessage string
+
+	// Prompt through liquid handler software
+	LiquidHandlerPrompt bool
+
+	// Prompt in time line
+	TimelinePrompt bool
+}
+
+// Data which is returned from this protocol, and data types
+Data {
+	// Antha inherits all standard primitives valid in golang;
+	//for example the string type shown here used to return a textual message
+	Status string
+}
+
+// Physical Inputs to this protocol with types
+Inputs {
+	// the LHComponent is the principal liquidhandling type in antha
+	// the * signifies that this is a pointer to the component rather than the component itself
+	// most key antha functions such as Sample and Mix use *LHComponent rather than LHComponent
+	Solution *LHComponent
+}
+
+// Physical outputs from this protocol with types
+Outputs {
+	// An output LHComponent variable is created with prompt
+	OutPutSolution *LHComponent
+}
+
+Requirements {
+
+}
+
+// Conditions to run on startup
+Setup {
+
+}
+
+// The core process for this protocol, with the steps to be performed
+// for every input
+Steps {
+
+	OutPutSolution = Solution
+
+	// The Prompt command will add a step in the timeline in AnthaOS to prompt the user.
+	if TimelinePrompt {
+
+		OutPutSolution = Prompt(OutPutSolution, PromptMessage)
+
+		Status = "Prompt adds a prompt which appears in the timeline"
+		// The MixerPrompt command will add a prompt through the liquid handling software
+		// to produce a pause with message at a specific position during operation.
+	} else if LiquidHandlerPrompt {
+
+		OutPutSolution = MixerPrompt(OutPutSolution, PromptMessage)
+
+		Status = "MixerPrompt adds a prompt which causes the Liquid handler software to prompt the user."
+
+	} else {
+		// A convenient way to generate strings is using the fmt.Sprint function.
+		// This is another example of variadic function which can take any number of arguments.
+		// The function can also take in any type of argument, not just strings.
+		Status = fmt.Sprint("No prompt added to", OutPutSolution.Name(), ". ", "TimelinePrompt = ", TimelinePrompt, "LiquidHandlerPrompt = ", LiquidHandlerPrompt)
+
+		// to print the message to the terminal the fmt.Println function can be used.
+		// In the AnthaOS the terminal output can be seen by opening up the console using the browser's developer tools.
+		// These can be useful for debugging your code.
+		fmt.Println(Status)
+
+		// In Antha we can also format the colour of strings printed in the terminal using the text package.
+		fmt.Println(text.Blue("Coloured Status = "), text.Red(Status))
+	}
+
+}
+
+// Run after controls and a steps block are completed to
+// post process any data and provide downstream results
+Analysis {
+}
+
+// A block of tests to perform to validate that the sample was processed
+//correctly. Optionally, destructive tests can be performed to validate
+//results on a dipstick basis
+Validation {
+
+}

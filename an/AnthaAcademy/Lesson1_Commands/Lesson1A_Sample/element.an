@@ -1,0 +1,111 @@
+// Example protocol demonstrating the use of the Sample function.
+// The Sample function is not sufficient to generate liquid handling instructions alone,
+// We would need a Mix command to instruct where to put the sample
+// We can either modify the code to add this or wire the output Sample into the Lesson1B_Mix element
+// Any comment placed here directly above the protocol name will appear in AnthaOS as the protocol description.
+//
+// Concepts covered:
+// Anatomy of an Antha element
+// types
+// Volume
+// Comments and AnthaOS
+// LHComponent
+// Sampling
+// Reading Code
+// imports
+// functions
+protocol Lesson1A_Sample // this is the name of the protocol Lessonthat will be called in a workflow or other antha element
+
+// the mixer package must be imported to use the Sample function
+import (
+	"github.com/antha-lang/antha/antha/anthalib/mixer"
+)
+
+// Input parameters for this protocol (data)
+Parameters {
+	// antha, like golang is a strongly typed language in which the type of a variable must be declared.
+	// In this case we're creating a variable called SampleVolume which is of type Volume;
+	// the type system allows the antha compiler to catch many types of common errors before the programme is run
+	// the antha type system extends this to biological types such as volumes here.
+	// functions require inputs of particular types to be adhered to.
+	// Any text written above any of the parameters, Data, Inputs and Outputs variables
+	// will appear in AnthaOS as annotations.
+	SampleVolume Volume
+}
+
+// Data which is returned from this protocol, and data types
+Data {
+	// Antha inherits all standard primitives valid in golang;
+	//for example the string type shown here used to return a textual message
+	Status string
+}
+
+// Physical Inputs to this protocol with types
+Inputs {
+	// the LHComponent is the principal liquidhandling type in antha
+	// the * signifies that this is a pointer to the component rather than the component itself
+	// most key antha functions such as Sample and Mix use *LHComponent rather than LHComponent
+	Solution *LHComponent
+}
+
+// Physical outputs from this protocol with types
+Outputs {
+	// An output LHComponent variable is created called Sample
+	Sample *LHComponent
+}
+
+Requirements {
+
+}
+
+// Conditions to run on startup
+Setup {
+
+}
+
+// The core process for this protocol, with the steps to be performed
+// for every input
+Steps {
+
+	// Programming is typically made up of a series of functions.
+	// Functions, like mathematical functions and like the antha elements themselves,
+	// are black boxes which process some input arguments to produce outputs.
+
+	// In this line of code we have a variable on the left called Sample.
+	// We initialised this variable as an LHComponent above in the Outputs section.
+	// Because the Sample is to the left of an = sign,
+	// the value of Sample will be updated as the product of the mixer.Sample function to the right of the = sign.
+	// At the top of the element file we can see that we import a library which ends with /mixer.
+	// Here we are using a function called Sample from the mixer library.
+	// This demonstrates one use of a full stop when reading code: accessing code stored in an imported package.
+	// In Antha, as with Golang, any code which is imported from a package will always start with a capital letter.
+	// We can tell Sample is a function here since it is proceded by parenthesis( ).
+	// The contents of the parentheses, Solution and SampleVolume, are the input
+	// arguments to the function. We can find out what a specific function requires as input arguments by looking at the function signature.
+	// In the mixer library the function signature can be found,
+	// here it is:
+	// func Sample(l *LHComponent, v Volume) *LHComponent {
+	// The function signature  shows that the function requires a *LHComponent and a Volume and returns an *LHComponent
+	Sample = mixer.Sample(Solution, SampleVolume)
+
+	// The Sample function is not sufficient to generate liquid handling instructions alone,
+	// We would need a Mix command to instruct where to put the sample
+	// We can either modify the code to add this or wire the output Sample into the Lesson1B_Mix element
+
+	// we can also export data only outputs.
+	// In this case we'll use quotations to write a message as a string like this:
+	Status = "Lesson 1A_Sample has been a success, now wire the corresponding output into the input of Lesson1B_Mix"
+
+}
+
+// Run after controls and a steps block are completed to
+// post process any data and provide downstream results
+Analysis {
+}
+
+// A block of tests to perform to validate that the sample was processed
+//correctly. Optionally, destructive tests can be performed to validate
+//results on a dipstick basis
+Validation {
+
+}

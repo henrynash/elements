@@ -1,0 +1,95 @@
+// Example protocol demonstrating how to mix a sample on to an existing solution.
+//
+// Concepts covered:
+// Mixing samples on top of existing solutions.
+// Liquid Policies (LHPolicy and PolicyName)
+// The error type
+// Errorf
+protocol Lesson1E_MixInPlace
+
+import ()
+
+// Input parameters for this protocol (data)
+Parameters {
+	// Each LHComponent must have an LHPolicy specified which controls how a liquid
+	// is handled (e.g. "water", "glycerol", "PostMix", "PreMix").
+	// The PolicyName lis a string which looks up the LHPolicy
+	// if a PolicyName is specified here the default mix policy of the Sample will be
+	// overridden.
+	OverrideMixingPolicy PolicyName
+}
+
+// Data which is returned from this protocol, and data types
+Data {
+}
+
+// Physical Inputs to this protocol with types
+Inputs {
+	// This protocol expects a sample to be passed in from a previous element.
+	// Wire in the output Sample from Lesson1A_Sample into here.
+	Sample                  *LHComponent
+	SolutionToMixSampleOnTo *LHComponent
+}
+
+// Physical outputs from this protocol with types
+Outputs {
+	MixedSolution *LHComponent
+}
+
+Requirements {
+
+}
+
+// Conditions to run on startup
+Setup {
+
+}
+
+// The core process for this protocol, with the steps to be performed
+// for every input
+Steps {
+
+	// != is how we evaluate if two items are not equal.
+	// We'll use it here to override the LHPolicy if the value specified is not blank
+	if OverrideMixingPolicy != "" {
+
+		// If a policy is specified, we'll attempt to assign the LHPolicy corresponding to PolicyName
+		// we'll do this using the SetPolicyName method available for the LHComponent type.
+
+		// The function returns an error to report back if the function executed successfully with the given input.
+		// If no error occurs, the error will be nil.
+		var err error
+		err = Sample.SetPolicyName(OverrideMixingPolicy)
+		// In this case, if an unknown PolicyName is specified with OverrideMixingPolicy (e.g. bananas) an error will be returned.
+		// if a valid policy is specified the error will remain as nil.
+		// we can therefore evaluate if an error has occurred and in this case
+		// use the Errorf function to cause  the protocol to terminate with an error message.
+		// error handling is fundamental to programming and many functions will return an error as one of the outputs.
+		// This provides a convenient way to assess which step a protocol may have failed.
+		if err != nil {
+			// any error type can return it's error message with .Error(), which returns a string.
+			// Errorf takes in a formatted string, using %s in the error message indicates that this should be substituted
+			// by the first argument following the initial error message and that the type expected is a string.
+			Errorf("An error has occurred: %s", err.Error())
+		}
+	}
+
+	// Finally we mix Sample on to SolutionToMixSampleOnTo using the Mix command.
+	MixedSolution = Mix(SolutionToMixSampleOnTo, Sample)
+	// In this case, if SolutionToMixSampleOnTo is a solution with a defined location, Sample will be mixed on top of it.
+	// If SolutionToMixSampleOnTo is also a sample, then first SolutionToMixSampleOnTo will be mixed to a new location,
+	// and then Sample will be mixed on top of SolutionToMixSampleOnTo.
+	// Since we're using Mix, the location to mix to will be decided by the Antha scheduler
+}
+
+// Run after controls and a steps block are completed to
+// post process any data and provide downstream results
+Analysis {
+}
+
+// A block of tests to perform to validate that the sample was processed
+//correctly. Optionally, destructive tests can be performed to validate
+//results on a dipstick basis
+Validation {
+
+}

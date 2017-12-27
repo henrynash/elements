@@ -1,0 +1,64 @@
+// Lesson showing how to convert between mass based and molar based concentrations.
+protocol Lesson4F_Units_Concentration
+
+import (
+	"github.com/antha-lang/antha/antha/anthalib/wunit"
+)
+
+// Input parameters for this protocol
+Parameters {
+	MyConc          Concentration
+	MolecularWeight float64
+}
+
+// Data which is returned from this protocol
+Data {
+	ConcinMperL             Concentration
+	ConcinGperL             Concentration
+	ValidConcentrationUnits string
+}
+
+// Physical inputs to this protocol
+Inputs{}
+
+// Physical outputs from this protocol
+Outputs{}
+
+Requirements {
+
+}
+
+// Actions to perform before protocol Lessonitself
+Setup {
+
+}
+
+// Core process of the protocol: steps to be performed for each input
+Steps {
+
+	// Concentrations are a special form of measurement unit
+	// since the unit is more flexible.
+	// Valid units are g/L, M/L (or mM).
+	// Units of X and U/l are also valid but these are discouraged unless necessary.
+	// the unit can be checked with the ValidMeasurementUnit or ValidConcentrationUnit functions in wunit library.
+	// If a valid unit is passed in the error retruned will be nil.
+	err := wunit.ValidConcentrationUnit("RandomInvalidUnit")
+
+	if err != nil {
+		ValidConcentrationUnits = err.Error()
+	}
+
+	// If using a M/l or g/l compatible unit these can be interchanged using the molecular weight.
+	ConcinMperL = MyConc.MolPerL(MolecularWeight)
+	ConcinGperL = MyConc.GramPerL(MolecularWeight)
+
+}
+
+// Actions to perform after steps block to analyze data
+Analysis {
+
+}
+
+Validation {
+
+}

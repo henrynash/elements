@@ -1,0 +1,22 @@
+{
+  "Parameters": {
+    "sampleDoubleconc": {
+      "Diluent": "water",
+      "Solution": "tartrazine",
+      "SolutionVolume": "30ul",
+      "TotalVolume": "150ul"
+    },
+    "sampleTotal": {
+      "Diluent": "water",
+      "Solution": "tartrazine",
+      "SolutionVolume": "15ul",
+      "TotalVolume": "150ul"
+    },
+    "samplehalfConc": {
+      "Diluent": "water",
+      "Solution": "tartrazine",
+      "SolutionVolume": "7.5ul",
+      "TotalVolume": "150ul"
+    }
+  }
+}

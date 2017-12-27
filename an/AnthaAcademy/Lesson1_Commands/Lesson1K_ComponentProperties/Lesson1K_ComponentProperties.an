@@ -1,0 +1,89 @@
+// Example protocol demonstrating how to request information about a solution.
+protocol Lesson1K_ComponentProperties // this is the name of the protocol Lesson that will be called in a workflow or other antha element
+
+// the mixer package must be imported to use the Sample function
+import (
+	"github.com/antha-lang/antha/antha/AnthaStandardLibrary/Packages/solutions"
+	"github.com/antha-lang/antha/antha/anthalib/wtype"
+)
+
+// Input parameters for this protocol (data)
+Parameters {
+}
+
+// Data which is returned from this protocol, and data types
+Data {
+	SolutionName          string
+	LiquidPolicy          PolicyName
+	SolutionConcentration Concentration
+	SolutionVolume        Volume
+	SubComponents         map[string]Concentration
+	DNASequences          []DNASequence
+	Warnings              []Warning
+}
+
+// Physical Inputs to this protocol with types
+Inputs {
+	Solution *LHComponent
+}
+
+// Physical outputs from this protocol with types
+Outputs {
+}
+
+Requirements {
+
+}
+
+// Conditions to run on startup
+Setup {
+
+}
+
+// The core process for this protocol, with the steps to be performed
+// for every input
+Steps {
+
+	var err error
+
+	SolutionName = Solution.Name()
+
+	LiquidPolicy = Solution.PolicyName()
+
+	if Solution.HasConcentration() {
+		SolutionConcentration = Solution.Concentration()
+	} else {
+		Warnings = append(Warnings, wtype.NewWarningf("No Concentration found for %s", Solution.Name()))
+	}
+
+	SolutionVolume = Solution.Volume()
+
+	var componentList solutions.ComponentList
+
+	componentList, err = solutions.GetSubComponents(Solution)
+
+	if err != nil {
+		Warnings = append(Warnings, wtype.NewWarningf(err.Error()))
+	}
+
+	SubComponents = componentList.Components
+
+	DNASequences, err = Solution.DNASequences()
+
+	if err != nil {
+		Warnings = append(Warnings, wtype.NewWarningf(err.Error()))
+	}
+
+}
+
+// Run after controls and a steps block are completed to
+// post process any data and provide downstream results
+Analysis {
+}
+
+// A block of tests to perform to validate that the sample was processed
+//correctly. Optionally, destructive tests can be performed to validate
+//results on a dipstick basis
+Validation {
+
+}

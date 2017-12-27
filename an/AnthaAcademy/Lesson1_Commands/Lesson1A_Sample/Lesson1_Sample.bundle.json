@@ -1,0 +1,21 @@
+{
+  "CompareInstructions": false,
+  "CompareOutputs": false,
+  "ComparisonOptions": "",
+  "Results": {
+    "MixTaskResults": null
+  },
+  "config": null,
+  "connections": [],
+  "parameters": {
+    "MyFirstProtocol": {
+      "SampleVolume": "15ul",
+      "Solution": "tartrazine"
+    }
+  },
+  "processes": {
+    "MyFirstProtocol": {
+      "component": "Lesson1A_Sample"
+    }
+  }
+}

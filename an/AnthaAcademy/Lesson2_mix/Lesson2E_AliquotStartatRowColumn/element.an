@@ -1,0 +1,145 @@
+// Extra fields to Pre mix, and start at specific columns or rows. The lowest level example protocol Lessonshowing The MixTo command being used to specify the specific wells to be aliquoted to;
+// By doing this we are able to specify whether the aliqouts are pipetted by row or by column.
+// We demonstrate here how to write functions in Antha elements to correct the well position for the start row and column.
+// In this case the user is still not specifying the well location (i.e. A1) in the parameters, although that would be possible to specify.
+// We don't generally encourage this since Antha is designed to be prodiminantly a high level language which avoids the user specifying well locations but this possibility is there if necessary.
+protocol Lesson2E_AliquotStartatRowColumn
+
+import (
+	"fmt"
+	"github.com/antha-lang/antha/antha/anthalib/mixer"
+	"github.com/antha-lang/antha/antha/anthalib/wtype"
+	"github.com/antha-lang/antha/antha/anthalib/wutil"
+)
+
+// Input parameters for this protocol (data)
+Parameters {
+	SolutionVolume   Volume
+	VolumePerAliquot Volume
+	NumberofAliquots int
+	StartRow         int // Optional parameter to specify Row start position; if not set or set to zero the first row will be selected
+	StartColumn      int // starts at 0
+	ByRow            bool
+	PreMix           bool
+}
+
+// Data which is returned from this protocol, and data types
+Data {
+	WellPositions []string // plate name as key to return []wells used
+}
+
+// Physical Inputs to this protocol with types
+Inputs {
+	Solutions []*LHComponent // we're now going to aliquot multiple solutions at the same time (but not mixing them)
+	OutPlate  *LHPlate
+}
+
+// Physical outputs from this protocol with types
+Outputs {
+	Aliquots []*LHComponent
+}
+
+Requirements {
+
+}
+
+// Conditions to run on startup
+Setup {
+
+}
+
+// Functions written in go can be declared outside of the other Antha sections such as Steps or Analysis. These can then be used in the Antha element.
+// jumpToWellPosition will return the well positions left in a plate starting from the row and column specified by the user.
+// If both are set to 0, all well positions will be returned.
+// If an invalid startRow or startColumn position is specified by the user an error will be returned. Otherwise the error returned will be nil.
+func jumpToWellPosition(plate *LHPlate, startRow, startColumn int, byRow bool) (wellPositions []string, err error) {
+	allWellPositions := plate.AllWellPositions(byRow)
+
+	if startRow > plate.WellsY() {
+		return []string{}, fmt.Errorf("startRow %d specified greater than number of rows in plate %s", startRow, plate.WellsY(), plate.Type)
+	}
+
+	if startColumn > plate.WellsX() {
+		return []string{}, fmt.Errorf("startColumn %d specified greater than number of columns in plate %s", startRow, plate.WellsY(), plate.Type)
+	}
+	var start bool
+	for _, well := range allWellPositions {
+		wellCoordinates := wtype.MakeWellCoordsA1(well)
+		if wellCoordinates.X == startRow && wellCoordinates.Y == startColumn {
+			start = true
+		}
+		if start {
+			wellPositions = append(wellPositions, well)
+		}
+	}
+
+	return wellPositions, nil
+}
+
+// The core process for this protocol, with the steps to be performed
+// for every input
+Steps {
+
+	number := SolutionVolume.SIValue() / VolumePerAliquot.SIValue()
+	possiblenumberofAliquots, _ := wutil.RoundDown(number)
+	if possiblenumberofAliquots < NumberofAliquots {
+		Errorf("Not enough solution for this many aliquots")
+	}
+
+	aliquots := make([]*LHComponent, 0)
+
+	// use our jumpToWellPosition function to work out well coordinates for the plate
+	wellpositionarray, err := jumpToWellPosition(OutPlate, StartRow, StartColumn, ByRow)
+
+	if err != nil {
+		Errorf(err.Error())
+	}
+
+	// initialise a counter
+	var counter int // an int is initialised as zero therefore this is the same as counter := 0 or var counter = 0
+	// initialise a platenumber
+	var platenumber int = 1
+
+	for _, Solution := range Solutions {
+
+		if PreMix {
+			Solution.Type = wtype.LTPreMix
+		}
+
+		for k := 0; k < NumberofAliquots; k++ {
+
+			if Solution.TypeName() == "dna" {
+				Solution.Type = wtype.LTDoNotMix
+			}
+			aliquotSample := mixer.Sample(Solution, VolumePerAliquot)
+
+			aliquot := MixNamed(OutPlate.Type, wellpositionarray[counter], fmt.Sprint("AliquotPlate", platenumber), aliquotSample)
+			aliquots = append(aliquots, aliquot)
+
+			var platepluswell string = fmt.Sprint(platenumber, wellpositionarray[counter])
+			WellPositions = append(WellPositions, platepluswell)
+
+			if counter+1 == len(wellpositionarray) {
+				platenumber++
+				counter = 0
+			} else {
+				counter++
+			}
+		}
+		Aliquots = aliquots
+
+	}
+
+}
+
+// Run after controls and a steps block are completed to
+// post process any data and provide downstream results
+Analysis {
+}
+
+// A block of tests to perform to validate that the sample was processed correctly
+// Optionally, destructive tests can be performed to validate results on a
+// dipstick basis
+Validation {
+
+}

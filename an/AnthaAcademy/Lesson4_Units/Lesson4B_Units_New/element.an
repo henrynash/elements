@@ -1,0 +1,76 @@
+// demo of how to create units from raw values and unit strings
+protocol Lesson4B_Units_New
+
+import (
+	"github.com/antha-lang/antha/antha/anthalib/wunit"
+)
+
+// Input parameters for this protocol
+Parameters {
+	MyValue                float64
+	MyUnit                 string
+	VolumeWithUnitAsString string
+}
+
+// Data which is returned from this protocol
+Data {
+	MyVolume     Volume
+	ParsedVolume Volume
+}
+
+// Physical inputs to this protocol
+Inputs{}
+
+// Physical outputs from this protocol
+Outputs{}
+
+Requirements {
+
+}
+
+// Actions to perform before protocol Lessonitself
+Setup {
+
+}
+
+// Core process of the protocol: steps to be performed for each input
+Steps {
+
+	// to create a new unit in the code use the New functions imported from the wunit library.
+
+	// These all take in two arguments, the value as a float followed by the unit as a string.
+	// Here is an example using NewVolume.
+	MyVolume = wunit.NewVolume(MyValue, MyUnit)
+
+	// Similar New functions exist for all other measurement types too.
+
+	// It's also possible to parse a value and unit from a string value
+	value, unit := wunit.SplitValueAndUnit(VolumeWithUnitAsString)
+
+	// if an invalid unit is passed in to NewVolume the program will terminate and report an error.
+	// To fail more gracefully, it's possible to check the validity of some units using wunit.ValidMeasurementUnit
+	// If a valid measurement type and unit for that measurement type is passed in, the error returned is nil.
+	// https://godoc.org/github.com/antha-lang/antha/antha/anthalib/wunit#ValidConcentrationUnit
+
+	err := wunit.ValidMeasurementUnit("Volume", unit)
+
+	if err != nil {
+		Errorf(err.Error())
+	}
+
+	ParsedVolume = wunit.NewVolume(value, unit)
+
+	// If using the AnthaOS, it's recommended to use the Antha types as input parameters
+	// rather than the raw float and string values since the unit safety is built in to the OS.
+
+	// Exercise: adjust the protocol Lesson to make a concentration instead
+}
+
+// Actions to perform after steps block to analyze data
+Analysis {
+
+}
+
+Validation {
+
+}

@@ -1,0 +1,115 @@
+// Lesson demonstrating how to call another Antha element from within an element
+//
+// Concepts Covered:
+// RunSteps
+// maps
+protocol Lesson1L_RunSteps
+
+// Place golang packages to import here
+import ()
+
+// Parameters to this protocol
+Parameters {
+	// The volume to transfer for each component name.
+	// Here we're using a map. This stores a series of unique keys each corresponding to a value.
+	// In this case the keys are of type string and the values are of type Volume.
+	// Essentially it acts as a lookup table.
+	// In this case we're using this variable to store pairs of component names to the volume which we wish to transfer for that component
+	// For example {"Glucose":10ul, "Glycerol": 5ul}
+	// If a "default" key is present as a key in the map,
+	// the volume for the default will be used for any solution which is not specified in the map.
+	// For example {"Glucose":10ul, "Glycerol": 5ul, "default": 15ul}
+	VolumeForTransfer map[string]Volume
+}
+
+// Output data of this protocol
+Data {
+	Status   []string
+	Warnings []Warning
+}
+
+// Physical inputs to this protocol
+Inputs {
+	Solutions []*LHComponent
+}
+
+// Physical outputs to this protocol
+Outputs {
+	TransferredSolutions []*LHComponent
+}
+
+// Conditions to run on startup
+Setup {
+
+}
+
+// The core process for this protocol. These steps are executed for each input.
+Steps {
+
+	// range through component names
+	for _, solution := range Solutions {
+
+		// initialise a new variable to store the transfer volume for that solution.
+		var transferVolume Volume
+
+		// We'll check for the volume to transfer in the VolumeForTransfer map[string]Volume along these lines:
+		// 1. Check if a volume is specified for that solution,
+		// 2. otherwise check is a default volume is set,
+		// 3. otherwise terminate run.
+
+		// When looking up the corresponding value of a key in a map; the first output, in this case vol, will be the returned value.
+		// The second output (in this case the variable found) is optional.
+		// When specified this returns a boolean stating whether the key, in this case Solution.Name(), is present in the map.
+		// An if statement can consist of two steps in a single line separated by ;
+		// In this case we're evaluating the value of found and then using the found boolean to evaluate whether to perform the actions specified
+		// in the curly braces following.
+		// If the found value is not true the "else if" statement is evaluated.
+		// Finally, if this is also not true, we perform the actions specified in the curly braces following else.
+		if vol, found := VolumeForTransfer[solution.Name()]; found {
+			transferVolume = vol
+		} else if defaultVol, defaultFound := VolumeForTransfer["default"]; defaultFound {
+			transferVolume = defaultVol
+			Warnings = append(Warnings, wtype.NewWarning("No Volume specified for ", solution.Name(), " so using default Volume ", defaultVol.ToString()))
+		} else {
+			// if no volume is specified for the component and no default specified we're forced to terminate the protocol and report back to the user.
+			// Note that this error message uses ` ` rather than " ". This is because we wish to use quotations within the message i.e. "default".
+			Errorf(`Cannot continue run: No VolumeForTransfer specified for %s and no "default" specified. Please add one of these.`, solution.Name())
+		}
+
+		// run Lesson1A_Sample element
+		sampleResults := RunSteps(Lesson1A_Sample, Parameters{
+			SampleVolume: transferVolume,
+		}, Inputs{
+			Solution: solution,
+		})
+
+		// get output sample to use in next step
+		sample := sampleResults.Outputs.Sample
+
+		// add status to slice
+		Status = append(Status, sampleResults.Data.Status)
+
+		// now use sample in Mix element
+		mixResults := RunSteps(Lesson1B_Mix, Parameters{}, Inputs{
+			Sample: sample,
+		})
+
+		// append output TransferredSolutions
+		TransferredSolutions = append(TransferredSolutions, mixResults.Outputs.TransferredSolution)
+	}
+
+	// done
+}
+
+// Run after controls and a steps block are completed to post process any data
+// and provide downstream results
+Analysis {
+
+}
+
+// A block of tests to perform to validate that the sample was processed
+// correctly. Optionally, destructive tests can be performed to validate
+// results on a dipstick basis
+Validation {
+
+}

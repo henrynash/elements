@@ -1,0 +1,55 @@
+// protocol Exercise4_Transfer is a user exercise.
+//
+// Reinforces Exercises 2 and 3.
+/*
+
+4. Make a new protocol which will take in a slice of solutions and transfer them to a specified plate
+
+*/
+protocol Exercise4_Transfer
+
+// Place golang packages to import here
+import ()
+
+// Parameters to this protocol
+Parameters {
+	TransferVolume Volume
+	Replicates     int
+}
+
+// Output data of this protocol
+Data{}
+
+// Physical inputs to this protocol
+Inputs {
+	InputSolutions []*wtype.LHComponent
+	OutPlate       *wtype.LHPlate
+}
+
+// Physical outputs to this protocol
+Outputs {
+	OutPutSolutions []*LHComponent
+}
+
+// Conditions to run on startup
+Setup {
+
+}
+
+// The core process for this protocol. These steps are executed for each input.
+Steps {
+
+}
+
+// Run after controls and a steps block are completed to post process any data
+// and provide downstream results
+Analysis {
+
+}
+
+// A block of tests to perform to validate that the sample was processed
+// correctly. Optionally, destructive tests can be performed to validate
+// results on a dipstick basis
+Validation {
+
+}

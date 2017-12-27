@@ -1,0 +1,41 @@
+{
+  "CompareInstructions": false,
+  "CompareOutputs": false,
+  "ComparisonOptions": "",
+  "Results": {
+    "MixTaskResults": null
+  },
+  "config": null,
+  "connections": [],
+  "parameters": {
+    "sampleDoubleconc": {
+      "Diluent": "water",
+      "Solution": "tartrazine",
+      "SolutionVolume": "30ul",
+      "TotalVolume": "150ul"
+    },
+    "sampleTotal": {
+      "Diluent": "water",
+      "Solution": "tartrazine",
+      "SolutionVolume": "15ul",
+      "TotalVolume": "150ul"
+    },
+    "samplehalfConc": {
+      "Diluent": "water",
+      "Solution": "tartrazine",
+      "SolutionVolume": "7.5ul",
+      "TotalVolume": "150ul"
+    }
+  },
+  "processes": {
+    "sampleDoubleconc": {
+      "component": "Lesson1G_SampleForTotalVolume"
+    },
+    "sampleTotal": {
+      "component": "Lesson1G_SampleForTotalVolume"
+    },
+    "samplehalfConc": {
+      "component": "Lesson1G_SampleForTotalVolume"
+    }
+  }
+}
