@@ -2,7 +2,7 @@ SHELL=/bin/bash
 
 AN_DIRS?=an
 
-INPUT_DIRS=$(AN_DIRS) defaults
+INPUT_DIRS=$(AN_DIRS)
 PACKAGE=$(shell go list .)
 ELEMENT_PACKAGE=repos.antha.com/elements
 

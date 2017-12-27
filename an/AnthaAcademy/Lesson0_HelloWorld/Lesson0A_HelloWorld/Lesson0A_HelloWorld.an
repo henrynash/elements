@@ -1,0 +1,52 @@
+// Lesson showing Hello World in Antha
+protocol Lesson0A_HelloWorld
+
+import ()
+
+// Input parameters for this protocol (data)
+Parameters {
+}
+
+// Data which is returned from this protocol, and data types
+Data {
+	// Antha inherits all standard primitives valid in golang;
+	// for example the string type shown here used to return a textual message
+	MessageForWorld string
+}
+
+// Physical Inputs to this protocol with types
+Inputs {
+}
+
+// Physical outputs from this protocol with types
+Outputs {
+}
+
+Requirements {
+
+}
+
+// Conditions to run on startup
+Setup {
+
+}
+
+// The core process for this protocol, with the steps to be performed
+// for every input
+Steps {
+
+	MessageForWorld = "Hello World"
+
+}
+
+// Run after controls and a steps block are completed to
+// post process any data and provide downstream results
+Analysis {
+}
+
+// A block of tests to perform to validate that the sample was processed
+//correctly. Optionally, destructive tests can be performed to validate
+//results on a dipstick basis
+Validation {
+
+}

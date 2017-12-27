@@ -1,0 +1,60 @@
+// protocol Exercise7_EnzymeKinetics is a user exercise.
+//
+/*
+7A. Make a new protocol called Exercise7_EnzymeKinetics which calls the ReactionSetup element recursively to set up a series of reactions to characeterise the kinetics of an enzyme.
+7B. Make another element to process the results of an enzyme assay which calls the PlotData element to plot a Lineweaver Burke plot.
+
+
+
+Do this by recursively using the Aliquot element from within the Aliquot_multi element in a similar way to the AutoPCR_demo element shown in Lesson0.
+*/
+protocol Exercise7_EnzymeKinetics
+
+// Place golang packages to import here
+import ()
+
+// Parameters to this protocol
+Parameters {
+	EnzymeConcentrations    []Concentration
+	SubstrateConcentrations []Concentration
+	Replicates              int
+}
+
+// Output data of this protocol
+Data {
+}
+
+// Physical inputs to this protocol
+Inputs {
+	Enzyme    *LHComponent
+	Substrate *LHComponent
+	Buffer    *LHComponent
+}
+
+// Physical outputs to this protocol
+Outputs {
+	Reactions []*wtype.LHComponent
+}
+
+// Conditions to run on startup
+Setup {
+
+}
+
+// The core process for this protocol. These steps are executed for each input.
+Steps {
+
+}
+
+// Run after controls and a steps block are completed to post process any data
+// and provide downstream results
+Analysis {
+
+}
+
+// A block of tests to perform to validate that the sample was processed
+// correctly. Optionally, destructive tests can be performed to validate
+// results on a dipstick basis
+Validation {
+
+}

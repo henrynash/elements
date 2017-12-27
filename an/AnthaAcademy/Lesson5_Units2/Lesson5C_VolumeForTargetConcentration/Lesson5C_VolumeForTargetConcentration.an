@@ -1,0 +1,75 @@
+// Example of how to convert a concentration and mass to a volume.
+// Also demonstrates the use of the Warning type.
+protocol Lesson5C_VolumeForTargetConcentration
+
+import (
+	"github.com/antha-lang/antha/antha/anthalib/wunit"
+)
+
+// Input parameters for this protocol
+Parameters {
+	TargetConcentration Concentration
+	StockConcentration  Concentration
+	TotalVolume         Volume
+}
+
+// Data which is returned from this protocol
+Data {
+	VolumeRequired Volume
+	Warnings       Warning
+}
+
+// Physical inputs to this protocol
+Inputs{}
+
+// Physical outputs from this protocol
+Outputs{}
+
+Requirements {
+
+}
+
+// Actions to perform before protocol Lessonitself
+Setup {
+
+}
+
+// Core process of the protocol: steps to be performed for each input
+Steps {
+
+	var err error
+
+	VolumeRequired, err = wunit.VolumeForTargetConcentration(TargetConcentration, StockConcentration, TotalVolume)
+
+	if err != nil {
+		Errorf(err.Error())
+	}
+
+	// There's also a special type in Antha for flagging up warnings back to the user.
+	// These are designed for errors which are not necessarily fatal which may result but which the user should be aware of.
+	// In this case we might want to return a warning if the volume converted to is very low.
+
+	warningVolume := wunit.NewVolume(0.5, "ul")
+	decimalPlaces := 7
+	// We'll evaluate if the volume calculated is below our cut off of 0.5 ul and create a warning if it is.
+	// The LessThanRounded is the safest way to compare the values since it's generally not safe to compare floating point numbers without specifying precision.
+	if VolumeRequired.LessThanRounded(warningVolume, decimalPlaces) {
+		// There are two functions available to set a warning.
+		// wtype.NewWarning behaves the same as fmt.Sprint in taking any number of arguments of any type and concatenating them into a string error message.
+		// Here we're using wtype.NewWarningf which uses a formatted string in the same way as the Errorf command.
+		Warnings = wtype.NewWarningf("low volume %s calculated after conversion of stock concentration %s to target concentration %s. It's recommended not to pipette volumes below 0.5ul due to low accuracy.", VolumeRequired, StockConcentration, TargetConcentration)
+	}
+
+	// There are many other functions available in the wunit library.
+	// Check them out here:
+	// https://godoc.org/github.com/antha-lang/antha/antha/anthalib/wunit
+}
+
+// Actions to perform after steps block to analyze data
+Analysis {
+
+}
+
+Validation {
+
+}

@@ -1,0 +1,92 @@
+// Example protocol Lessondemonstrating the use of the SampleForTotalVolume function.
+//
+// Concepts covered:
+// SamplForTotalVolume
+// Slices []
+// append
+// variadic functions
+//
+protocol Lesson1G_SampleForTotalVolume
+
+import (
+	"github.com/antha-lang/antha/antha/anthalib/mixer"
+	"github.com/antha-lang/antha/antha/anthalib/wtype"
+)
+
+// Input parameters for this protocol (data)
+Parameters {
+	SolutionVolume Volume // e.g. 2ul
+	TotalVolume    Volume // e.g. 20ul
+}
+
+// Data which is returned from this protocol, and data types
+Data{}
+
+// Physical Inputs to this protocol with types
+Inputs {
+	Solution *LHComponent
+	Diluent  *LHComponent
+}
+
+// Physical outputs from this protocol with types
+Outputs {
+	DilutedSample *LHComponent
+}
+
+Requirements {
+
+}
+
+// Conditions to run on startup
+Setup {
+
+}
+
+// The core process for this protocol, with the steps to be performed
+// for every input
+Steps {
+
+	// make empty slice of LHComponents (i.e. of length 0) ready to sequentially add all samples to
+	// See golangbook chapter 6 for more details on slices and arrays
+	var allsamples []*LHComponent
+
+	// SampleForTotalVolume will "top up" solution to the TotalVolume with Diluent.
+	// In this case it will still add diluent first but calculates the volume to add by substracting the volumes of subsequent components
+	// i.e. if TotalVolume == 20ul and SolutionVolume == 2ul then 18ul of Diluent will be sampled here
+	diluentsample := mixer.SampleForTotalVolume(Diluent, TotalVolume)
+
+	// append will add the diluent sample to the allsamples slice
+	allsamples = append(allsamples, diluentsample)
+
+	solutionsample := mixer.Sample(Solution, SolutionVolume)
+
+	allsamples = append(allsamples, solutionsample)
+
+	// As we've learnt, the Sample functions will not generate liquid handling instructions on their own
+	// We need to tell Antha what to do with samples
+	// For this we need to use one of the Mix functions
+	// therefore finally we use Mix to combine samples into a new component.
+	// Since allsamples are, erm, all samples the Mix command will transfer all of these to a new location.
+	// if the first solution was not a sample but an LHComponent with a fixed location,
+	// the other samples would be mixed on top of it without moving.
+	// This is the first time we've mixed a slice of samples rather than just one.
+	// All of the Mix commands (Mix, MixInto, MixNamed) can take a variable number of LHComponents arguments to the function.
+	// These are known as variadic functions.
+	// By using the ... after the slice variable allsamples, each of the LHcomponents will be sequenitally used as arguments in the Mix command.
+	DilutedSample = Mix(allsamples...)
+
+	// Now we have an Antha element which will generate liquid handling instructions
+
+}
+
+// Run after controls and a steps block are completed to
+// post process any data and provide downstream results
+Analysis {
+}
+
+// A block of tests to perform to validate that the sample was processed
+//correctly. Optionally, destructive tests can be performed to validate
+//results on a dipstick basis
+Validation {
+
+}

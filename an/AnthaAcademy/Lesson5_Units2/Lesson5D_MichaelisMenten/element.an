@@ -1,0 +1,156 @@
+// Lesson showing how to handle unit conversions for a real life use case, Michaelis Menten kinetics.
+// Calculate rate of reaction, V, of enzyme displaying Micahelis-Menten kinetics with Vmax, Km and [S] declared
+// Calculating [S] and V from g/l concentration and looking up molecular weight of named substrate
+// An example of how to write a function to handle custom units is included here
+// along with an exercise to integrate this in to improve the protocol.
+protocol Lesson5D_MichaelisMenten
+
+import (
+	"fmt"
+	"github.com/antha-lang/antha/antha/AnthaStandardLibrary/Packages/pubchem"
+	"strings"
+)
+
+// Input parameters for this protocol
+Parameters {
+	Km wunit.Moles
+
+	VMax string // e.g. 1 M/s
+
+	SubstrateConc Concentration
+	SubstrateVol  Volume
+	Substrate     string
+}
+
+// Data which is returned from this protocol
+Data {
+	V      float64
+	S      wunit.Moles
+	Status string
+}
+
+// Physical inputs to this protocol
+Inputs{}
+
+// Physical outputs from this protocol
+Outputs{}
+
+Requirements {
+
+}
+
+// Actions to perform before protocol Lessonitself
+Setup {
+
+}
+
+// Core process of the protocol: steps to be performed for each input
+Steps {
+
+	// M/s is not a standard unit available in the Antha library but we can manually add checks to ensure unit safety of custom units.
+	// We could even write a more sophisticated function to do this,
+	// have a go at this by substituting wunit.SplitValueAndUnit with
+	// the parseVMaxUnit function below.
+
+	// check unit of Vmax is M/s to validate future calculations.
+
+	vMax, vMaxunit := wunit.SplitValueAndUnit(VMax)
+
+	if strings.ToUpper(vMaxunit) != "M/S" {
+		Errorf("invalid Vmaxunit specified (%s) must be specified in M/s", vMaxunit)
+	}
+
+	// Look up subtrate properties from pubchem to get molecular weight.
+	substrateProperties, err := pubchem.MakeMolecule(Substrate)
+	if err != nil {
+		Errorf(err.Error())
+	}
+
+	// calculate molar concentration
+	substrateMolarConc := SubstrateConc.MolPerL(substrateProperties.MolecularWeight)
+
+	substrateMoles := substrateMolarConc.SIValue() / SubstrateVol.SIValue()
+
+	// set S in Moles
+	S = wunit.NewAmount(substrateMoles, "M")
+
+	// Work out rate of reaction, V of enzyme with Michaelis-Menten kinetics and [S], Km and Vmax declared
+
+	// Now working out Molarity of Substrate
+	V = ((S.SIValue() * vMax) / (S.SIValue() + Km.SIValue()))
+
+	// print report
+	Status = fmt.Sprintln(
+		"For substrate =", Substrate, ". We have", SubstrateVol.ToString(), "of", Substrate, "at concentration of", SubstrateConc.ToString(),
+		"Therefore... Moles of", Substrate, "=", substrateMoles, "Moles.",
+		"Molar Concentration of", Substrate, "=", substrateMolarConc.ToString(),
+		"Rate, V of enzyme at substrate conc", S.ToString(),
+		"of enzyme with Km", Km.ToString(),
+		"and Vmax", vMax, vMaxunit,
+		"Rate, V = ", V, "M/s")
+
+	// Exercise: use the function below to parse a VMax unit and adjust the value according to the unit specified
+}
+
+// parseVMaxUnit takes in a value and unit as a string
+// checks the unit is valid for VMax and returns the value corrected for the dimensions of the unit.
+func parseVMaxUnit(valueAndUnit string) (vmax float64, vMaxUnit string, err error) {
+
+	value, unit := wunit.SplitValueAndUnit(valueAndUnit)
+
+	if unit == "" {
+		return 0.0, "", fmt.Errorf("No unit specified for VMax unit in %s", valueAndUnit)
+	}
+
+	// It's best to separate your code into modular reusable functions
+	// so we've written an auxiliary function splitUnit to separate a compound unit
+	// consisting of a numerator and denominator.
+	numerator, denominator, err := splitUnit(unit)
+
+	if err != nil {
+		return 0.0, "", err
+	}
+
+	if err := wunit.ValidMeasurementUnit("Moles", numerator); err != nil {
+		return 0.0, "", fmt.Errorf("VMax unit numerator must be valid Mole value, error: %s", err.Error())
+	}
+
+	if err := wunit.ValidMeasurementUnit("Time", denominator); err != nil {
+		return 0.0, "", fmt.Errorf("VMax unit  denominator must be valid Time value, error: %s", err.Error())
+	}
+
+	numeratorUnit := wunit.NewAmount(value, numerator)
+
+	moles := numeratorUnit.SIValue()
+
+	denominatorUnit := wunit.NewTime(1.0, denominator)
+
+	seconds := denominatorUnit.SIValue()
+
+	vmax = moles / seconds
+
+	return vmax, "M/s", nil
+}
+
+// splitUnit takes in a string and checks if it can be converted into a numerator and denominator separated by a single "/".
+// If this cannot be achieved an error will be returned otherwise the numerator and denominator are returned with a nil error.
+func splitUnit(unit string) (numerator, denominator string, err error) {
+	if strings.Count(unit, "/") == 1 {
+		fields := strings.Split(unit, "/")
+		if len(fields) == 2 {
+			return strings.TrimSpace(fields[0]), strings.TrimSpace(fields[1]), nil
+		} else {
+			return "", "", fmt.Errorf(`unit must contain a numerator unit and denominator unit separated by "/". Found this unit: %s`, unit)
+		}
+	}
+	return "", "", fmt.Errorf(`unit must contain exactly one "/". Found this unit %s with %d`, unit, strings.Count(unit, "/"))
+}
+
+// Actions to perform after steps block to analyze data
+Analysis {
+
+}
+
+Validation {
+
+}

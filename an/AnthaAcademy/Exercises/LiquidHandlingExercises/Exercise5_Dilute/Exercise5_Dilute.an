@@ -1,0 +1,112 @@
+// protocol Exercise5_Dilute is a user exercise.
+
+// Read through Lesson3_ReactionSetUp,
+// Lesson3_SerialDilution and
+// Lesson5C_VolumeForTargetConcentration before attempting this.
+
+/*
+
+(A) Make a new protocol called Dilute which will automatically dilute a sample by a DilutionFactor.
+	A MinimalTransferVolume should be specified below which an intermdiate sample will first be made
+	to facilitate reaching the target dilution.
+
+	For example :
+
+		DilutionFactor == 10.0,
+		TargetTransferVolume == 10ul
+		MinimalTransferVolume == 0.5ul
+
+	The resulting DilutedSolution will be composed of
+	1ul of SolutionToDilute and 9ul of Diluent.
+
+	However, if DilutionFactor is increased to 100.0:
+
+		DilutionFactor == 100.0,
+		TargetTransferVolume == 10ul
+		MinimalTransferVolume == 0.5ul
+
+	The resulting DilutedSolution will need to be composed of
+	0.1ul of SolutionToDilute and 9.9ul of Diluent.
+
+	but since the 0.1ul if below the MinimalTransferVolume of 0.5ul,
+	it will need to first be diluted to an intermediate solution
+	and then the intermediate used to achieve the specified DilutionFactor.
+
+	Possibly by making a 1 in 10 intermiediate dilution
+	and then diluting the intermediate 1 in 10 to achieve the 1 in 100 dilution necessary.
+
+	One way to do this is by calling the SerialDilution element
+	if the TargetTransferVolume.SIValue() < MinimalTransferVolume.SIValue()
+
+	A Warning should be returned back to the user if a dilution has occurred.
+	(see Lesson5C_VolumeForTargetConcentration)
+
+(B) Refactor to take in Concentration parameters and convert to Volumes:
+
+	Parameters{
+		TargetTransferVolume Volume
+		StartingConcentration Consentration
+		TargetConcentration Concentration
+		MinimalTransferVolume Volume
+	}
+
+*/
+protocol Exercise5_Dilute
+
+// Place golang packages to import here
+import ()
+
+// Parameters to this protocol
+Parameters {
+	// The volume of  DilutedSolution to make.
+	TargetTransferVolume Volume
+
+	// The factor by which to dilute the SolutionToDilute with the Diluent.
+	DilutionFactor float64
+
+	// The volume below which an intermediate dilution needs to be made.
+	MinimalTransferVolume Volume
+}
+
+// Output data of this protocol
+Data {
+	Warning Warning
+	Diluted bool
+}
+
+// Physical inputs to this protocol
+Inputs {
+	SolutionToDilute *LHComponent
+	Diluent          *LHComponent
+	DilutionPlate    *LHPlate
+	OutPlate         *LHPlate
+}
+
+// Physical outputs to this protocol
+Outputs {
+	DilutedSolution      *LHComponent
+	IntermediateSolution *LHComponent // as a potentially more convenient output we can also return a map of the solutions using the name of the component as a key
+}
+
+// Conditions to run on startup
+Setup {
+
+}
+
+// The core process for this protocol. These steps are executed for each input.
+Steps {
+
+}
+
+// Run after controls and a steps block are completed to post process any data
+// and provide downstream results
+Analysis {
+
+}
+
+// A block of tests to perform to validate that the sample was processed
+// correctly. Optionally, destructive tests can be performed to validate
+// results on a dipstick basis
+Validation {
+
+}

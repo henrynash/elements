@@ -1,0 +1,85 @@
+// Example protocol Lesson demonstrating the use of the SampleAll function.
+// If we run this element directly wired into Lesson1B_Mix an error will occur.
+// This is because when new components are autoallocated by the system they do not have a defined volume.
+// If we're going to sample all of the solution must have a defined volume
+// so cannot be auto allocated by the Antha scheduler as before.
+// We can get around this by wiring the output of a previous mix in to the Solution input.
+//
+// Concepts covered:
+// booleans
+// Auto allocation behaviour in Antha
+// SampleAll cannot be used on AutoAllocated LHcomponents with no set volume.
+protocol Lesson1F_SampleAll
+
+import (
+	"github.com/antha-lang/antha/antha/anthalib/mixer"
+	"github.com/antha-lang/antha/antha/anthalib/wtype"
+)
+
+// Input parameters for this protocol (data)
+Parameters {
+	// the bool type is a "boolean": which essentially means true or false
+	Sampleall bool
+}
+
+// Data which is returned from this protocol, and data types
+Data {
+	Status string
+}
+
+// Physical Inputs to this protocol with types
+Inputs {
+	// If we run this element directly wired into Lesson1B_Mix an error will occur.
+	// This is because when new components are autoallocated by the system they do not have a defined volume.
+	// If we're going to sample all of the solution must have a defined volume
+	// so cannot be auto allocated by the Antha scheduler as before.
+	// We can get around this by wiring the output of a previous mix in to the Solution input.
+	Solution *LHComponent
+}
+
+// Physical outputs from this protocol with types
+Outputs {
+	Sample *LHComponent
+}
+
+Requirements {
+
+}
+
+// Conditions to run on startup
+Setup {
+
+}
+
+// The core process for this protocol, with the steps to be performed
+// for every input
+Steps {
+
+	Status = "Not sampled anything"
+
+	// the SampleAll function samples the entire contents of the LHComponent
+	// so there's no need to specify the volume
+	// this if statement specifies that the SampleAll action will only be performed if SampleAll is set to true
+	// since if statements inherently evaluate truth statements and SampleAll is a boolean type
+	// we can replace
+	// if Sampleall == true {}
+	// with just
+	// if Sampleall {}
+	if Sampleall == true {
+		Sample = mixer.SampleAll(Solution)
+		Status = "Sampled everything"
+	}
+
+}
+
+// Run after controls and a steps block are completed to
+// post process any data and provide downstream results
+Analysis {
+}
+
+// A block of tests to perform to validate that the sample was processed
+//correctly. Optionally, destructive tests can be performed to validate
+//results on a dipstick basis
+Validation {
+
+}

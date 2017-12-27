@@ -1,0 +1,71 @@
+// Protocol Exercise2_CherryPick is an exercise for the user to work on.
+// see https://repos.antha.com/antha-ninja/elements-westeros/tree/wip/AnthaAcademy/AnthaAcademy/Exercises/LiquidHandlingExercises
+// Please go through lessons 1A-1D and read golang book Chapters 5 and 6 before trying this.
+//
+// https://www.golang-book.com/books/intro/6#section1
+//
+/*
+
+A) Generate a protocol called CherryPick which will take in a slice of components as an input and output a single component.
+Using the parameters below modify the Steps block so the protocol correctly selects an input solution from a slice of InputSolutions.
+i.e. if the components were ["water","dna","fluorescein"] and PositionInSlice was 0; the "water" component would be selected.
+// This will just select that component but not do anything with it. We may also want to physically sample and mix the chosen component.
+
+B) Modify the protoocl such that two new parameters are added:
+// 	MixToNewLocation bool
+//	SolutionVolume   Volume
+// Modify the steps code such that if MixToNewLocation is set to true the component will be sampled and mixed to a new location.
+
+i.e.
+if MixToNewLocation {
+    // take a sample of the solution at position PositionInSlice of Input solutions and mix output as OutputSolution.
+} else {
+    // assign OutputSolution as the solution at position PositionInSlice of Input
+	// solutions without sampling and mixing the solution to a new location.
+}*/
+protocol Exercise2_CherryPick
+
+// Place golang packages to import here
+import ()
+
+// Parameters to this protocol
+Parameters {
+	PositionInSlice int
+}
+
+// Output data of this protocol
+Data {
+}
+
+// Physical inputs to this protocol
+Inputs {
+	InputSolutions []*LHComponent
+}
+
+// Physical outputs to this protocol
+Outputs {
+	OutputSolution *LHComponent
+}
+
+// Conditions to run on startup
+Setup {
+
+}
+
+// The core process for this protocol. These steps are executed for each input.
+Steps {
+
+}
+
+// Run after controls and a steps block are completed to post process any data
+// and provide downstream results
+Analysis {
+
+}
+
+// A block of tests to perform to validate that the sample was processed
+// correctly. Optionally, destructive tests can be performed to validate
+// results on a dipstick basis
+Validation {
+
+}

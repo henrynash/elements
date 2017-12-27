@@ -1,0 +1,10 @@
+{
+  "Parameters": {
+    "sampleTotal": {
+      "Diluent": "water",
+      "Solution": "tartrazine",
+      "SolutionVolume": "15ul",
+      "TotalVolume": "150ul"
+    }
+  }
+}

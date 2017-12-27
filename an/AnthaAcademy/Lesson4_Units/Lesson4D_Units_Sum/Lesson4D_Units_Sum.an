@@ -1,0 +1,93 @@
+// Demonstration of Volume addition in Antha.
+protocol Lesson4D_Units_Sum
+
+import (
+	"github.com/antha-lang/antha/antha/anthalib/wunit"
+)
+
+// Input parameters for this protocol
+Parameters {
+	MyVolume      Volume
+	MyOtherVolume Volume
+}
+
+// Data which is returned from this protocol
+Data {
+	Sum1            Volume
+	Sum2            Volume
+	Sum3            Volume
+	TripleSumVolume Volume
+}
+
+// Physical inputs to this protocol
+Inputs{}
+
+// Physical outputs from this protocol
+Outputs{}
+
+Requirements {
+
+}
+
+// Actions to perform before protocol Lessonitself
+Setup {
+
+}
+
+// Core process of the protocol: steps to be performed for each input
+Steps {
+
+	// There are three ways to do arithmetic with Antha measurements
+
+	// Here are the methods for addition of Volumes:
+
+	// Method 1:
+	// Convert to SI units and values and use go syntax for arithmetic of float values.
+	sumofSIValues := MyVolume.SIValue() + MyOtherVolume.SIValue()
+
+	siUnit := MyVolume.Unit().BaseSISymbol()
+
+	Sum1 = wunit.NewVolume(sumofSIValues, siUnit)
+
+	// Method 2:
+	// Use methods available on all measurement types.
+	Sum2 = (wunit.CopyVolume(MyVolume))
+
+	Sum2.Add(MyOtherVolume)
+
+	// Method 3: (preferred method)
+	// Use Standard library function.
+	Sum3 = wunit.AddVolumes(MyVolume, MyOtherVolume)
+
+	// This can take in any number of volume arguments and return the sum.
+	TripleSumVolume = wunit.AddVolumes(Sum1, Sum2, Sum3)
+
+}
+
+// Actions to perform after steps block to analyze data
+Analysis {
+
+}
+
+Validation {
+
+}
+
+/*
+// this is how to write a function in go and use it in an antha protocol
+func AddVolume(myvolume wunit.ConcreteMeasurement, myothervolume wunit.ConcreteMeasurement )(newvolume wunit.ConcreteMeasurement) {
+
+var sumofSIValues float64
+var siUnit string
+
+sumofSIValues = myvolume.SIValue() + myothervolume.SIValue()
+
+siUnit = myvolume.Unit().BaseSISymbol()
+
+// or a less safe but simpler way would be
+// siUnit = "l"
+
+newvolume = wunit.NewVolume(sumofSIValues,siUnit)
+	return
+}
+*/

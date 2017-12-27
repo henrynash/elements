@@ -1,0 +1,66 @@
+// Example protocol demonstrating the use of the Mix function
+// The Sample function is not sufficient to generate liquid handling instructions alone,
+// We would need a Mix command to instruct where to put the sample
+//
+// Concepts Covered:
+// Wiring together elements
+// type compatibility
+// Mix
+// Antha's high level auto allocation
+protocol Lesson1B_Mix
+
+// Mix is an intrinsic function of the language so no import is needed.
+import ()
+
+// Input parameters for this protocol (data)
+Parameters {
+}
+
+// Data which is returned from this protocol, and data types
+Data {
+}
+
+// Physical Inputs to this protocol with types
+Inputs {
+	// This protocol expects a sample to be passed in from a previous element.
+	// Wire in the output Sample from Lesson1A_Sample into here.
+	// Antha will only allow compatible outputs and inputs to be wired together based on the type.
+	// In this case only another LHComponent will be able to wired in.
+	Sample *LHComponent
+}
+
+// Physical outputs from this protocol with types
+Outputs {
+	TransferredSolution *LHComponent
+}
+
+Requirements {
+
+}
+
+// Conditions to run on startup
+Setup {
+
+}
+
+// The core process for this protocol, with the steps to be performed
+// for every input
+Steps {
+	// The highest level Mix command is simply Mix, when used with a single argument
+	// This will autoallocate and transfer the sample to a suitable location decided by the Antha scheduler.
+	// The valid output plate types for autoallocated mixes can be set in the configuration preferences.
+	TransferredSolution = Mix(Sample)
+
+}
+
+// Run after controls and a steps block are completed to
+// post process any data and provide downstream results
+Analysis {
+}
+
+// A block of tests to perform to validate that the sample was processed
+//correctly. Optionally, destructive tests can be performed to validate
+//results on a dipstick basis
+Validation {
+
+}

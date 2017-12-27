@@ -1,0 +1,9 @@
+{
+  "defaults": {
+    "Diluent": "water",
+    "Solution": "tartrazine",
+    "SolutionVolume": "15ul",
+    "TotalVolume": "150ul"
+  },
+  "name": "Lesson1G_SampleForTotalVolume"
+}

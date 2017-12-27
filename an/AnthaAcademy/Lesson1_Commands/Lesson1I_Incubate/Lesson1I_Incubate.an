@@ -1,0 +1,196 @@
+// Example protocol demonstrating the use of the Incubate function.
+//
+// Concepts covered:
+// scope
+// directly declaring fields of a type using { }
+// commenting out code
+protocol Lesson1I_Incubate // this is the name of the protocol Lessonthat will be called in a workflow or other antha element
+
+// the mixer package must be imported to use the Sample function
+import (
+	"fmt"
+)
+
+// Input parameters for this protocol (data)
+Parameters {
+	// Time to incubate sample for.
+	IncubationTime Time
+
+	// Temperature to incubate sample for.
+	IncubationTemp Temperature
+
+	// Rate at which to shake sample. This can be set to zero if no shaking is desired.
+	ShakeRate Rate
+
+	// Optionally specify the shaking amplitude of the Incubator.
+	// The force at which a sample shakes is highly dependent on the shaing radius as well as the shaking rate.
+	ShakeRadius Length
+
+	// Time for which the Incubator should be pre-heated.
+	PreIncubationTime Time
+
+	// If this is selected the MixerPrompt will be used to prompt the user to move the plate to an incubator.
+	// If not selected a physical Incubator device and incubate compatible plate must be chosen.
+	ManualIncubateStep bool
+}
+
+// Data which is returned from this protocol, and data types
+Data {
+}
+
+// Physical Inputs to this protocol with types
+Inputs {
+	Solution *LHComponent
+}
+
+// Physical outputs from this protocol with types
+Outputs {
+	// An output LHComponent variable is created with prompt
+	OutPutSolution *LHComponent
+}
+
+Requirements {
+
+}
+
+// Conditions to run on startup
+Setup {
+
+}
+
+// The core process for this protocol, with the steps to be performed
+// for every input
+Steps {
+
+	solution := Solution
+
+	// Since the user may not wish to specify some of the incubate options specified
+	// we should check that the values are greater than zero before setting them in the Incubate command.
+	// The AnthaOS will by default set the values to zero rather than leaving empty.
+	// Therefore for the optional fields instead of setting to zero we'll set the values to nil
+
+	// first we need to create the nil value optional variables
+	// We must do this here rather than when evaluating whether each value is greater than zero.
+	// This is because the variables must be in visible to the downstream Incubate command.
+	var optionalShakeRadius Length
+	var optionalShakeRate Rate
+	var optionalPreIncubationTime Time
+	var optionalPreIncubationTemp Temperature
+
+	// ensure these values are not set unless greater than 0
+	if ShakeRadius.RawValue() > 0.0 {
+		optionalShakeRadius = ShakeRadius
+		// If we were to initialise the variable here
+		// it would not be available outside of the { }  in which it is declared
+		locallyScopedVariable := ShakeRadius
+		fmt.Println("locallyScopedVariable = ", locallyScopedVariable)
+	}
+	// if the // is removed from in front of the code below the code would not compile since locallyScopedVariable would be out of scope.
+	// fmt.Println("out of scope locallyScopedVariable = ", locallyScopedVariable)
+
+	if ShakeRate.RawValue() > 0.0 {
+		optionalShakeRate = ShakeRate
+	}
+
+	if PreIncubationTime.RawValue() > 0.0 {
+		optionalPreIncubationTime = PreIncubationTime
+		optionalPreIncubationTemp = optionalPreIncubationTemp
+	}
+
+	// The Incubate command will Incubate the LHComponent using the IncubateOpt conditions specified, consisting of a time, temperature, shake rate and shake radius.
+	// PreTemp and PreTime options may also be specified if preheating is required before using the incubator.
+	if !ManualIncubateStep {
+
+		// The incubate command requires an argument which is of tpye IncubateOpt
+		// This is shorthand for IncutateOptions.
+		// We can initialise this variable and set each property one at a time like this:
+		// initialise
+		var incubatorOptions IncubateOpt
+		// set Temp
+		incubatorOptions.Temp = IncubationTemp
+		// set Time
+		incubatorOptions.Time = IncubationTime
+		// and so on ...
+
+		// Or we can set all properties at once like this.
+		// This way is more explicit and cleaner.
+		// the { } signifies that these at the properties which make up the instance of IncubateOpt.
+		// Each field is set explicitely by using the field name followed by :
+		incubatorOptions = IncubateOpt{
+			Temp:        IncubationTemp,
+			Time:        IncubationTime,
+			ShakeRate:   optionalShakeRate,
+			ShakeRadius: optionalShakeRadius,
+			PreTemp:     optionalPreIncubationTemp,
+			PreTime:     optionalPreIncubationTime,
+		}
+
+		solution = Incubate(solution, incubatorOptions)
+	}
+
+	// The MixerPrompt command will add a prompt through the liquid handling software
+	// to produce a pause with message at a specific position during operation.
+
+	// var message string
+
+	if ManualIncubateStep {
+		if PreIncubationTime.RawValue() > 0.0 {
+			preHeatMessage := "Preheat Incubator for " + toNearestTimeDimension(PreIncubationTime) + " at " + IncubationTemp.ToString()
+			solution = MixerPrompt(solution, preHeatMessage)
+		}
+		message := fmt.Sprintf("Move Solution %s to Incubator with shaking amplitude %s and Incubate for %s at %s and %s", Solution.Name(), ShakeRadius.ToString(), toNearestTimeDimension(IncubationTime), IncubationTemp.ToString(), toNearestRateDimension(ShakeRate))
+		solution = MixerPrompt(solution, message)
+		// In Antha and Golang any code in the file must be used or the code will not compile.
+		// Whilst in the process of writing your code you'll often want to experiment and may need to debug.
+		// It is often useful in these stages to be able to silence code
+		// We can do this by commenting the code out.
+		// This is shown below using the /* and */ to comment out a block of code.
+	} /*else {
+	    message = fmt.Sprintf("Solution %s now incubating for %s at %s", Solution.Name(),IncubationTime.ToString(),IncubationTemp.ToString())
+	}*/
+	// Once you're happy the code is doing what you expect and you're happy with it, such commented out code should be removed to make it easier to read.
+
+	OutPutSolution = solution
+
+}
+
+// toNearestDimension converts the Time to the most sensible dimension.
+func toNearestTimeDimension(time Time) string {
+	// if larger than two hours use hours
+	if time.SIValue() > 7200 {
+		return fmt.Sprint(time.SIValue()/3600.0, "h")
+	}
+	// if larger than 2 minutes use minutes
+	if time.SIValue() > 120 {
+		return fmt.Sprint(time.SIValue()/60.0, "min")
+	}
+	// return in seconds by default
+	return fmt.Sprint(time.SIValue(), "s")
+}
+
+// toNearestDimension converts the Rate to the most sensible dimension.
+func toNearestRateDimension(rate Rate) string {
+	// if larger than two hours use hours
+	if rate.SIValue() > 7200 {
+		return fmt.Sprint(rate.SIValue()/3600.0, "/h")
+	}
+	// if larger than 2 minutes use minutes
+	if rate.SIValue() > 120 {
+		return fmt.Sprint(rate.SIValue()/60.0, "/min")
+	}
+
+	// return in seconds by default
+	return fmt.Sprint(rate.SIValue(), "/s")
+}
+
+// Run after controls and a steps block are completed to
+// post process any data and provide downstream results
+Analysis {
+}
+
+// A block of tests to perform to validate that the sample was processed
+//correctly. Optionally, destructive tests can be performed to validate
+//results on a dipstick basis
+Validation {
+
+}

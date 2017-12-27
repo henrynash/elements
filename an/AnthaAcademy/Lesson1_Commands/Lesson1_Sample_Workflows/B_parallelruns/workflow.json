@@ -1,0 +1,14 @@
+{
+  "connections": [],
+  "processes": {
+    "sampleDoubleconc": {
+      "component": "Lesson1G_SampleForTotalVolume"
+    },
+    "sampleTotal": {
+      "component": "Lesson1G_SampleForTotalVolume"
+    },
+    "samplehalfConc": {
+      "component": "Lesson1G_SampleForTotalVolume"
+    }
+  }
+}

@@ -1,0 +1,98 @@
+// The lowest level example protocol Lessonshowing The MixTo command being used to specify the specific wells to be aliquoted to;
+// By doing this we are able to specify whether the aliqouts are pipetted by row or by column.
+// In this case the user is still not specifying the well location (i.e. A1) in the parameters, although that would be possible to specify.
+// We don't generally encourage this since Antha is designed to be prodiminantly a high level language which avoids the user specifying well locations but this possibility is there if necessary.
+protocol Lesson2D_Aliquot_MultiSolutions
+
+import (
+	"fmt"
+	"github.com/antha-lang/antha/antha/anthalib/mixer"
+	"github.com/antha-lang/antha/antha/anthalib/wtype"
+	"github.com/antha-lang/antha/antha/anthalib/wutil"
+)
+
+// Input parameters for this protocol (data)
+Parameters {
+	SolutionVolume   Volume
+	VolumePerAliquot Volume
+	NumberofAliquots int
+	ByRow            bool
+}
+
+// Data which is returned from this protocol, and data types
+Data{}
+
+// Physical Inputs to this protocol with types
+Inputs {
+	Solutions []*LHComponent // we're now going to aliquot multiple solutions at the same time (but not mixing them)
+	OutPlate  *LHPlate
+}
+
+// Physical outputs from this protocol with types
+Outputs {
+	Aliquots []*LHComponent
+}
+
+Requirements {
+
+}
+
+// Conditions to run on startup
+Setup {
+
+}
+
+// The core process for this protocol, with the steps to be performed
+// for every input
+Steps {
+
+	number := SolutionVolume.SIValue() / VolumePerAliquot.SIValue()
+	possiblenumberofAliquots, _ := wutil.RoundDown(number)
+	if possiblenumberofAliquots < NumberofAliquots {
+		Errorf("Not enough solution for this many aliquots")
+	}
+
+	aliquots := make([]*LHComponent, 0)
+
+	// work out well coordinates for any plate
+	wellpositionarray := OutPlate.AllWellPositions(ByRow)
+
+	// initialise a counter
+	var counter int // an int is initialised as zero therefore this is the same as counter := 0 or var counter = 0
+
+	for _, Solution := range Solutions {
+		for k := 0; k < NumberofAliquots; k++ {
+
+			if Solution.TypeName() == "dna" {
+				Solution.Type = wtype.LTDoNotMix
+			}
+			aliquotSample := mixer.Sample(Solution, VolumePerAliquot)
+
+			// this time we're using counter as an index to go through the wellpositionarray one position at a time and ensuring the next free position is chosen
+			// the platenumber is hardcoded to 1 here so if we tried to specify too many aliquots in the parameters the protocol Lessonwould fail
+			// it would be better to create a platenumber variable of type int and use an if statement to increase platenumber by 1 if all well positions are filled up i.e.
+			// if counter == len(wellpositionarray) {
+			// 		platenumber++
+			//}
+			aliquot := MixNamed(OutPlate.Type, wellpositionarray[counter], fmt.Sprint("AliquotPlate", 1), aliquotSample)
+			aliquots = append(aliquots, aliquot)
+			counter = counter + 1 // this is the same as using the more concise counter++
+		}
+		Aliquots = aliquots
+
+		// Exercise: refactor to use wtype.WellCoords instead of creating the well ids manually using alphabet and strconv
+	}
+
+}
+
+// Run after controls and a steps block are completed to
+// post process any data and provide downstream results
+Analysis {
+}
+
+// A block of tests to perform to validate that the sample was processed correctly
+// Optionally, destructive tests can be performed to validate results on a
+// dipstick basis
+Validation {
+
+}

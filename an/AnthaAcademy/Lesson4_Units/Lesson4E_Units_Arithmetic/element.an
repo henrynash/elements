@@ -1,0 +1,116 @@
+// Lesson demoing how to do basic arithmetic in Antha.
+protocol Lesson4E_Units_Arithmetic
+
+import (
+	"github.com/antha-lang/antha/antha/anthalib/wunit"
+)
+
+// Input parameters for this protocol
+Parameters {
+	MyVolume      Volume
+	MyOtherVolume Volume
+	Factor        float64
+}
+
+// Data which is returned from this protocol
+Data {
+	Sum                      Volume
+	Difference               Volume
+	Product                  Volume
+	QuotientVolume           Volume
+	QuotientFactor           float64
+	SumLessThanDifference    bool
+	SumGreaterThanDifference bool
+	SumEqualToDifference     bool
+	LowestVolume             Volume
+	HighestVolume            Volume
+	SortedVolumes            []Volume
+}
+
+// Physical inputs to this protocol
+Inputs{}
+
+// Physical outputs from this protocol
+Outputs{}
+
+Requirements {
+
+}
+
+// Actions to perform before protocol Lessonitself
+Setup {
+
+}
+
+// Core process of the protocol: steps to be performed for each input
+Steps {
+
+	// AddVolumes can take in any number of volume arguments and return the sum
+	Sum = wunit.AddVolumes(MyVolume, MyOtherVolume)
+
+	// SubtractVolumes can take in any number of volume arguments,
+	// subtracting all subsequent volumes from the first.
+	Difference = wunit.SubtractVolumes(MyVolume, MyOtherVolume)
+
+	// MultiplyVolume multiplies a volume by a factor
+	Product = wunit.MultiplyVolume(MyVolume, Factor)
+
+	// DivideVolume divides a volume by a factor and returns a volume
+	QuotientVolume = wunit.DivideVolume(MyVolume, Factor)
+
+	// DivideVolumes divides the first volume argument by the second and returns a factor.
+	// This time an error is also returned as the second output.
+	// The error is returned as nil unless the returned value is infinity or not a number.
+	var err error
+
+	QuotientFactor, err = wunit.DivideVolumes(MyVolume, MyOtherVolume)
+
+	if err != nil {
+		Errorf(err.Error())
+	}
+
+	// These functions are also all available for concentrations.
+	// For Concentrations an error is always returned as the second output.
+	// The error will be returned if the concentration units are incompatible.
+
+	// Other useful methods on all units are LessThanRounded, EqualTo and GreaterThanRounded.
+	// These can be used to compare units of the same type.
+	// These methods include an int value which represents the precision when evaluating the values.
+	// the precision refers to the number of decimal places.
+	SumLessThanDifference = Sum.LessThanRounded(Difference, 6)
+	SumGreaterThanDifference = Sum.GreaterThanRounded(Difference, 6)
+	SumEqualToDifference = Sum.EqualToRounded(Difference, 6)
+
+	// Finally we can also perform sorting on a set of Volumes or Concentrations,
+	// or return maximum or minimum values from the set.
+
+	allVolumes := []Volume{Sum, Difference, Product, QuotientVolume}
+
+	LowestVolume, err = wunit.MinVolume(allVolumes)
+
+	if err != nil {
+		Errorf(err.Error())
+	}
+
+	HighestVolume, err = wunit.MaxVolume(allVolumes)
+
+	if err != nil {
+		Errorf(err.Error())
+	}
+
+	SortedVolumes, err = wunit.SortVolumes(allVolumes)
+
+	if err != nil {
+		Errorf(err.Error())
+	}
+
+}
+
+// Actions to perform after steps block to analyze data
+Analysis {
+
+}
+
+Validation {
+
+}

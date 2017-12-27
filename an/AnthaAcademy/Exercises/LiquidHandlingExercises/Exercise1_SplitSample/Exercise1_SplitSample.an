@@ -1,0 +1,77 @@
+// protocol Exercise1_SplitSample is a user exercise.
+//
+/*
+1. Using what you've learnt in Lessons 1A-1D, adapt the protocol to Split an input
+solution into two output solutions.
+
+Using the parameters below modify the Steps block so the protocol correctly samples
+the Input solution into two output solutions, SolutionA and SolutionB of Volumes VolumeA and VolumeB.
+*/
+protocol Exercise1_SplitSample
+
+// Place golang packages to import here
+import (
+	"github.com/antha-lang/antha/antha/anthalib/mixer"
+)
+
+// Parameters to this protocol
+Parameters {
+	VolumeA    Volume
+	VolumeB    Volume
+	PlateNameA string
+	PlateNameB string
+}
+
+// Output data of this protocol
+Data{}
+
+// Physical inputs to this protocol
+Inputs {
+	InputSolution *LHComponent
+	Platetype     *LHPlate
+}
+
+// Physical outputs to this protocol
+Outputs {
+	ComponentA *LHComponent
+	ComponentB *LHComponent
+}
+
+// Conditions to run on startup
+Setup {
+
+}
+
+// The core process for this protocol. These steps are executed for each input.
+Steps {
+	// Notice we use := here to define sampleA.
+	// We can do this to set the value of a new variable directly
+	// instead of declaring the variable with a type initially (i.e. var sampleA *LHComponent).
+	//
+	// This is only necessary when we're declaring the value of a variable for the first time.
+	// This condition is imposed since one mechanism by which errors can creep into
+	// code is by reassigning the values of existing variables.
+	// It's therefore useful to treat the first use of a variable as a special case so the writer of the program knows when it is first used.
+	//
+	// We haven't needed to to do this up until now since all the variables we've used
+	// had previously been declared in the Parameters, Inputs, Data or Outputs sections
+	// In this case we don't need to declare the type of sampleA since it can be inferred from the context.
+	//
+	sampleA := mixer.Sample(InputSolution, VolumeA)
+
+	ComponentA = MixNamed(Platetype.Type, "", PlateNameA, sampleA)
+
+}
+
+// Run after controls and a steps block are completed to post process any data
+// and provide downstream results
+Analysis {
+
+}
+
+// A block of tests to perform to validate that the sample was processed
+// correctly. Optionally, destructive tests can be performed to validate
+// results on a dipstick basis
+Validation {
+
+}
