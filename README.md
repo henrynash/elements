@@ -14,7 +14,7 @@ git submodule update --init
 ```
 
 ## Build
-To build or update elements:
+To build or update elements in the elements folder:
 ```sh
 make
 # or
@@ -29,6 +29,13 @@ make -C "$(go list -f '{{.Dir}}' github.com/antha-lang/elements)"
 By default, `make` will download and update any dependent libraries. If you
 have any modifications to these dependencies (e.g., non-master branches), `make
 current` will build elements without updating any dependent libraries.
+
+
+If your elements are stored elsewhere you can change the target directory to comile with make by adding `AN_DIRS=<your-directory-here>` 
+e.g...
+```bash
+make -C $HOME/go/src/github.com/antha-lang/elements AN_DIRS=$HOME/Documents
+```
 
 ### Setting up anthabuild as an alias
 The tutorial material will refer to using anthabuild as a command to recompile all antha elements.
@@ -50,20 +57,23 @@ EOF
 source ~/.bashrc
 ```
 
+Important: this will build elements stored in the elements folder, if your elements are stored elsewhere 
+the anthabuild command should be appended with AN_DIRS=<targetdirectory> when running or initially setting up the anthabuild alias.
+
+e.g. 
+```sh
+anthabuild AN_DIRS=$GOPATH/src/github.com/my-antha-elements
+```
+
 ## Test
 To run tests ok all example workflows:
 ```sh
 make test
 ```
 
-To run examples manually:
-```sh
-make
-cd examples/X/Y && antha run
-```
 ## Run 
 ```sh
-antha run --parameters myparameters.json --workflow workflowfile.json
+antha run --bundle workflow-and-parameters.json
 ```
 
 ## Help
