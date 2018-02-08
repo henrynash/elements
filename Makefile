@@ -24,7 +24,7 @@ fmt_json:
 compile:
 	rm -rf "vendor/$(ELEMENT_PACKAGE)"
 	mkdir -p .staging
-	go build -o .staging/antha-s1 ./vendor/github.com/antha-lang/antha/cmd/antha
+	go build -o .staging/antha-s1 github.com/antha-lang/antha/cmd/antha
 	./.staging/antha-s1 format -w $(AN_DIRS)
 	./.staging/antha-s1 compile \
 	  --outdir=vendor/$(ELEMENT_PACKAGE) \
@@ -36,7 +36,7 @@ compile_with_deps:
 	go get -d ./cmd/... || true
 	rm -rf "vendor/$(ELEMENT_PACKAGE)"
 	mkdir -p .staging
-	go build -o .staging/antha-s1 ./vendor/github.com/antha-lang/antha/cmd/antha
+	go build -o .staging/antha-s1 github.com/antha-lang/antha/cmd/antha
 	./.staging/antha-s1 format -w $(AN_DIRS)
 	./.staging/antha-s1 compile \
 	  --outdir=vendor/$(ELEMENT_PACKAGE) \
