@@ -71,8 +71,8 @@ Steps {
 		DNAwithORFs = wtype.Annotate(DNA, features)
 
 		Status = fmt.Sprintln(
-			text.Print("DNA_Seq: ", DNA_seq),
-			text.Print("ORFs: ", DNAwithORFs.Features),
+			text.Sprint("DNA_Seq: ", DNA_seq),
+			text.Sprint("ORFs: ", DNAwithORFs.Features),
 		)
 
 	} else {

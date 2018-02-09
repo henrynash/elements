@@ -6,7 +6,7 @@ before_install:
 - sudo apt-get install -y libglpk-dev libopencv-dev libcv-dev libhighgui-dev
 - go get golang.org/x/net/context
 - go get google.golang.org/grpc
-- go get github.com/antha-lang/antha/cmd/antha
+- go get github.com/antha-lang/antha/...
 - go get github.com/golang/protobuf/proto
 - go get github.com/golang/protobuf/ptypes/...
 script: make test

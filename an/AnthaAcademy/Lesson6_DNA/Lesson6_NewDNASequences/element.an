@@ -6,7 +6,6 @@
 protocol Lesson6_NewDNASequences
 
 import (
-	inventory "github.com/antha-lang/antha/antha/AnthaStandardLibrary/Packages/Inventory"
 	"github.com/antha-lang/antha/antha/AnthaStandardLibrary/Packages/igem"
 	"github.com/antha-lang/antha/antha/AnthaStandardLibrary/Packages/sequences"
 	"github.com/antha-lang/antha/antha/anthalib/wtype"
@@ -67,11 +66,6 @@ Steps {
 			} else {
 				partDNA = wtype.MakeLinearDNASequence(nm, part)
 			}
-			// check if in inventory
-		} else if inventoryDNA, found := inventory.Partslist()[part]; found {
-			partDNA = inventoryDNA
-
-			// else treat as DNA sequence and check
 		} else {
 
 			if Vectors {

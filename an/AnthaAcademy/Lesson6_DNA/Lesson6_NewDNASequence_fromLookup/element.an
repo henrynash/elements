@@ -80,15 +80,15 @@ Steps {
 
 	if BiobrickID {
 		Status = fmt.Sprintln(
-			text.Print(ID+" DNA_Seq: ", DNA),
-			text.Print(ID+" ORFs: ", DNA.Features),
-			text.Print(ID+" PartDescription", partdetails.Description(ID)),
+			text.Sprint(ID+" DNA_Seq: ", DNA),
+			text.Sprint(ID+" ORFs: ", DNA.Features),
+			text.Sprint(ID+" PartDescription", partdetails.Description(ID)),
 		)
 		Description = partdetails.Description(ID)
 	} else {
 		Status = fmt.Sprintln(
-			text.Print(ID+" DNA_Seq: ", DNA),
-			text.Print(ID+" ORFs: ", DNA.Features),
+			text.Sprint(ID+" DNA_Seq: ", DNA),
+			text.Sprint(ID+" ORFs: ", DNA.Features),
 		)
 	}
 	Warnings = err

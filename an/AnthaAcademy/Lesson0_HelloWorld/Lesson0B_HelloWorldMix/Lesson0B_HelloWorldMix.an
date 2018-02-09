@@ -21,6 +21,7 @@ Data {
 	// Antha inherits all standard primitives valid in golang;
 	// for example the string type shown here used to return a textual message
 	MessageForWorld string
+	ResizedImage    File
 }
 
 // Physical Inputs to this protocol with types
@@ -57,7 +58,7 @@ Steps {
 
 		// Download a hello world image.
 		// The type of a new variable can be inferred by using :=
-		helloWorldFile, err := download.File("https://upload.wikimedia.org/wikipedia/commons/thumb/2/28/HelloWorld.svg/1200px-HelloWorld.svg.png", "helloWorld.png")
+		helloWorldFile, err := download.File("https://i.imgur.com/WoHzauZ.png", "helloWorld.png")
 
 		// Errorf will terminate the run and report an error message
 		// if an error occurs when downloading the file.
@@ -88,7 +89,7 @@ Steps {
 				VolumePerWell:  pixelVolume,                  // set the volume to pipette for each pixel.
 				InputFile:      helloWorldFile,               // use the image file we've downloaded.
 				NotThisColour:  "black",                      // skip any black pixels.
-				PaletteName:    "ProteinPaintboxVisible",     // use Atum's Protein Paintbox of E.coli expressing coloured and fluorescent proteins.
+				PaletteName:    "ProteinPaintboxUV",          // use Atum's Protein Paintbox of E.coli expressing coloured and fluorescent proteins.
 				AutoRotate:     true,                         // AutoRotate image to orientate correctly on the plate.
 				UseLiquidClass: wtype.PolicyName("plateout"), // over-ride the default liquid class with one for plating out.
 			},
@@ -98,6 +99,7 @@ Steps {
 
 		// set the Pixels which we defined in Outputs to be set to the Pixels output of the PipetteImage element.
 		Pixels = pipettedOutImage.Outputs.Pixels
+		ResizedImage = pipettedOutImage.Data.ResizedImage
 	}
 
 }

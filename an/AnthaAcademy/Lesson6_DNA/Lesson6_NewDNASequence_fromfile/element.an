@@ -65,8 +65,8 @@ Steps {
 	}
 
 	Status = fmt.Sprintln(
-		text.Print("DNA_Seq: ", DNA),
-		text.Print("ORFs: ", orfs),
+		text.Sprint("DNA_Seq: ", DNA),
+		text.Sprint("ORFs: ", orfs),
 	)
 
 	Warnings = err
