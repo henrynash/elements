@@ -12,7 +12,7 @@
   },
   "processes": {
     "MyFirstProtocol": {
-      "component": "Lesson0B_HelloWorldMix"
+      "component": "Lesson0C_HelloWorldBio"
     }
   }
 }

@@ -227,6 +227,10 @@ Steps {
 	//Exporting resulting images
 	//--------------------------------------------------------------
 
+	if ImageFileName == "" {
+		ImageFileName = InputFile.Name
+	}
+
 	ResizedImage, err = image.Export(imgBase, ImageFileName)
 	if err != nil {
 		Errorf(err.Error())

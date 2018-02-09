@@ -1,11 +1,22 @@
 // protocol Exercise1_SplitSample is a user exercise.
 //
 /*
-1. Using what you've learnt in Lessons 1A-1D, adapt the protocol to Split an input
+1A. Using what you've learnt in Lessons 1A-1D, adapt the protocol to Split an input
 solution into two output solutions.
 
 Using the parameters below modify the Steps block so the protocol correctly samples
 the Input solution into two output solutions, SolutionA and SolutionB of Volumes VolumeA and VolumeB.
+
+1B. Use this element as a template by copying it into a new file Exercise1B_MixSolutions.an
+in a folder of the same name called Exercise1B_MixSolutions.
+
+Important: If using the Antha OS it's very important that the folder name is the same as the element name
+(this is the name immediately to the right of the key word protocol below)
+otherwise there will be a build error when trying to push the new element to run in the Antha OS.
+
+Change the name of the protocol in the new file to Exercise1B_MixSolutions.
+
+Finally, change the element such that equal volumes of three solutions are sampled and mixed together to create one output solution.
 */
 protocol Exercise1_SplitSample
 

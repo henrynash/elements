@@ -1,0 +1,260 @@
+// Lesson showing Hello World in Antha in which we will make a sequence
+// to express a protein with the sequence HelloWorld
+protocol Lesson0C_HelloWorldBio
+
+import (
+	inventory "github.com/antha-lang/antha/antha/AnthaStandardLibrary/Packages/Inventory"
+	"github.com/antha-lang/antha/antha/AnthaStandardLibrary/Packages/enzymes/lookup"
+	"github.com/antha-lang/antha/antha/AnthaStandardLibrary/Packages/export"
+	"github.com/antha-lang/antha/antha/AnthaStandardLibrary/Packages/sequences"
+	"github.com/antha-lang/antha/antha/AnthaStandardLibrary/Packages/sequences/entrez"
+)
+
+// Input parameters for this protocol (data)
+Parameters {
+}
+
+// Data which is returned from this protocol, and data types
+Data {
+	// Antha inherits all standard primitives valid in golang;
+	// for example the string type shown here used to return a textual message
+	MessageForWorld string
+	Warnings        []Warning
+	SequenceFile    File
+}
+
+// Physical Inputs to this protocol with types
+Inputs {
+}
+
+// Physical outputs from this protocol with types
+Outputs {
+	CellsWithMessage *LHComponent
+}
+
+Requirements {
+
+}
+
+// Conditions to run on startup
+Setup {
+
+}
+
+// The core process for this protocol, with the steps to be performed
+// for every input
+Steps {
+
+	MessageForWorld = "Hello World"
+
+	var proteinSequence wtype.ProteinSequence
+
+	err := proteinSequence.SetSequence(MessageForWorld)
+
+	// This probably won't work since O is not a valid amino acid.
+	// The SetSequence method available on all sequences will perform validation on
+	// the sequence so an error should be returned stating the sequence contains
+	// invalid characters for this type of sequence.
+
+	if err != nil {
+		// let's add this as a warning to report back to the user.
+		Warnings = append(Warnings, wtype.NewWarningf("error setting Protein Sequence %s: %s", proteinSequence.Sequence(), err.Error()))
+
+		// We'll deal with the error by changing to a valid sequence.
+		// Let's go for HeyEarth instead.
+
+		MessageForWorld = "HeyEarth"
+
+		err = proteinSequence.SetSequence(MessageForWorld)
+
+		// if that doesn't work we'll terminate
+		if err != nil {
+			Errorf(err.Error())
+		}
+		// set name too
+		proteinSequence.SetName(MessageForWorld)
+
+	}
+
+	dnaSeq, err := sequences.RevTranslate(proteinSequence, sequences.UseAnyCodon)
+
+	if err != nil {
+		Errorf(err.Error())
+	}
+
+	// we can add it another 99 times by setting up a for loop
+	// first get the original sequence to add before we append it.
+	heyEarthSeq := dnaSeq.Sequence()
+	// The set of statements after the keyword "for" set the conditions of the loop.
+	// how it starts, when it stops and what happens with each iteration of the loop.
+	// This loop is initialised with a variable called counter set to 0 (counter := 0)
+	// the loop will continue as long as counter is less than 99 (counter < 10)
+	// each iteration of the loop will increase counter by 1 (counter++)
+	for counter := 0; counter < 99; counter++ {
+
+		err = dnaSeq.Append(heyEarthSeq)
+
+		if err != nil {
+			Errorf(err.Error())
+		}
+
+	}
+
+	// add a start codon before
+	err = dnaSeq.Prepend("ATG")
+
+	if err != nil {
+		Errorf(err.Error())
+	}
+
+	// add a stop codon after
+	err = dnaSeq.Append("TAA")
+
+	if err != nil {
+		Errorf(err.Error())
+	}
+
+	// we want to express the protein so need to prepend the sequence
+	// with a promoter to ensure the DNA is transcribed to RNA,
+	// and a ribosome binding site so the RNA can be translated into protein.
+
+	// add RBS
+	err = dnaSeq.Prepend("aaagaggagaaa")
+
+	if err != nil {
+		Errorf(err.Error())
+	}
+
+	// add promoter
+	err = dnaSeq.Prepend(inventory.Promoter.Sequence())
+
+	if err != nil {
+		Errorf(err.Error())
+	}
+
+	// and let's add a terminator after the sequence to stop RNA transcription.
+
+	err = dnaSeq.Append(inventory.Terminator.Sequence())
+
+	if err != nil {
+		Errorf(err.Error())
+	}
+
+	// now clone into a vector
+
+	// look up sequence of the common cloning vector pUC19
+	pUC19, err := entrez.RetrieveSequence("M77789.2", "nucleotide")
+
+	if err != nil {
+		Errorf(err.Error())
+	}
+
+	// HindIII is a single cutter of pUC19 which cuts the plasmid in the middle of the multiple cloning site.
+	// We can look up the hindIII sequence in the plasmid and then replace that with the sequence we've generated to
+	// express the HEYEARTH protein.
+
+	// First look up the restiction enzyme hindIII.
+	hindIII, err := lookup.RestrictionEnzyme("HindIII")
+
+	if err != nil {
+		Errorf(err.Error())
+	}
+
+	// Make a new sequence based on the recognition site of HindIII.
+	var hindIIISequence DNASequence
+	err = hindIIISequence.SetSequence(hindIII.RecognitionSequence)
+
+	if err != nil {
+		Errorf(err.Error())
+	}
+
+	// Find hindIII sites
+	hindIIISites := sequences.FindAll(&pUC19, &hindIIISequence)
+
+	if len(hindIIISites.Positions) == 0 {
+		Errorf("no Hind III sites found in %s", pUC19.Name())
+	}
+
+	// Replace the first HindIII sequence with our dna sequence.
+	dnaSeq, err = sequences.Replace(pUC19, hindIIISites.Positions[0], dnaSeq)
+	if err != nil {
+		Errorf(err.Error())
+	}
+
+	// Export the sequence as a FASTA file.
+	SequenceFile, _, err = export.Fasta(dnaSeq.Name(), &dnaSeq)
+
+	if err != nil {
+		Errorf(err.Error())
+	}
+
+	// Now we can turn the sequence into a physical solution.
+	// we'll make a solution based on the dna solution from the test inventory.
+	dnaSolution := NewComponent("dna")
+
+	// Set the name.
+	dnaSolution.SetName(dnaSeq.Name())
+
+	// Give it a volume.
+	dnaSolution.SetVolume(wunit.NewVolume(10, "ul"))
+
+	// Add the dna sequence to the solution.
+	err = dnaSolution.AddDNASequence(dnaSeq)
+
+	if err != nil {
+		Errorf(err.Error())
+	}
+
+	// finally we'll run the Transformation element to transform E.coli
+	// with the DNA.
+
+	// Set the RPM
+	transformationRPM, err := wunit.NewRate(100, "/min")
+
+	if err != nil {
+		Errorf(err.Error())
+	}
+
+	// set the parameters directly into the Transformation element.
+	transformation := RunSteps(Transformation,
+		Parameters{
+			DNATransferVolume:           wunit.NewVolume(2, "ul"),      // Volume of DNA to Transfer.
+			RecoveryTemp:                wunit.NewTemperature(37, "C"), // This is the temperature to incubate the transformed cells and the recovery medium
+			RecoveryTime:                wunit.NewTime(1, "h"),         // This is the time to incubate the transformed cells and the recovery medium
+			TransformationTemp:          wunit.NewTemperature(4, "C"),  // This is the temperature to incubate the cells and the DNA
+			TransformationTime:          wunit.NewTime(5, "min"),       // This is the time to incubate the cells and the DNA
+			CompetentCellTransferVolume: wunit.NewVolume(17, "ul"),     // This is the volume of transformed cells that will be transfered to the recovery media
+			CellsAlreadyInPlate:         true,                          // Indicate if the competent cells are already in the transformation plate
+			RecoveryMediaAlreadyInPlate: true,                          // Indicate if the recovery media is already in the transformation plate
+			DefaultCompetentCellVolume:  wunit.NewVolume(20, "ul"),     // This is the volume of competent cells to transfer to the transformation plate
+			DefaultRecoveryMediaVolume:  wunit.NewVolume(100, "ul"),    // This is the volume of competent cells to transfer to the recovery plate
+			RPM:              transformationRPM, // Speed of Incubator rotation
+			Replicates:       1,                 // Replicates will perform technial replicates of the inputted DNA to transform. Default is set to 1.
+			IncubateManually: true,              // Select this if you do not have an Antha compatible incubator and you will be prompted to incubate the samples manually.
+		}, Inputs{
+			DNAToTransform:          dnaSolution,                      // This is the input DNA samples that comes as the output from an upstream element (e.g. ParsePlate or ConstructAssembly)
+			PlateWithCompetentCells: NewPlate("pcrplate_with_cooler"), // Specify the output plate in which the DNA is added to the competent cells
+			PlatewithRecoveryMedia:  NewPlate("SRWFB96_riser20"),      // specify the output plate in which the transformed cells are added to the recovery media
+			CompetentCells:          NewComponent("neb5compcells"),    // Specify the type of competent cells to use
+			RecoveryMedia:           NewComponent("SOC"),              // specify the type of recovery media to use
+		})
+
+	// set exported Output to the first recovered cell from the transformation
+	CellsWithMessage = transformation.Outputs.RecoveredCells[0]
+
+	// add dna sequence data to cells
+	CellsWithMessage.AddDNASequence(dnaSeq)
+
+}
+
+// Run after controls and a steps block are completed to
+// post process any data and provide downstream results
+Analysis {
+}
+
+// A block of tests to perform to validate that the sample was processed
+//correctly. Optionally, destructive tests can be performed to validate
+//results on a dipstick basis
+Validation {
+
+}

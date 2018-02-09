@@ -1,0 +1,271 @@
+// This element is a transformation element that requires an input of a DNA sample (LHComponent) to transform.
+// DNA samples can be inputted directly from a plate file (using ParsePlate) or from another element (such as ConstructAssembly).
+// CompetentCells and RecoveryMedia can be pre-dispensed by the user into the PlateWithRecoveryMedia and PlateWithCompetentCells plates
+// (and CellsAlreadyInPlate and RecoveryMediaAlreadyInPlate selected). Alternatively, Antha will dispense these components
+// from the input plate.
+protocol Transformation
+
+import (
+	"fmt"
+	"github.com/antha-lang/antha/antha/anthalib/mixer"
+	"github.com/antha-lang/antha/antha/anthalib/wtype"
+	"strings"
+)
+
+// Input parameters for this protocol (data)
+Parameters {
+	DNATransferVolume           Volume      // This is the volume of DNA that you wish to transform
+	RecoveryTemp                Temperature // This is the temperature to incubate the transformed cells and the recovery medium
+	RecoveryTime                Time        // This is the time to incubate the transformed cells and the recovery medium
+	TransformationTemp          Temperature // This is the temperature to incubate the cells and the DNA
+	TransformationTime          Time        // This is the time to incubate the cells and the DNA
+	CompetentCellTransferVolume Volume      // This is the volume of transformed cells that will be transfered to the recovery media
+	IncubateManually            bool        // Select this if you do not have an Antha compatible incubator and you will be prompted to incubate the samples manually.
+	CellsAlreadyInPlate         bool        // Indicate if the competent cells are already in the transformation plate
+	RecoveryMediaAlreadyInPlate bool        // Indicate if the recovery media is already in the transformation plate
+	DefaultCompetentCellVolume  Volume      // This is the volume of competent cells to transfer to the transformation plate
+	DefaultRecoveryMediaVolume  Volume      // This is the volume of competent cells to transfer to the recovery plate
+	RPM                         Rate        // Speed of Incubator rotation
+	Replicates                  int         // Replicates will perform technial replicates of the inputted DNA to transform. Default is set to 1.
+}
+
+// Data which is returned from this protocol, and data types
+Data{}
+
+// Physical Inputs to this protocol with types
+Inputs {
+	DNAToTransform          *LHComponent // This is the input DNA sample that comes as the output from an upstream element (e.g. ParsePlate or ConstructAssembly)
+	PlateWithCompetentCells *LHPlate     // Specify the output plate in which the DNA is added to the competent cells
+	PlatewithRecoveryMedia  *LHPlate     // specify the output plate in which the transformed cells are added to the recovery media
+	CompetentCells          *LHComponent // Specify the type of competent cells to use
+	RecoveryMedia           *LHComponent // specify the type of recovery media to use
+}
+
+// Physical outputs from this protocol with types
+Outputs {
+	RecoveredCells []*LHComponent // Recovered cells which can be linked into downstream elements (e.g. PlateOut)
+}
+
+Requirements {
+}
+
+// Conditions to run on startup
+Setup {
+}
+
+// The core process for this protocol, with the steps to be performed
+// for every input
+Steps {
+
+	// start plate counters
+	var allDNASamples []*LHComponent
+
+	//set Replicates to default of 1
+	if Replicates == 0 {
+		Replicates = 1
+	}
+
+	//adjust samples if replicates specified
+
+	for j := 0; j < Replicates; j++ {
+		if j == 0 {
+			allDNASamples = append(allDNASamples, DNAToTransform)
+		} else if j >= 1 {
+			// copy sample
+			allDNASamples = append(allDNASamples, DNAToTransform.Cp())
+		}
+	}
+
+	var compCellPlateWells = make([]string, len(allDNASamples))
+
+	for i := range allDNASamples {
+		compCellPlateWells[i] = PlateWithCompetentCells.AllWellPositions(wtype.BYCOLUMN)[i]
+		if i >= len(PlateWithCompetentCells.AllWellPositions(wtype.BYCOLUMN)) {
+			Errorf("Too many transformations for plate type %s; well capacity is %d. Please select a larger plate or perform fewer transformations.", PlateWithCompetentCells.Type, PlateWithCompetentCells.Nwells)
+		}
+	}
+
+	var cellsSlice = make([]*LHComponent, len(allDNASamples))
+	var recoverySlice = make([]*LHComponent, len(allDNASamples))
+
+	if CellsAlreadyInPlate {
+
+		// check if CompetentCellTransferVolume is not greater than the sum of DNATransferVolume+DefaultCompetentCellVolume minus the plate residual volume
+		transformationPlateResidualVol := PlateWithCompetentCells.Welltype.ResidualVolume()
+		sumOfComponents := wunit.SubtractVolumes(wunit.AddVolumes(DefaultCompetentCellVolume, DNATransferVolume), transformationPlateResidualVol)
+		if wunit.SubtractVolumes(sumOfComponents, CompetentCellTransferVolume).RawValue() < 0 {
+			Errorf("The requested ComponentCellTransferVolume %s is greater than the sum of the DNATransferVolume and DefaultCompetentCellVolume, minus the PlateWithCompetentCells residual volume (total: %s). Please lower the CompetentCellTransferVolume or change the plate type.", CompetentCellTransferVolume, sumOfComponents)
+		}
+
+		var firstcounter int
+
+		for i := range allDNASamples {
+
+			compCells := CompetentCells.Cp()
+			compCells.SetVolume(DefaultCompetentCellVolume)
+
+			for firstcounter < len(compCellPlateWells) {
+
+				if PlateWithCompetentCells.WellMap()[compCellPlateWells[firstcounter]].WContents.Name() == CompetentCells.Name() {
+					cellsSlice[i] = PlateWithCompetentCells.WellMap()[compCellPlateWells[i]].WContents
+					break
+				} else if PlateWithCompetentCells.WellMap()[compCellPlateWells[firstcounter]].Empty() {
+					PlateWithCompetentCells.WellMap()[compCellPlateWells[i]].Add(compCells)
+					cellsSlice[i] = PlateWithCompetentCells.WellMap()[compCellPlateWells[i]].WContents
+					break
+				}
+			}
+			firstcounter++
+		}
+
+		SetInputPlate(PlateWithCompetentCells)
+	}
+
+	PlateWithCompetentCells.PlateName = "Transformation Plate"
+
+	var recoveryPlateWells = compCellPlateWells
+
+	if RecoveryMediaAlreadyInPlate {
+
+		for i := range allDNASamples {
+			recoveryPlateWells[i] = PlatewithRecoveryMedia.AllWellPositions(wtype.BYCOLUMN)[i]
+			if i >= len(PlatewithRecoveryMedia.AllWellPositions(wtype.BYCOLUMN)) {
+				Errorf("Too many transformations for plate type %s; well capacity is %d. Please select a larger plate or perform fewer transformations.", PlateWithCompetentCells.Type, PlateWithCompetentCells.Nwells)
+			}
+		}
+
+		var secondcounter int
+
+		for i := range allDNASamples {
+
+			recoverMediumDuplicate := RecoveryMedia.Cp()
+			recoverMediumDuplicate.SetVolume(DefaultRecoveryMediaVolume)
+
+			for secondcounter < len(recoveryPlateWells) {
+				if PlatewithRecoveryMedia.WellMap()[recoveryPlateWells[secondcounter]].WContents.Name() == RecoveryMedia.Name() {
+					recoverySlice[i] = PlatewithRecoveryMedia.WellMap()[recoveryPlateWells[i]].WContents
+					break
+				} else if PlatewithRecoveryMedia.WellMap()[recoveryPlateWells[secondcounter]].Empty() {
+					PlatewithRecoveryMedia.WellMap()[recoveryPlateWells[i]].Add(recoverMediumDuplicate)
+					recoverySlice[i] = PlatewithRecoveryMedia.WellMap()[recoveryPlateWells[i]].WContents
+					break
+				}
+			}
+			secondcounter++
+		}
+
+		SetInputPlate(PlatewithRecoveryMedia)
+	}
+
+	PlatewithRecoveryMedia.PlateName = "Recovery Plate"
+
+	var transformedCells []*LHComponent
+
+	for i, reaction := range allDNASamples {
+
+		var messages []string
+
+		var transformation *LHComponent
+
+		var compCellsMessage string
+
+		if CellsAlreadyInPlate {
+			compCellsMessage = fmt.Sprintf("Please take competent cells %s out of the freezer and add %s to positions %s of TransformationPlate and click continue when thawed", CompetentCells.Name(), DefaultCompetentCellVolume.ToString(), strings.Join(compCellPlateWells, ", "))
+		} else {
+			compCellsMessage = fmt.Sprintf("Please take competent cells %s out of the freezer and add to input plate and click continue when thawed", CompetentCells.Name())
+		}
+
+		var recoveryMediaMessage string
+
+		if RecoveryMediaAlreadyInPlate {
+			recoveryMediaMessage = fmt.Sprintf("Please ensure %s of %s recovery media is ready at positions %s of RecoveryPlate and click continue when ready", DefaultRecoveryMediaVolume.ToString(), RecoveryMedia.Name(), strings.Join(recoveryPlateWells, ", "))
+		} else {
+			recoveryMediaMessage = fmt.Sprintf("Please ensure recovery media is ready in input plate and click continue when ready")
+		}
+
+		messages = append(messages, compCellsMessage, recoveryMediaMessage)
+
+		reaction = MixerPrompt(reaction, strings.Join(messages, "; "))
+
+		// change liquid type to mix DNA gently with cells
+		reaction.Type = wtype.LTDNACELLSMIX
+
+		// Take each reaction from ReactionsMap and set with a predefined volume (in parameters) asking them to mix them gently with cells
+		// (by using liquid type LTDNACELLSMIX) all stored in the variable dnaSample
+		reactionSample := mixer.Sample(reaction, DNATransferVolume)
+
+		// Mix our dnaSample to the PlateWithCompetentCells at position CompetentCellPlateWells with plate identifier 1
+		if !CellsAlreadyInPlate {
+			cells := MixNamed(PlateWithCompetentCells.Type, compCellPlateWells[i], "Transformation Plate", mixer.Sample(CompetentCells, DefaultCompetentCellVolume))
+			transformation = Mix(cells, reactionSample)
+		} else {
+			//transformation = Mix(cellsSlice[i], reactionSample)
+			transformation = MixInto(PlateWithCompetentCells, compCellPlateWells[i], reactionSample)
+		}
+
+		// Append all transformation reactions into the transformedCells slice
+		transformedCells = append(transformedCells, transformation)
+	}
+
+	// Generate a transformation incubation message to be displayed in a prompt dialogue box
+	transformationincubationMessage := fmt.Sprintf("Please incubate transformed cells for %.0f %s at %s. Click continue once done.", TransformationTime.SIValue()/60.0, " minutes", TransformationTemp.ToString())
+
+	// loop through the transformedCells slice applying the prompt to all the transformed cells
+	for i := range transformedCells {
+		transformedCells[i] = MixerPrompt(transformedCells[i], transformationincubationMessage)
+	}
+
+	for k, transformedCell := range transformedCells {
+
+		// Take each of the transformations and set with the predefined cell transfer volume in parameters asking them to mix with
+		// the recovery media (by using liquid type LTPostMix)
+		transformationSample := mixer.Sample(transformedCell, CompetentCellTransferVolume)
+		// change liquid type to mix cells with SOC Media
+		transformationSample.Type = wtype.LTPostMix
+
+		var recovery *LHComponent
+
+		// Mix our transformationSample to the PlateWithRecoveryMedia at position nextRecoveryWell in the plate named RecoveryPlate
+		if !RecoveryMediaAlreadyInPlate {
+			recoverymedia := MixNamed(PlatewithRecoveryMedia.Type, recoveryPlateWells[k], "RecoveryPlate", mixer.Sample(RecoveryMedia, DefaultRecoveryMediaVolume))
+			recovery = Mix(recoverymedia, transformationSample)
+		} else {
+			//recovery = Mix(recoverySlice[k], transformationSample)
+			recovery = MixInto(PlatewithRecoveryMedia, recoveryPlateWells[k], transformationSample)
+		}
+
+		// Fill our array RecoveredCells with all of the recoverd transformations
+		RecoveredCells = append(RecoveredCells, recovery)
+
+	}
+
+	// incubate the reaction mixture
+	if !IncubateManually {
+
+		// if Reaction temp is 25 or below we'll do the reaction at room temperature on deck
+		if RecoveryTemp.SIValue() > 25 {
+			for idx := range RecoveredCells {
+				RecoveredCells[idx] = Incubate(RecoveredCells[idx], IncubateOpt{
+					Temp:      RecoveryTemp,
+					Time:      RecoveryTime,
+					ShakeRate: RPM,
+				})
+			}
+		}
+	}
+	incubationMessage := fmt.Sprintf("Please incubate cells in recovery media for %.0f %s at %s. Click continue once done.", RecoveryTime.SIValue()/60.0, " minutes", RecoveryTemp.ToString())
+	for i := range RecoveredCells {
+		RecoveredCells[i] = MixerPrompt(RecoveredCells[i], incubationMessage)
+	}
+}
+
+// Run after controls and a steps block are completed to
+// post process any data and provide downstream results
+Analysis {
+}
+
+// A block of tests to perform to validate that the sample was processed correctly
+// Optionally, destructive tests can be performed to validate results on a
+// dipstick basis
+Validation {
+}
