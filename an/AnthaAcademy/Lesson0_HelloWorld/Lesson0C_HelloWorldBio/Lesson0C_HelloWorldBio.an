@@ -88,7 +88,7 @@ Steps {
 	// The set of statements after the keyword "for" set the conditions of the loop.
 	// how it starts, when it stops and what happens with each iteration of the loop.
 	// This loop is initialised with a variable called counter set to 0 (counter := 0)
-	// the loop will continue as long as counter is less than 99 (counter < 10)
+	// the loop will continue as long as counter is less than 99 (counter < 99)
 	// each iteration of the loop will increase counter by 1 (counter++)
 	for counter := 0; counter < 99; counter++ {
 
