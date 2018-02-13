@@ -55,7 +55,7 @@ Since antha is still in rapid development and we’re making changes on a weekly
 For other basic resources on how to use the command line and git see [here](https://synthace.github.io/antha-lang-archive/docs/academy/basics.html)
 
 ## Antha Lessons:
-Go to [Lesson 1](Lesson1_RunningWorkflows/README.md) to  get started
+Go to [Lesson 1](Lesson1_Commands/readme_lesson1_runningworkflows.md) to  get started
 
 ### Running Antha elements
 Get used to running existing antha elements with an Example element for running multiple PCR reactions
