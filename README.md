@@ -82,4 +82,4 @@ antha --help
 ```
 
 ## Academy
-Go to the [Antha Academy](An/AnthaAcademy/Lesson1_Commands/README.md) page to be guided through how to use antha in more detail.
+Go to the [Antha Academy](an/AnthaAcademy/README.md) page to be guided through how to use antha in more detail.
