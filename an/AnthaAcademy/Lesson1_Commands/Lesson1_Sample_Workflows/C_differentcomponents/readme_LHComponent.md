@@ -2,7 +2,7 @@
 
 One of the key antha types which will typically be specified in the parameters file is the wtype.LHComponent
 
-LHComponents can be accessed in the parameters.yml file in the following way:
+LHComponents can be accessed in the parameters or bundle file in the following way:
 
 These are written as a string: e.g. 
 "Diluent":"water",
@@ -15,7 +15,7 @@ i.e. When we say the concept of a component we don't mean a specific sample of w
 To check what components are available type the following command
 
 ```bash
-antharun list components
+antha list components
 ```
 
 ## Test inventory
@@ -60,7 +60,7 @@ Open the file and add the component to the list within the body of the func make
 To check what plates are available type the following command
 
 ```bash
-antharun list plates
+antha list plates
 ```
 
 ### LiquidTypes:
@@ -92,7 +92,7 @@ Currently this consists of:
 The full list can be found by typing 
 
 ```bash
-antharun list policies
+antha list policies
 ```
 
 or looking at the liquidClass map in the following file: 
@@ -101,7 +101,7 @@ or looking at the liquidClass map in the following file:
 The details of any of the properties of an lhpolicy can be found by running 
 
 ```bash
-antharun list policyCommands
+antha list policyCommands
 ```
 
 ```bash
@@ -111,7 +111,7 @@ $GOPATH/src/github.com/antha-lang/antha/microArch/driver/liquidhandling/makelhpo
 
 ## Excercises
 
-1. Check the available plates using ```antharun lhplates``` and change inputPlateType to one of the valid alternatives in the parameters file config section
+1. Check the available plates using ```antha list lhplates``` and change inputPlateType to one of the valid alternatives in the parameters file config section
 
 2. Check the available components and change Solution from water to one of these.
 

@@ -144,7 +144,7 @@ anthabuild AN_DIRS=$GOPATH/src/repos.antha.com/antha-ninja/elements-westeros
 (a) Command line:
 
 ```bash
-antharun --bundle Lesson1_Sample/Lesson1_Sample.bundle.json
+antha run --bundle Lesson1_Sample/Lesson1_Sample.bundle.json
 ```
 
 (b) AnthaOS:
