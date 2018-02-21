@@ -116,4 +116,4 @@ $GOPATH/src/github.com/antha-lang/antha/microArch/driver/liquidhandling/makelhpo
 2. Check the available components and change Solution from water to one of these.
 
 ## Next Steps
-Now move on to Lesson 2 where you can find out about how to perform more advanced liquid handling. 
+Now go straight to learning about writing antha elements with exercises [here](../../../Exercises/LiquidHandlingExercises/README.md) 
