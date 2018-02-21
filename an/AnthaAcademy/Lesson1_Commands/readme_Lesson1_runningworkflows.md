@@ -67,5 +67,6 @@ If a metadata.json file is added to the element folder with the element.an file.
 
 ## Next Steps
 
-Now Move to [Folder A](Lesson1_Sample_Workflows/A_Singleelement/readme_basicCommands.md) to find out the basic Antha commands to build an run Antha elements.
+Now, if working on the command line you can move to [Folder A](Lesson1_Sample_Workflows/A_Singleelement/readme_basicCommands.md) to find out the basic Antha commands to build an run Antha elements.
+Or go straight to learning about writing antha elements with exercises [here](../Exercises/LiquidHandlingExercises/README.md)
 

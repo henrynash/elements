@@ -1,8 +1,8 @@
-### Other antharun flags:
+### Other antha run flags:
  
-A full list of optional flags which can be used with antharun is available by running ```antharun --help```
+A full list of optional flags which can be used with antharun is available by running ```antha run --help```
 
-### antharun --parameters --workflow
+### antha run --parameters --workflow
 
 By default the antharun command uses a parameters file named parameters.json and a workflow file named workflow.json. 
 If these files are named differently you’ll need to use the --parameters and/or --workflow flags to specify which files to use.
@@ -11,10 +11,10 @@ If these files are named differently you’ll need to use the --parameters and/o
 To run the parameters found in this folder you'll need to run this:
 
 ```bash
-antharun --parameters parameters.yml --workflow myamazingworkflow.json
+antha run --parameters parameters.yml --workflow myamazingworkflow.json
 ```
 
-### antharun --bundle 
+### antha run --bundle 
 
 By default the antharun command uses a parameters file named parameters.json and a workflow file named workflow.json. 
 If these files are named differently you’ll need to use the --parameters and/or --workflow flags to specify which files to use.
@@ -24,7 +24,7 @@ To run the combined parameters and workflow bundle found in this folder you'll n
 
 
 ```bash
-antharun --bundle bundle.json 
+antha run --bundle bundle.json 
 ```
 
 
@@ -32,11 +32,11 @@ antharun --bundle bundle.json
 
 e.g. 
 ```bash
-antharun --inputPlateType greiner384
+antha run --inputPlateType greiner384
 ```
 
 This allows the type of input plate to be specified from the list of available Antha plate types. 
-The available plates can be found by running the ```antharun list plates``` command
+The available plates can be found by running the ```antha list plates``` command
 
  
 
@@ -44,14 +44,14 @@ The available plates can be found by running the ```antharun list plates``` comm
 
 e.g. 
 ```bash
-antharun --inputPlates inputplate.csv 
+antha run --inputPlates inputplate.csv 
 ```
 
 This allows user defined input plates to be defined. If this is not chosen antha will decide upon the layout.
 More than one inputplate can be defined: this would be done like so:
 
 ```bash
-antharun --inputPlates assemblyreagents.csv --inputPlates assemblyparts.csv
+antha run --inputPlates assemblyreagents.csv --inputPlates assemblyparts.csv
 ```
 
 
@@ -75,7 +75,7 @@ There are many other preferences which can be specified in the config, such as t
 	
 ## Excercises
 
-1. Check the available plates using ```antharun list plates``` and change inputPlateType to one of the valid alternatives in the parameters file
+1. Check the available plates using ```antha list plates``` and change inputPlateType to one of the valid alternatives in the parameters file
 
 ## Next Steps
 open [readme_LHComponents.md](readme_LHComponent.md) and continue

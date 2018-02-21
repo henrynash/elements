@@ -1,8 +1,8 @@
-## (a) antharun --driver
+## (a) antha run --driver
 
 1. 
-There are many additional flags which may be used with the antharun command. 
-To see the full list type antharun --help on the command line.
+There are many additional flags which may be used with the antha run command. 
+To see the full list type antha run --help on the command line.
 
 2. 
 To select which driver port to connect to add the --driver flag as shown above (making sure it matches the driver port you’ve served in a separate terminal). 
@@ -10,19 +10,19 @@ To select which driver port to connect to add the --driver flag as shown above (
 A driver can be called from a local port if already running (see part b):
 
 ```bash
-antharun --driver localhost:50051
+antha run --driver localhost:50051
 ```
 
 Or called directly from source code:
 
 ```bash
-antharun --driver go://github.com/antha-lang/manualLiquidHandler/server
+antha run --driver go://github.com/antha-lang/manualLiquidHandler/server
 ```
 
 or
 
 ```bash
-antharun --driver go://github.com/Synthace/PipetMaxDriver/server
+antha run --driver go://github.com/Synthace/PipetMaxDriver/server
 ```
 
 ### (b) Running a driver 
@@ -54,7 +54,7 @@ If using the clientdevice (```./clientdevice.exe -—device pipetmax```) to cont
 This will allow direct running and simulation of the Pipetmax:
 
 ```bash
-antharun --driver localhost:50051 --driver 192.168.1.58:50051
+antha run --driver localhost:50051 --driver 192.168.1.58:50051
 ```
 
 
@@ -63,7 +63,7 @@ or if from source code:
 
 
 ```bash
-antharun --driver  go://github.com/Synthace/PipetMaxDriver/server --driver 192.168.1.58:50051
+antha run --driver  go://github.com/Synthace/PipetMaxDriver/server --driver 192.168.1.58:50051
 ```
 
 

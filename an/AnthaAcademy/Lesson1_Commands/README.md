@@ -117,7 +117,7 @@ Take a look at the three .an files in this folder and read through the comments 
 
 ## Excercises
 
-1. Modify the Lesson0_Sample/element.an file by adding a step in the steps block to take the Sample produced and Mix it to an output location by adding the following line:
+1. Modify the Lesson1_Sample/element.an file by adding a step in the steps block to take the Sample produced and Mix it to an output location by adding the following line:
 
 Sample = Mix(Sample)
 
@@ -144,7 +144,7 @@ anthabuild AN_DIRS=$GOPATH/src/repos.antha.com/antha-ninja/elements-westeros
 (a) Command line:
 
 ```bash
-antharun --bundle Lesson1_Sample/Lesson1_Sample.bundle.json
+antha run --bundle Lesson1_Sample/Lesson1_Sample.bundle.json
 ```
 
 (b) AnthaOS:
@@ -157,4 +157,6 @@ click simulate
 ## Next Steps
 
 Now Move to [workflows](readme_Lesson1_runningworkflows.md) to find out how to use the Antha element in a workflow with real parameters.
+
+Or go straight to learning about writing antha elements with exercises [here](../Exercises/LiquidHandlingExercises/README.md)
 
