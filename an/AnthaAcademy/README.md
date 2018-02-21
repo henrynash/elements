@@ -16,7 +16,7 @@ If using OS X or Linux and you’re not familiar with working on the command lin
 1. Complete [Code academy working on the command line course Unit 1](https://www.codecademy.com/learn/learn-the-command-line) (2 hours) 
 
 ### Installation
-If running Antha purely through the AnthaOS you don't need to install anything. If you want to run locally, please install following the instructions [here](../README.md).
+If running Antha purely through the [AnthaOS](https://docs.antha.com/) you don't need to install anything. If you want to run locally, please install following the instructions [here](../README.md).
 
 
 ### Basics of golang
