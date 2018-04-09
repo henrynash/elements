@@ -41,7 +41,7 @@ func run() error {
 
 func main() {
 	if err := run(); err != nil {
-		fmt.Fprintf(os.Stderr, err.Error())
+		fmt.Fprintln(os.Stderr, "error:", err)
 		os.Exit(1)
 	}
 }
