@@ -109,7 +109,7 @@ Steps {
 				if PlateWithCompetentCells.WellMap()[compCellPlateWells[firstcounter]].WContents.Name() == CompetentCells.Name() {
 					cellsSlice[i] = PlateWithCompetentCells.WellMap()[compCellPlateWells[i]].WContents
 					break
-				} else if PlateWithCompetentCells.WellMap()[compCellPlateWells[firstcounter]].Empty() {
+				} else if PlateWithCompetentCells.WellMap()[compCellPlateWells[firstcounter]].IsEmpty() {
 					PlateWithCompetentCells.WellMap()[compCellPlateWells[i]].AddComponent(compCells)
 					cellsSlice[i] = PlateWithCompetentCells.WellMap()[compCellPlateWells[i]].WContents
 					break
@@ -145,7 +145,7 @@ Steps {
 				if PlatewithRecoveryMedia.WellMap()[recoveryPlateWells[secondcounter]].WContents.Name() == RecoveryMedia.Name() {
 					recoverySlice[i] = PlatewithRecoveryMedia.WellMap()[recoveryPlateWells[i]].WContents
 					break
-				} else if PlatewithRecoveryMedia.WellMap()[recoveryPlateWells[secondcounter]].Empty() {
+				} else if PlatewithRecoveryMedia.WellMap()[recoveryPlateWells[secondcounter]].IsEmpty() {
 					PlatewithRecoveryMedia.WellMap()[recoveryPlateWells[i]].AddComponent(recoverMediumDuplicate)
 					recoverySlice[i] = PlatewithRecoveryMedia.WellMap()[recoveryPlateWells[i]].WContents
 					break
