@@ -1,9 +1,9 @@
 {
   "Config": {
-    "InputPlateType": [
+    "InputPlateTypes": [
       "pcrplate_skirted_riser"
     ],
-    "OutputPlateType": [
+    "OutputPlateTypes": [
       "greiner384_riser"
     ]
   },
@@ -19,7 +19,7 @@
       "Diluent": "water",
       "Solution": "tartrazine",
       "SolutionVolume": "15ul",
-      "TotalVolume": "150ul"
+      "TotalVolume": "125ul"
     },
     "samplealone": {
       "SampleVolume": "20ul",

@@ -1,22 +1,30 @@
 {
+  "Config": {
+    "InputPlateTypes": [
+      "pcrplate_skirted_riser"
+    ],
+    "OutputPlateTypes": [
+      "greiner384_riser"
+    ]
+  },
   "Parameters": {
     "sampleDoubleconc": {
       "Diluent": "water",
       "Solution": "tartrazine",
       "SolutionVolume": "30ul",
-      "TotalVolume": "150ul"
+      "TotalVolume": "125ul"
     },
     "sampleTotal": {
       "Diluent": "water",
       "Solution": "tartrazine",
       "SolutionVolume": "15ul",
-      "TotalVolume": "150ul"
+      "TotalVolume": "125ul"
     },
     "samplehalfConc": {
       "Diluent": "water",
       "Solution": "tartrazine",
       "SolutionVolume": "7.5ul",
-      "TotalVolume": "150ul"
+      "TotalVolume": "125ul"
     }
   }
 }

@@ -253,7 +253,7 @@ Steps {
 			}
 		}
 	}
-	incubationMessage := fmt.Sprintf("Please incubate cells in recovery media for %.0f %s at %s. Click continue once done.", RecoveryTime.SIValue()/60.0, " minutes", RecoveryTemp.ToString())
+	incubationMessage := fmt.Sprintf("Please incubate and shake cells in recovery media for %.0f %s at %s. Click continue once done.", RecoveryTime.SIValue()/60.0, " minutes", RecoveryTemp.ToString())
 	for i := range RecoveredCells {
 		RecoveredCells[i] = MixerPrompt(RecoveredCells[i], incubationMessage)
 	}

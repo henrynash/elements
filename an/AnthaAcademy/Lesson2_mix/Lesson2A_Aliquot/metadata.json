@@ -6,5 +6,8 @@
     "SolutionVolume": "4000ul",
     "VolumePerAliquot": "25ul"
   },
-  "name": "Lesson2A_Aliquot"
+  "name": "Lesson2A_Aliquot",
+  "tags": [
+    "AnthaAcademy"
+  ]
 }

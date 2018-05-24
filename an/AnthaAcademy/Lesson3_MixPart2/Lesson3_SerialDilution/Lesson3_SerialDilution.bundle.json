@@ -5,14 +5,21 @@
   "Results": {
     "MixTaskResults": null
   },
-  "config": null,
+  "config": {
+    "inputPlateTypes": [
+      "pcrplate_skirted_riser18"
+    ],
+    "outputPlateTypes": [
+      "pcrplate_skirted_riser18"
+    ]
+  },
   "connections": [],
   "parameters": {
     "SerialDilute": {
       "Diluent": "water",
       "DilutionFactor": 10,
       "NumberOfDilutions": 16,
-      "OutPlate": "DSW96_riser20",
+      "OutPlate": "DSW96_riser18",
       "Solution": "tartrazine",
       "TotalVolumeperDilution": "100ul"
     }

@@ -133,7 +133,14 @@ The Bundle file should look like this:
       "VolumeB": "2ul"
     }
   },
-  "config": null
+  "config": {
+    "inputPlateTypes":[
+      "pcrplate_skirted_riser18"
+    ],
+    "outputPlateTypes":[
+      "pcrplate_skirted_riser18"
+    ]
+  }
 }
 ```
 

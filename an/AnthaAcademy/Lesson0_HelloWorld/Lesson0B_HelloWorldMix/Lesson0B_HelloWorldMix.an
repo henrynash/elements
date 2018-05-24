@@ -26,6 +26,7 @@ Data {
 
 // Physical Inputs to this protocol with types
 Inputs {
+	PlateCanvas *LHPlate
 }
 
 // Physical outputs from this protocol with types
@@ -94,7 +95,7 @@ Steps {
 				UseLiquidClass: wtype.PolicyName("plateout"), // over-ride the default liquid class with one for plating out.
 			},
 			Inputs{ // Inputs are physical inputs.
-				OutPlate: NewPlate("Agarplateforpicking768_riser20"), // choose an agar plate with 768 pixel resolution.
+				OutPlate: PlateCanvas, // choose an agar plate with 768 pixel resolution.
 			})
 
 		// set the Pixels which we defined in Outputs to be set to the Pixels output of the PipetteImage element.

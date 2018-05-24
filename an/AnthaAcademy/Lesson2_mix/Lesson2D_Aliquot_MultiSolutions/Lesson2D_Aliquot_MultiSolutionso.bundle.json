@@ -5,13 +5,20 @@
   "Results": {
     "MixTaskResults": null
   },
-  "config": null,
+  "config": {
+    "inputPlateTypes": [
+      "pcrplate_skirted_riser18"
+    ],
+    "outputPlateTypes": [
+      "pcrplate_skirted_riser18"
+    ]
+  },
   "connections": [],
   "parameters": {
     "AliquotParams": {
       "ByRow": true,
       "NumberofAliquots": 50,
-      "OutPlate": "greiner384_riser20",
+      "OutPlate": "greiner384_riser18",
       "SolutionVolume": "4000ul",
       "Solutions": [
         "water",

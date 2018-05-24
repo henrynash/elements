@@ -3,5 +3,8 @@
     "SampleVolume": "15ul",
     "Solution": "tartrazine"
   },
-  "name": "Lesson1A_Sample"
+  "name": "Lesson1A_Sample",
+  "tags": [
+    "AnthaAcademy"
+  ]
 }
