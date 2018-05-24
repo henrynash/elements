@@ -5,7 +5,14 @@
   "Results": {
     "MixTaskResults": null
   },
-  "config": null,
+  "config": {
+    "inputPlateTypes": [
+      "pcrplate_skirted_riser18"
+    ],
+    "outputPlateTypes": [
+      "pcrplate_skirted_riser18"
+    ]
+  },
   "connections": [],
   "parameters": {
     "MyFirstProtocol": {

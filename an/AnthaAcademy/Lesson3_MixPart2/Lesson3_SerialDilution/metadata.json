@@ -3,9 +3,12 @@
     "Diluent": "water",
     "DilutionFactor": 10,
     "NumberOfDilutions": 16,
-    "OutPlate": "DSW96_riser20",
+    "OutPlate": "DSW96_riser18",
     "Solution": "tartrazine",
     "TotalVolumeperDilution": "100ul"
   },
-  "name": "Lesson3_SerialDilution"
+  "name": "Lesson3_SerialDilution",
+  "tags": [
+    "AnthaAcademy"
+  ]
 }

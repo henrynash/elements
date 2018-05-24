@@ -5,12 +5,19 @@
   "Results": {
     "MixTaskResults": null
   },
-  "config": null,
+  "config": {
+    "inputPlateTypes": [
+      "pcrplate_skirted_riser18"
+    ],
+    "outputPlateTypes": [
+      "pcrplate_skirted_riser18"
+    ]
+  },
   "connections": [],
   "parameters": {
     "AliquotParams2": {
       "NumberofAliquots": 96,
-      "OutPlate": "SRWFB96_riser20",
+      "OutPlate": "SRWFB96_riser18",
       "Solution": "mediaonculture",
       "SolutionVolume": "20ml",
       "VolumePerAliquot": "200ul"

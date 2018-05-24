@@ -2,7 +2,7 @@
   "defaults": {
     "ByRow": true,
     "NumberofAliquots": 50,
-    "OutPlate": "greiner384_riser20",
+    "OutPlate": "greiner384_riser18",
     "SolutionVolume": "4000ul",
     "Solutions": [
       "water",
@@ -10,5 +10,8 @@
     ],
     "VolumePerAliquot": "5ul"
   },
-  "name": "Lesson2D_Aliquot_MultiSolutions"
+  "name": "Lesson2D_Aliquot_MultiSolutions",
+  "tags": [
+    "AnthaAcademy"
+  ]
 }

@@ -5,5 +5,8 @@
     "SolutionVolume": "15ul",
     "TotalVolume": "150ul"
   },
-  "name": "Lesson1G_SampleForTotalVolume"
+  "name": "Lesson1G_SampleForTotalVolume",
+  "tags": [
+    "AnthaAcademy"
+  ]
 }

@@ -13,7 +13,7 @@
     "DriverSpecificTipWastePreferences": null,
     "DriverSpecificWashPreferences": null,
     "InputPlateData": null,
-    "InputPlateType": [
+    "InputPlateTypes": [
       "greiner384_riser"
     ],
     "InputPlates": null,
@@ -21,7 +21,7 @@
     "MaxPlates": null,
     "MaxWells": null,
     "ModelEvaporation": false,
-    "OutputPlateType": [
+    "OutputPlateTypes": [
       "greiner384_riser"
     ],
     "OutputPlates": null,
@@ -29,7 +29,7 @@
     "PlanningVersion": "",
     "PrintInstructions": false,
     "ResidualVolumeWeight": null,
-    "TipType": null,
+    "TipTypes": null,
     "UseDriverTipTracking": false
   },
   "connections": [
@@ -49,14 +49,14 @@
       "InputSolution": "TB",
       "PlateNameA": "PlateA",
       "PlateNameB": "PlateB",
-      "Platetype": "greiner384_riser20",
+      "Platetype": "greiner384_riser18",
       "VolumeA": "100ul",
       "VolumeB": "20ul"
     },
     "Process2": {
       "PlateNameA": "PlateA",
       "PlateNameB": "PlateA",
-      "Platetype": "greiner384_riser20",
+      "Platetype": "greiner384_riser18",
       "VolumeA": "1ul",
       "VolumeB": "200ul"
     },
@@ -64,7 +64,7 @@
       "InputSolution": "dna",
       "PlateNameA": "PlateA",
       "PlateNameB": "PlateA",
-      "Platetype": "greiner384_riser20",
+      "Platetype": "greiner384_riser18",
       "VolumeA": "0.5ul",
       "VolumeB": "2ul"
     }

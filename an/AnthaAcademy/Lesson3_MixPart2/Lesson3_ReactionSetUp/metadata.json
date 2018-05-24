@@ -4,10 +4,13 @@
     "Enzyme": "T4Ligase",
     "EnzymeVolume": "1ul",
     "NumberofReactions": 5,
-    "OutPlate": "pcrplate_skirted_riser20",
+    "OutPlate": "pcrplate_skirted_riser18",
     "Substrate": "dna_part",
     "SubstrateVolume": "2ul",
     "TotalVolume": "10ul"
   },
-  "name": "Lesson3_ReactionSetUp"
+  "name": "Lesson3_ReactionSetUp",
+  "tags": [
+    "AnthaAcademy"
+  ]
 }

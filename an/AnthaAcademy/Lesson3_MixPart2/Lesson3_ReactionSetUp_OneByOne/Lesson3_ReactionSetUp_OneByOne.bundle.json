@@ -5,7 +5,14 @@
   "Results": {
     "MixTaskResults": null
   },
-  "config": null,
+  "config": {
+    "inputPlateTypes": [
+      "pcrplate_skirted_riser18"
+    ],
+    "outputPlateTypes": [
+      "pcrplate_skirted_riser18"
+    ]
+  },
   "connections": [],
   "parameters": {
     "Assaysetup": {
@@ -13,7 +20,7 @@
       "Enzyme": "T4Ligase",
       "EnzymeVolume": "1ul",
       "NumberofReactions": 5,
-      "OutPlate": "pcrplate_skirted_riser20",
+      "OutPlate": "pcrplate_skirted_riser18",
       "Substrate": "dna_part",
       "SubstrateVolume": "2ul",
       "TotalVolume": "10ul"

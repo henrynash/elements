@@ -11,7 +11,7 @@
     },
     "NotThisColour": "white",
     "OnlyThisColour": "",
-    "OutPlate": "greiner384_riser20",
+    "OutPlate": "greiner384_riser18",
     "PaletteName": "Neon",
     "Rotate": false,
     "SubsetNames": [
@@ -29,5 +29,8 @@
     "UseLiquidClass": "water",
     "VolumePerWell": "50ul"
   },
-  "name": "PipetteImage"
+  "name": "PipetteImage",
+  "tags": [
+    "AnthaAcademy"
+  ]
 }

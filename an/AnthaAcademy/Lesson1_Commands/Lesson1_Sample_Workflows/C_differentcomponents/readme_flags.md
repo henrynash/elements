@@ -28,11 +28,11 @@ antha run --bundle bundle.json
 ```
 
 
-### antharun --inputPlateType
+### antharun --InputPlateTypes
 
 e.g. 
 ```bash
-antha run --inputPlateType greiner384
+antha run --InputPlateTypes greiner384
 ```
 
 This allows the type of input plate to be specified from the list of available Antha plate types. 
@@ -63,10 +63,10 @@ A series of desired input or output plates (in order of preference) can be speci
 
 ```json
  "Config": {
-        "InputPlateType": [
+        "InputPlateTypes": [
             "pcrplate_skirted_riser"
         ],
-        "OutputPlateType": [
+        "OutputPlateTypes": [
             "greiner384_riser"
         ]
     }
@@ -75,7 +75,7 @@ There are many other preferences which can be specified in the config, such as t
 	
 ## Excercises
 
-1. Check the available plates using ```antha list plates``` and change inputPlateType to one of the valid alternatives in the parameters file
+1. Check the available plates using ```antha list plates``` and change InputPlateTypes to one of the valid alternatives in the parameters file
 
 ## Next Steps
 open [readme_LHComponents.md](readme_LHComponent.md) and continue

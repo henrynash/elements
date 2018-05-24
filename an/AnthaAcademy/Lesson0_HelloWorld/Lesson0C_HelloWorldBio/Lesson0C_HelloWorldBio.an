@@ -25,6 +25,8 @@ Data {
 
 // Physical Inputs to this protocol with types
 Inputs {
+	PlateForCompetentCells *LHPlate
+	PlateForRecovery       *LHPlate
 }
 
 // Physical outputs from this protocol with types
@@ -232,11 +234,11 @@ Steps {
 			Replicates:       1,                 // Replicates will perform technial replicates of the inputted DNA to transform. Default is set to 1.
 			IncubateManually: true,              // Select this if you do not have an Antha compatible incubator and you will be prompted to incubate the samples manually.
 		}, Inputs{
-			DNAToTransform:          dnaSolution,                      // This is the input DNA samples that comes as the output from an upstream element (e.g. ParsePlate or ConstructAssembly)
-			PlateWithCompetentCells: NewPlate("pcrplate_with_cooler"), // Specify the output plate in which the DNA is added to the competent cells
-			PlatewithRecoveryMedia:  NewPlate("SRWFB96_riser20"),      // specify the output plate in which the transformed cells are added to the recovery media
-			CompetentCells:          NewComponent("neb5compcells"),    // Specify the type of competent cells to use
-			RecoveryMedia:           NewComponent("SOC"),              // specify the type of recovery media to use
+			DNAToTransform:          dnaSolution,                   // This is the input DNA samples that comes as the output from an upstream element (e.g. ParsePlate or ConstructAssembly)
+			PlateWithCompetentCells: PlateForCompetentCells,        // Specify the output plate in which the DNA is added to the competent cells
+			PlatewithRecoveryMedia:  PlateForRecovery,              // specify the output plate in which the transformed cells are added to the recovery media
+			CompetentCells:          NewComponent("neb5compcells"), // Specify the type of competent cells to use
+			RecoveryMedia:           NewComponent("SOC"),           // specify the type of recovery media to use
 		})
 
 	// set exported Output to the first recovered cell from the transformation
