@@ -3,7 +3,6 @@ protocol Lesson1J_NewComponent // this is the name of the protocol Lessonthat wi
 
 // the mixer package must be imported to use the Sample function
 import (
-	"github.com/antha-lang/antha/antha/AnthaStandardLibrary/Packages/solutions"
 	"github.com/antha-lang/antha/antha/anthalib/wtype"
 )
 
@@ -61,7 +60,7 @@ Steps {
 	OutPutSolution.SetVolume(SolutionVolume)
 
 	if len(SubComponents) > 0 {
-		OutPutSolution, err = solutions.AddSubComponents(OutPutSolution, solutions.ComponentList{Components: SubComponents})
+		err = OutPutSolution.AddSubComponents(wtype.ComponentList{Components: SubComponents})
 		if err != nil {
 			Errorf(err.Error())
 		}
