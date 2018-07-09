@@ -1,0 +1,10 @@
+{
+  "defaults": {
+    "PlateForCompetentCells": "pcrplate_with_cooler",
+    "PlateForRecovery": "GreinerSWVBottom_bioshake"
+  },
+  "name": "Lesson0C_HelloWorldBio",
+  "tags": [
+    "AnthaAcademy"
+  ]
+}

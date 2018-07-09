@@ -3,7 +3,6 @@ protocol Lesson1K_ComponentProperties // this is the name of the protocol Lesson
 
 // the mixer package must be imported to use the Sample function
 import (
-	"github.com/antha-lang/antha/antha/AnthaStandardLibrary/Packages/solutions"
 	"github.com/antha-lang/antha/antha/anthalib/wtype"
 )
 
@@ -58,9 +57,9 @@ Steps {
 
 	SolutionVolume = Solution.Volume()
 
-	var componentList solutions.ComponentList
+	var componentList wtype.ComponentList
 
-	componentList, err = solutions.GetSubComponents(Solution)
+	componentList, err = wtype.GetSubComponents(Solution)
 
 	if err != nil {
 		Warnings = append(Warnings, wtype.NewWarningf(err.Error()))

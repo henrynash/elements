@@ -1,4 +1,4 @@
-FROM golang:1.9
+FROM golang:1.10
 ENV ANTHA_BRANCH master
 
 RUN apt-get update -qq && apt-get install -y libglpk-dev protobuf-compiler
