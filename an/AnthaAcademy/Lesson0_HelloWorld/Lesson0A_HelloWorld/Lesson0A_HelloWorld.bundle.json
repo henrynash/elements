@@ -1,0 +1,67 @@
+{
+  "Config": {
+    "driverSpecificInputPreferences": [
+      "position_4",
+      "position_5",
+      "position_7",
+      "position_8",
+      "position_9",
+      "position_6",
+      "position_1",
+      "position_3"
+    ],
+    "driverSpecificOutputPreferences": [
+      "position_6",
+      "position_5",
+      "position_9",
+      "position_8",
+      "position_7",
+      "position_4",
+      "position_1"
+    ],
+    "driverSpecificTipPreferences": [
+      "position_3",
+      "position_2",
+      "position_4",
+      "position_5",
+      "position_6",
+      "position_7",
+      "position_8",
+      "position_9"
+    ],
+    "driverSpecificTipWastePreferences": [
+      "position_1",
+      "position_7"
+    ],
+    "driverSpecificWashPreferences": [],
+    "executionPlannerVersion": "ep2",
+    "inputPlateTypes": [],
+    "maxPlates": 4.5,
+    "maxWells": 278,
+    "modelEvaporation": false,
+    "outputPlateTypes": [],
+    "outputSort": false,
+    "residualVolumeWeight": 1,
+    "tipTypes": [],
+    "useDriverTipTracking": true
+  },
+  "Parameters": {
+    "Lesson0A HelloWorld 1_run1": {}
+  },
+  "Processes": {
+    "Lesson0A HelloWorld 1_run1": {
+      "component": "Lesson0A_HelloWorld",
+      "metadata": {
+        "x": 100,
+        "y": 100
+      }
+    }
+  },
+  "Properties": {
+    "description": "",
+    "id": "7GRBKRNK4EFXVV08BF2MWFDS8W",
+    "name": "Lesson0A_HelloWorld"
+  },
+  "connections": [],
+  "version": "1.2.0"
+}

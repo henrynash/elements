@@ -1,4 +1,4 @@
-// This element is a transformation element that requires an input of a DNA sample (LHComponent) to transform.
+// This element is a transformation element that requires an input of a DNA sample (Liquid) to transform.
 // DNA samples can be inputted directly from a plate file (using ParsePlate) or from another element (such as ConstructAssembly).
 // CompetentCells and RecoveryMedia can be pre-dispensed by the user into the PlateWithRecoveryMedia and PlateWithCompetentCells plates
 // (and CellsAlreadyInPlate and RecoveryMediaAlreadyInPlate selected). Alternatively, Antha will dispense these components
@@ -34,16 +34,16 @@ Data{}
 
 // Physical Inputs to this protocol with types
 Inputs {
-	DNAToTransform          *LHComponent // This is the input DNA sample that comes as the output from an upstream element (e.g. ParsePlate or ConstructAssembly)
-	PlateWithCompetentCells *LHPlate     // Specify the output plate in which the DNA is added to the competent cells
-	PlatewithRecoveryMedia  *LHPlate     // specify the output plate in which the transformed cells are added to the recovery media
-	CompetentCells          *LHComponent // Specify the type of competent cells to use
-	RecoveryMedia           *LHComponent // specify the type of recovery media to use
+	DNAToTransform          *Liquid // This is the input DNA sample that comes as the output from an upstream element (e.g. ParsePlate or ConstructAssembly)
+	PlateWithCompetentCells *Plate  // Specify the output plate in which the DNA is added to the competent cells
+	PlatewithRecoveryMedia  *Plate  // specify the output plate in which the transformed cells are added to the recovery media
+	CompetentCells          *Liquid // Specify the type of competent cells to use
+	RecoveryMedia           *Liquid // specify the type of recovery media to use
 }
 
 // Physical outputs from this protocol with types
 Outputs {
-	RecoveredCells []*LHComponent // Recovered cells which can be linked into downstream elements (e.g. PlateOut)
+	RecoveredCells []*Liquid // Recovered cells which can be linked into downstream elements (e.g. PlateOut)
 }
 
 Requirements {
@@ -58,7 +58,7 @@ Setup {
 Steps {
 
 	// start plate counters
-	var allDNASamples []*LHComponent
+	var allDNASamples []*Liquid
 
 	//set Replicates to default of 1
 	if Replicates == 0 {
@@ -85,8 +85,8 @@ Steps {
 		}
 	}
 
-	var cellsSlice = make([]*LHComponent, len(allDNASamples))
-	var recoverySlice = make([]*LHComponent, len(allDNASamples))
+	var cellsSlice = make([]*Liquid, len(allDNASamples))
+	var recoverySlice = make([]*Liquid, len(allDNASamples))
 
 	if CellsAlreadyInPlate {
 
@@ -159,13 +159,13 @@ Steps {
 
 	PlatewithRecoveryMedia.PlateName = "Recovery Plate"
 
-	var transformedCells []*LHComponent
+	var transformedCells []*Liquid
 
 	for i, reaction := range allDNASamples {
 
 		var messages []string
 
-		var transformation *LHComponent
+		var transformation *Liquid
 
 		var compCellsMessage string
 
@@ -223,7 +223,7 @@ Steps {
 		// change liquid type to mix cells with SOC Media
 		transformationSample.Type = wtype.LTPostMix
 
-		var recovery *LHComponent
+		var recovery *Liquid
 
 		// Mix our transformationSample to the PlateWithRecoveryMedia at position nextRecoveryWell in the plate named RecoveryPlate
 		if !RecoveryMediaAlreadyInPlate {

@@ -5,7 +5,7 @@ There are many additional flags which may be used with the antha run command.
 To see the full list type antha run --help on the command line.
 
 2. 
-To select which driver port to connect to add the --driver flag as shown above (making sure it matches the driver port you’ve served in a separate terminal). 
+To select which driver port to connect to add the --driver flag as shown above (making sure it matches the driver port you've served in a separate terminal). 
 
 A driver can be called from a local port if already running (see part b):
 

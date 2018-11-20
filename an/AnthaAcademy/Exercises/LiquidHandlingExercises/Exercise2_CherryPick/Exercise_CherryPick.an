@@ -39,12 +39,12 @@ Data {
 
 // Physical inputs to this protocol
 Inputs {
-	InputSolutions []*LHComponent
+	InputSolutions []*Liquid
 }
 
 // Physical outputs to this protocol
 Outputs {
-	OutputSolution *LHComponent
+	OutputSolution *Liquid
 }
 
 // Conditions to run on startup

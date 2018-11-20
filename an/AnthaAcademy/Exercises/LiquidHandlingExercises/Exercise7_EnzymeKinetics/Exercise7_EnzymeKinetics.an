@@ -26,15 +26,15 @@ Data {
 
 // Physical inputs to this protocol
 Inputs {
-	Enzyme    *LHComponent
-	Substrate *LHComponent
-	Buffer    *LHComponent
-	PlateType *LHPlate
+	Enzyme    *Liquid
+	Substrate *Liquid
+	Buffer    *Liquid
+	PlateType *Plate
 }
 
 // Physical outputs to this protocol
 Outputs {
-	Reactions []*wtype.LHComponent
+	Reactions []*wtype.Liquid
 }
 
 // Conditions to run on startup

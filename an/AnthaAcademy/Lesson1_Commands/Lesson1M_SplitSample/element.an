@@ -1,0 +1,67 @@
+// Example protocol Lesson demonstrating the use of the SplitSample function.
+// SplitSample produces two outputs when used, the sample, and the remaining liquid of the liquid sampled from.
+// SplitSample can be used to ensure the order of steps is controlled more precisely.
+protocol Lesson1M_SplitSample
+
+import ()
+
+// Input parameters for this protocol (data)
+Parameters {
+	SampleVolume Volume
+}
+
+// Data which is returned from this protocol, and data types
+Data {
+	Status string
+}
+
+// Physical Inputs to this protocol with types
+Inputs {
+	// If we run this element directly wired into Lesson1B_Mix an error will occur.
+	// This is because when new components are autoallocated by the system they do not have a defined volume.
+	// If we're going to sample all of the solution must have a defined volume
+	// so cannot be auto allocated by the Antha scheduler as before.
+	// We can get around this by wiring the output of a previous mix in to the Solution input.
+	Solution *Liquid
+}
+
+// Physical outputs from this protocol with types
+Outputs {
+	SampledLiquid   *Liquid
+	RemainingLiquid *Liquid
+}
+
+Requirements {
+
+}
+
+// Conditions to run on startup
+Setup {
+
+}
+
+// The core process for this protocol, with the steps to be performed
+// for every input
+Steps {
+
+	SampledLiquid, RemainingLiquid = SplitSample(Solution, SampleVolume)
+
+	// In this case we'll use back ticks to write the string message like this:
+	// this way we can write the message over several lines and include " " symbols in the message
+	Status = `Now wire the RemainingLiquid output into the Solution input
+	 of another instance of Lesson1M_SplitSample and Mix both SampledLiquid outputs 
+	 using one of the Mix elements`
+
+}
+
+// Run after controls and a steps block are completed to
+// post process any data and provide downstream results
+Analysis {
+}
+
+// A block of tests to perform to validate that the sample was processed
+//correctly. Optionally, destructive tests can be performed to validate
+//results on a dipstick basis
+Validation {
+
+}

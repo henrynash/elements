@@ -9,7 +9,6 @@ import (
 
 // Input parameters for this protocol (data)
 Parameters {
-	SolutionVolume   Volume
 	VolumePerAliquot Volume
 	Positions        []string // positions on each plate to add aliquots
 	NumberofPlates   int      // number of plates to fill aliquots into
@@ -21,12 +20,12 @@ Data{}
 
 // Physical Inputs to this protocol with types
 Inputs {
-	Solution *LHComponent
+	Solution *Liquid
 }
 
 // Physical outputs from this protocol with types
 Outputs {
-	Aliquots []*LHComponent
+	Aliquots []*Liquid
 }
 
 Requirements {
@@ -42,7 +41,7 @@ Setup {
 // for every input
 Steps {
 
-	aliquots := make([]*LHComponent, 0)
+	aliquots := make([]*Liquid, 0)
 
 	// this time round we're going to change the platenumber with each loop until we reach NumberofPlates specified in parameters
 	// note that we're starting counting from 1 instead of zero since a platenumber of 0 is an invalid entry into MixTo

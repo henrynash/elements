@@ -69,13 +69,13 @@ Data {
 
 // Physical inputs to this protocol
 Inputs {
-	ComponentA *wtype.LHComponent
-	ComponentB *wtype.LHComponent
+	ComponentA *wtype.Liquid
+	ComponentB *wtype.Liquid
 }
 
 // Physical outputs to this protocol
 Outputs {
-	MixedComponent *wtype.LHComponent
+	MixedComponent *wtype.Liquid
 }
 
 // Conditions to run on startup
@@ -155,7 +155,7 @@ anthabuild AN_DIRS=$GOPATH/src/github.com/my-antha-elements
 ```
 
 ## Excercises
-1. Start with [Exercise 1](Exercise1_SplitSample/Exercise1_SplitSample.an) and follow the comments.
+1. Start with [Exercise 1](Exercise1_SampleAndMixLiquid/Exercise1_SampleAndMixLiquid.an) and follow the comments.
 
 ## Next Steps
 Work your way through all the exercises and lesson folders following the comments in the antha element (.an) files.

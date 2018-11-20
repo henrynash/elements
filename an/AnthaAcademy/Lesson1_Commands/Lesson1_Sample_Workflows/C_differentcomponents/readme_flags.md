@@ -5,7 +5,7 @@ A full list of optional flags which can be used with antharun is available by ru
 ### antha run --parameters --workflow
 
 By default the antharun command uses a parameters file named parameters.json and a workflow file named workflow.json. 
-If these files are named differently you’ll need to use the --parameters and/or --workflow flags to specify which files to use.
+If these files are named differently you'll need to use the --parameters and/or --workflow flags to specify which files to use.
 
 
 To run the parameters found in this folder you'll need to run this:
@@ -17,7 +17,7 @@ antha run --parameters parameters.yml --workflow myamazingworkflow.json
 ### antha run --bundle 
 
 By default the antharun command uses a parameters file named parameters.json and a workflow file named workflow.json. 
-If these files are named differently you’ll need to use the --parameters and/or --workflow flags to specify which files to use.
+If these files are named differently you'll need to use the --parameters and/or --workflow flags to specify which files to use.
 
 
 To run the combined parameters and workflow bundle found in this folder you'll need to run this:
@@ -78,4 +78,4 @@ There are many other preferences which can be specified in the config, such as t
 1. Check the available plates using ```antha list plates``` and change InputPlateTypes to one of the valid alternatives in the parameters file
 
 ## Next Steps
-open [readme_LHComponents.md](readme_LHComponent.md) and continue
+open [readme_LHComponents.md](readme_Liquid.md) and continue

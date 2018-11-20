@@ -2,7 +2,7 @@
   "connections": [
     {
       "source": {
-        "port": "Sample",
+        "port": "SampledLiquid",
         "process": "sample"
       },
       "target": {

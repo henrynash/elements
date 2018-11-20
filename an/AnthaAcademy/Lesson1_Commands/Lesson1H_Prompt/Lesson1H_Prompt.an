@@ -37,16 +37,16 @@ Data {
 
 // Physical Inputs to this protocol with types
 Inputs {
-	// the LHComponent is the principal liquidhandling type in antha
+	// the Liquid is the principal liquidhandling type in antha
 	// the * signifies that this is a pointer to the component rather than the component itself
-	// most key antha functions such as Sample and Mix use *LHComponent rather than LHComponent
-	Solution *LHComponent
+	// most key antha functions such as Sample and Mix use *Liquid rather than Liquid
+	Solution *Liquid
 }
 
 // Physical outputs from this protocol with types
 Outputs {
-	// An output LHComponent variable is created with prompt
-	OutPutSolution *LHComponent
+	// An output Liquid variable is created with prompt
+	OutPutSolution *Liquid
 }
 
 Requirements {
@@ -91,6 +91,10 @@ Steps {
 
 		// In Antha we can also format the colour of strings printed in the terminal using the text package.
 		fmt.Println(text.Blue("Coloured Status = "), text.Red(Status))
+
+		// the text package also has a Print function which will highlight the
+		// first argument in red.
+		text.Print("text.Print:", Status)
 	}
 
 }

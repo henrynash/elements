@@ -24,15 +24,15 @@ Data {
 
 // Physical Inputs to this protocol with types
 Inputs {
-	// This protocol expects a sample to be passed in from a previous element
-	// wire in the output Sample from Lesson1A_Sample into here.
-	Sample *LHComponent
-	Plate  *LHPlate
+	// This protocol expects a SampledLiquid to be passed in from a previous element
+	// wire in the output SampledLiquid from Lesson1A_Sample into here.
+	SampledLiquid *Liquid
+	Plate         *Plate
 }
 
 // Physical outputs from this protocol with types
 Outputs {
-	TransferredSolution *LHComponent
+	TransferredSolution *Liquid
 }
 
 Requirements {
@@ -53,22 +53,22 @@ Steps {
 	// 1. the plate
 	// 2. well location as a  string e.g. "A1" (in this case we can also leave it blank "" which will leave the well location up to the scheduler to decide),
 	// 3. the sample or array of samples to be mixed
-	TransferredSolution = MixInto(Plate, Well, Sample)
+	TransferredSolution = MixInto(Plate, Well, SampledLiquid)
 
 	// This time we'll make the Status output more specific to the parameters we've actually used when we come to run the protocol.
 	// Strings can be concatenated using the + symbol.
-	Status = Sample.Name() + " mixed onto " + Plate.Type
+	Status = SampledLiquid.Name() + " mixed onto " + Plate.Type
 	// We learnt in Lesson1A_Sample that a full stop can indicate comething being accessed from an imported package.
 	// This line shows the other two uses of a full stop in code.
-	// The first, Sample.Name() shows a special type of function which is called directly on the variable itself.
-	// This type of function is called a method. This Name() method can be performed on any Antha *LHComponent.
+	// The first, SampledLiquid.Name() shows a special type of function which is called directly on the variable itself.
+	// This type of function is called a method. This Name() method can be performed on any Antha *Liquid.
 	// It returns a string description of the value of the measurement followed by the unit.
 	//
 	// Plate.Type is not running a method on the Plate variable but is calling a property, or field, of that variable.
 	// We can tell that Type is a field rather than a method since methods, like functions, are followed by parentheses.
 
-	// In this case we can use the godocs to look at the structure of the LHPlate type that there is a property called Type which is a string.
-	// https://godoc.org/github.com/antha-lang/antha/antha/anthalib/wtype#LHPlate
+	// In this case we can use the godocs to look at the structure of the Plate type that there is a property called Type which is a string.
+	// https://godoc.org/github.com/antha-lang/antha/antha/anthalib/wtype#Plate
 	// The godocs is a useful reference to see what various types, methods and functions do.
 
 }

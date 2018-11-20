@@ -25,13 +25,13 @@ Inputs {
 	// This protocol expects a sample to be passed in from a previous element.
 	// Wire in the output Sample from Lesson1A_Sample into here.
 	// Antha will only allow compatible outputs and inputs to be wired together based on the type.
-	// In this case only another LHComponent will be able to wired in.
-	Sample *LHComponent
+	// In this case only another Liquid will be able to wired in.
+	SampledLiquid *Liquid
 }
 
 // Physical outputs from this protocol with types
 Outputs {
-	TransferredSolution *LHComponent
+	TransferredSolution *Liquid
 }
 
 Requirements {
@@ -47,9 +47,9 @@ Setup {
 // for every input
 Steps {
 	// The highest level Mix command is simply Mix, when used with a single argument
-	// This will autoallocate and transfer the sample to a suitable location decided by the Antha scheduler.
+	// This will autoallocate and transfer the SampledLiquid to a suitable location decided by the Antha scheduler.
 	// The valid output plate types for autoallocated mixes can be set in the configuration preferences.
-	TransferredSolution = Mix(Sample)
+	TransferredSolution = Mix(SampledLiquid)
 
 }
 

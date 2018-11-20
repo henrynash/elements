@@ -47,17 +47,17 @@ Setup {
 // Core process of the protocol: steps to be performed for each input
 Steps {
 
-	// M/s is not a standard unit available in the Antha library but we can manually add checks to ensure unit safety of custom units.
+	// Mol/s is not a standard unit available in the Antha library but we can manually add checks to ensure unit safety of custom units.
 	// We could even write a more sophisticated function to do this,
 	// have a go at this by substituting wunit.SplitValueAndUnit with
 	// the parseVMaxUnit function below.
 
-	// check unit of Vmax is M/s to validate future calculations.
+	// check unit of Vmax is Mol/s to validate future calculations.
 
 	vMax, vMaxunit := wunit.SplitValueAndUnit(VMax)
 
-	if strings.ToUpper(vMaxunit) != "M/S" {
-		Errorf("invalid Vmaxunit specified (%s) must be specified in M/s", vMaxunit)
+	if strings.ToUpper(vMaxunit) != "MOL/S" {
+		Errorf("invalid Vmaxunit specified (%s) must be specified in Mol/s", vMaxunit)
 	}
 
 	// Look up subtrate properties from pubchem to get molecular weight.
@@ -72,7 +72,7 @@ Steps {
 	substrateMoles := substrateMolarConc.SIValue() / SubstrateVol.SIValue()
 
 	// set S in Moles
-	S = wunit.NewAmount(substrateMoles, "M")
+	S = wunit.NewAmount(substrateMoles, "Mol")
 
 	// Work out rate of reaction, V of enzyme with Michaelis-Menten kinetics and [S], Km and Vmax declared
 
@@ -111,11 +111,11 @@ func parseVMaxUnit(valueAndUnit string) (vmax float64, vMaxUnit string, err erro
 		return 0.0, "", err
 	}
 
-	if err := wunit.ValidMeasurementUnit("Moles", numerator); err != nil {
+	if err := wunit.GetGlobalUnitRegistry().AssertValidUnitForType("Moles", numerator); err != nil {
 		return 0.0, "", fmt.Errorf("VMax unit numerator must be valid Mole value, error: %s", err.Error())
 	}
 
-	if err := wunit.ValidMeasurementUnit("Time", denominator); err != nil {
+	if err := wunit.GetGlobalUnitRegistry().AssertValidUnitForType("Time", denominator); err != nil {
 		return 0.0, "", fmt.Errorf("VMax unit  denominator must be valid Time value, error: %s", err.Error())
 	}
 

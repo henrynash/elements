@@ -40,7 +40,7 @@ The parameters to the parallel process "sampleTotal" are shown below:
 
 The example parameters files in these folders show how to set variables specified in the parameters file to the actual values we want to assign to them. Take a look at how the parameters and workflow files in folder (c) correspond to the images above.
  
-One of the key variables you'll likely want to set are the liquid handling components. (wtype.LHComponent) 
+One of the key variables you'll likely want to set are the liquid handling components. (wtype.Liquid) 
 
 
 ### Bundle:

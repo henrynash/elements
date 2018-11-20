@@ -40,13 +40,13 @@ Data {
 
 // Physical Inputs to this protocol with types
 Inputs {
-	Solution *LHComponent
+	Solution *Liquid
 }
 
 // Physical outputs from this protocol with types
 Outputs {
-	// An output LHComponent variable is created with prompt
-	OutPutSolution *LHComponent
+	// An output Liquid variable is created with prompt
+	OutPutSolution *Liquid
 }
 
 Requirements {
@@ -97,7 +97,7 @@ Steps {
 		optionalPreIncubationTemp = optionalPreIncubationTemp
 	}
 
-	// The Incubate command will Incubate the LHComponent using the IncubateOpt conditions specified, consisting of a time, temperature, shake rate and shake radius.
+	// The Incubate command will Incubate the Liquid using the IncubateOpt conditions specified, consisting of a time, temperature, shake rate and shake radius.
 	// PreTemp and PreTime options may also be specified if preheating is required before using the incubator.
 	if !ManualIncubateStep {
 

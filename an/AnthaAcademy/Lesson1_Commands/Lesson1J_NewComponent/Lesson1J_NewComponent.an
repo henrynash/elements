@@ -1,4 +1,4 @@
-// Example protocol demonstrating setting up a new Liquid Handling Solution (LHComponent).
+// Example protocol demonstrating setting up a new Liquid Handling Solution (Liquid).
 protocol Lesson1J_NewComponent // this is the name of the protocol Lessonthat will be called in a workflow or other antha element
 
 // the mixer package must be imported to use the Sample function
@@ -26,8 +26,8 @@ Inputs {
 
 // Physical outputs from this protocol with types
 Outputs {
-	// An output LHComponent variable is created with prompt
-	OutPutSolution *LHComponent
+	// An output Liquid variable is created with prompt
+	OutPutSolution *Liquid
 }
 
 Requirements {
@@ -47,17 +47,23 @@ Steps {
 
 	OutPutSolution = NewComponent("water")
 
-	OutPutSolution.CName = SolutionName
+	OutPutSolution.SetName(SolutionName)
 
-	err = OutPutSolution.SetPolicyName(LiquidPolicy)
+	if LiquidPolicy != "" {
+		err = OutPutSolution.SetPolicyName(LiquidPolicy)
 
-	if err != nil {
-		Errorf(err.Error())
+		if err != nil {
+			Errorf(err.Error())
+		}
 	}
 
-	OutPutSolution.SetConcentration(SolutionConcentration)
+	if !SolutionConcentration.IsNil() {
+		OutPutSolution.SetConcentration(SolutionConcentration)
+	}
 
-	OutPutSolution.SetVolume(SolutionVolume)
+	if !SolutionVolume.IsNil() {
+		OutPutSolution.SetVolume(SolutionVolume)
+	}
 
 	if len(SubComponents) > 0 {
 		err = OutPutSolution.AddSubComponents(wtype.ComponentList{Components: SubComponents})

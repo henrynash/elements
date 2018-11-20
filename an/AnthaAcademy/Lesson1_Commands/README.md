@@ -17,7 +17,7 @@ protocol Sample // this is the name of the protocol that will be called in a wor
 
 
 ```go
-// we need to import the wtype package to use the LHComponent type
+// we need to import the wtype package to use the Liquid type
 // the mixer package is required to use the Sample function
 import (
 	"github.com/antha-lang/antha/antha/anthalib/wtype"
@@ -50,11 +50,11 @@ Parameters (
 ```go
 // Physical Inputs to this protocol with types
 Inputs (
-	// the LHComponent (i.e. Liquid Handling Component) is the principal liquidhandling type in antha 
+	// the Liquid (i.e. Liquid Handling Component) is the principal liquidhandling type in antha 
 	// the * signifies that this is a pointer to the component rather than the component itself
-	// most key antha functions such as Sample and Mix use *LHComponent rather than LHComponent
-	// since the type is imported from the wtype package we need to use  *wtype.LHComponent rather than simply *LHComponent
-	Solution *wtype.LHComponent
+	// most key antha functions such as Sample and Mix use *Liquid rather than Liquid
+	// since the type is imported from the wtype package we need to use  *wtype.Liquid rather than simply *Liquid
+	Solution *wtype.Liquid
 )
 ```
 
@@ -80,8 +80,8 @@ Data (
 ```go
 // Physical outputs from this protocol with types
 Outputs (
-	// An output LHComponent variable is created called Sample
-	Sample *wtype.LHComponent
+	// An output Liquid variable is created called Sample
+	SampledLiquid *wtype.Liquid
 )
 ```
 
@@ -97,15 +97,15 @@ Steps {
 	
 	// the Sample function is imported from the mixer library
 	// in the mixer library the function signature can be found, here it is:
-	// func Sample(l *wtype.LHComponent, v wunit.Volume) *wtype.LHComponent {
-	// The function signature  shows that the function requires a *LHComponent and a Volume and returns an *LHComponent	
-	Sample = mixer.Sample(Solution,SampleVolume)
+	// func Sample(l *wtype.Liquid, v wunit.Volume) *wtype.Liquid {
+	// The function signature  shows that the function requires a *Liquid and a Volume and returns an *Liquid	
+	SampledLiquid = mixer.Sample(Solution,SampleVolume)
 	
 	// The Sample function is not sufficient to generate liquid handling instructions alone,
 	// We would need a Mix command to instruct where to put the sample
 	
 	// we can also create data outputs as a string like this
-	// This can either be by using the ToString() method which can be used on units, such as volumes, and the .Name() method on an LHComponent  
+	// This can either be by using the ToString() method which can be used on units, such as volumes, and the .Name() method on an Liquid  
 	Status = SampleVolume.ToString() + " of " + Solution.Name() + " sampled"
 	
 }
@@ -117,9 +117,9 @@ Take a look at the three .an files in this folder and read through the comments 
 
 ## Excercises
 
-1. Modify the Lesson1_Sample/element.an file by adding a step in the steps block to take the Sample produced and Mix it to an output location by adding the following line:
+1. Modify the Lesson1_Sample/element.an file by adding a step in the steps block to take the SampledLiquid produced and Mix it to an output location by adding the following line:
 
-Sample = Mix(Sample)
+SampledLiquid = Mix(SampledLiquid)
 
 2. Modify the Status message accordingly
 
@@ -150,7 +150,7 @@ antha run --bundle Lesson1_Sample/Lesson1_Sample.bundle.json
 (b) AnthaOS:
 
 Select the element set with the name of your new branch 
-Select the Sample element 
+Select the Lesson1A_Sample element 
 Modify the parameters
 click simulate
 

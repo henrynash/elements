@@ -1,0 +1,72 @@
+{
+  "Config": {
+    "driverSpecificInputPreferences": [
+      "position_4",
+      "position_5",
+      "position_7",
+      "position_8",
+      "position_9",
+      "position_6",
+      "position_1",
+      "position_3"
+    ],
+    "driverSpecificOutputPreferences": [
+      "position_6",
+      "position_5",
+      "position_9",
+      "position_8",
+      "position_7",
+      "position_4",
+      "position_1"
+    ],
+    "driverSpecificTipPreferences": [
+      "position_3",
+      "position_2",
+      "position_4",
+      "position_5",
+      "position_6",
+      "position_7",
+      "position_8",
+      "position_9"
+    ],
+    "driverSpecificTipWastePreferences": [
+      "position_1",
+      "position_7"
+    ],
+    "driverSpecificWashPreferences": [],
+    "executionPlannerVersion": "ep2",
+    "inputPlateTypes": [
+      "pcrplate_skirted_riser18"
+    ],
+    "maxPlates": 4.5,
+    "maxWells": 278,
+    "modelEvaporation": false,
+    "outputPlateTypes": [],
+    "outputSort": false,
+    "residualVolumeWeight": 1,
+    "tipTypes": [],
+    "useDriverTipTracking": true
+  },
+  "Parameters": {
+    "Lesson0B HelloWorldMix 1_run1": {
+      "PlateCanvas": "Agarplateforpicking768_riser18",
+      "PrintPhysicalHelloWorld": true
+    }
+  },
+  "Processes": {
+    "Lesson0B HelloWorldMix 1_run1": {
+      "component": "Lesson0B_HelloWorldMix",
+      "metadata": {
+        "x": 268,
+        "y": 93
+      }
+    }
+  },
+  "Properties": {
+    "description": "",
+    "id": "71TN71D6BBAYAR2A1DPF3DQFHQ",
+    "name": "Lesson0B_HelloWorldMix"
+  },
+  "connections": [],
+  "version": "1.2.0"
+}

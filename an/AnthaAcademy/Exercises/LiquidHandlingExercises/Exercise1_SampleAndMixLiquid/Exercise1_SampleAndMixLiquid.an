@@ -1,4 +1,4 @@
-// protocol Exercise1_SplitSample is a user exercise.
+// protocol Exercise1_SampleAndMixLiquid is a user exercise.
 //
 /*
 1A. Using what you've learnt in Lessons 1A-1D, adapt the protocol to Split an input
@@ -18,7 +18,7 @@ Change the name of the protocol in the new file to Exercise1B_MixSolutions.
 
 Finally, change the element such that equal volumes of three solutions are sampled and mixed together to create one output solution.
 */
-protocol Exercise1_SplitSample
+protocol Exercise1_SampleAndMixLiquid
 
 // Place golang packages to import here
 import (

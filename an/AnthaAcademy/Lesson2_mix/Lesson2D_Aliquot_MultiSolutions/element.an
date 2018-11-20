@@ -24,13 +24,13 @@ Data{}
 
 // Physical Inputs to this protocol with types
 Inputs {
-	Solutions []*LHComponent // we're now going to aliquot multiple solutions at the same time (but not mixing them)
-	OutPlate  *LHPlate
+	Solutions []*Liquid // we're now going to aliquot multiple solutions at the same time (but not mixing them)
+	OutPlate  *Plate
 }
 
 // Physical outputs from this protocol with types
 Outputs {
-	Aliquots []*LHComponent
+	Aliquots []*Liquid
 }
 
 Requirements {
@@ -52,7 +52,7 @@ Steps {
 		Errorf("Not enough solution for this many aliquots")
 	}
 
-	aliquots := make([]*LHComponent, 0)
+	aliquots := make([]*Liquid, 0)
 
 	// work out well coordinates for any plate
 	wellpositionarray := OutPlate.AllWellPositions(ByRow)
@@ -63,9 +63,6 @@ Steps {
 	for _, Solution := range Solutions {
 		for k := 0; k < NumberofAliquots; k++ {
 
-			if Solution.TypeName() == "dna" {
-				Solution.Type = wtype.LTDoNotMix
-			}
 			aliquotSample := mixer.Sample(Solution, VolumePerAliquot)
 
 			// this time we're using counter as an index to go through the wellpositionarray one position at a time and ensuring the next free position is chosen

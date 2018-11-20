@@ -16,7 +16,7 @@ Parameters {
 	// Essentially it acts as a lookup table.
 	// In this case we're using this variable to store pairs of component names to the volume which we wish to transfer for that component
 	// For example {"Glucose":10ul, "Glycerol": 5ul}
-	// If a "default" key is present as a key in the map,
+	// We've also coded it such that if a "default" key is present as a key in the map,
 	// the volume for the default will be used for any solution which is not specified in the map.
 	// For example {"Glucose":10ul, "Glycerol": 5ul, "default": 15ul}
 	VolumeForTransfer map[string]Volume
@@ -30,12 +30,12 @@ Data {
 
 // Physical inputs to this protocol
 Inputs {
-	Solutions []*LHComponent
+	Solutions []*Liquid
 }
 
 // Physical outputs to this protocol
 Outputs {
-	TransferredSolutions []*LHComponent
+	TransferredSolutions []*Liquid
 }
 
 // Conditions to run on startup
@@ -77,25 +77,39 @@ Steps {
 		}
 
 		// run Lesson1A_Sample element
-		sampleResults := RunSteps(Lesson1A_Sample, Parameters{
-			SampleVolume: transferVolume,
-		}, Inputs{
-			Solution: solution,
-		})
+		sampleResults := RunSteps(
+			Lesson1A_Sample,
+			Parameters{
+				SampleVolume: transferVolume,
+			}, Inputs{
+				Solution: solution,
+			})
 
 		// get output sample to use in next step
-		sample := sampleResults.Outputs.Sample
+		sample := sampleResults.Outputs.SampledLiquid
 
 		// add status to slice
 		Status = append(Status, sampleResults.Data.Status)
 
 		// now use sample in Mix element
-		mixResults := RunSteps(Lesson1B_Mix, Parameters{}, Inputs{
-			Sample: sample,
-		})
+		mixResults := RunSteps(
+			Lesson1B_Mix,
+			Parameters{},
+			Inputs{
+				SampledLiquid: sample,
+			})
 
 		// append output TransferredSolutions
-		TransferredSolutions = append(TransferredSolutions, mixResults.Outputs.TransferredSolution)
+		// Note, that here we structure append such that each argument to append
+		// is on a separate line, this can be helpful for clarity when there are many arguments or the
+		// argument names are long (as in this case).
+		// The only difference to when specifying on a single line is the last
+		// argument is now followed by a comma
+		// before append is closed by the final parenthesis on the next line.
+		TransferredSolutions = append(
+			TransferredSolutions,
+			mixResults.Outputs.TransferredSolution,
+		)
 	}
 
 	// done

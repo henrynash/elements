@@ -3,7 +3,6 @@
     "NumberofAliquots": 8,
     "OutPlate": "pcrplate_with_cooler",
     "Solution": "fluorescein",
-    "SolutionVolume": "4000ul",
     "VolumePerAliquot": "25ul"
   },
   "name": "Lesson2A_Aliquot",

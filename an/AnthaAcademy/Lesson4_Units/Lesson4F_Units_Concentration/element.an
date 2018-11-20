@@ -40,9 +40,9 @@ Steps {
 	// since the unit is more flexible.
 	// Valid units are g/L, M/L (or mM).
 	// Units of X and U/l are also valid but these are discouraged unless necessary.
-	// the unit can be checked with the ValidMeasurementUnit or ValidConcentrationUnit functions in wunit library.
+	// the unit can be checked with wunit.GetGlobalUnitRegistry().AssertValidUnitForType
 	// If a valid unit is passed in the error retruned will be nil.
-	err := wunit.ValidConcentrationUnit("RandomInvalidUnit")
+	err := wunit.GetGlobalUnitRegistry().AssertValidUnitForType("Concentration", "RandomInvalidUnit")
 
 	if err != nil {
 		ValidConcentrationUnits = err.Error()

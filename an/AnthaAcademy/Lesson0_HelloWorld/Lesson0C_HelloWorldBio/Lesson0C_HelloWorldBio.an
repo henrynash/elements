@@ -25,13 +25,13 @@ Data {
 
 // Physical Inputs to this protocol with types
 Inputs {
-	PlateForCompetentCells *LHPlate
-	PlateForRecovery       *LHPlate
+	PlateForCompetentCells *Plate
+	PlateForRecovery       *Plate
 }
 
 // Physical outputs from this protocol with types
 Outputs {
-	CellsWithMessage *LHComponent
+	CellsWithMessage *Liquid
 }
 
 Requirements {

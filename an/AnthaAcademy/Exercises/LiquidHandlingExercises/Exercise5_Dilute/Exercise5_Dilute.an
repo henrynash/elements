@@ -45,7 +45,7 @@
 
 	Parameters{
 		TargetTransferVolume Volume
-		StartingConcentration Consentration
+		StartingConcentration Concentration
 		TargetConcentration Concentration
 		MinimalTransferVolume Volume
 	}
@@ -76,16 +76,16 @@ Data {
 
 // Physical inputs to this protocol
 Inputs {
-	SolutionToDilute *LHComponent
-	Diluent          *LHComponent
-	DilutionPlate    *LHPlate
-	OutPlate         *LHPlate
+	SolutionToDilute *Liquid
+	Diluent          *Liquid
+	DilutionPlate    *Plate
+	OutPlate         *Plate
 }
 
 // Physical outputs to this protocol
 Outputs {
-	DilutedSolution      *LHComponent
-	IntermediateSolution *LHComponent // as a potentially more convenient output we can also return a map of the solutions using the name of the component as a key
+	DilutedSolution      *Liquid
+	IntermediateSolution *Liquid // as a potentially more convenient output we can also return a map of the solutions using the name of the component as a key
 }
 
 // Conditions to run on startup

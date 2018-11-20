@@ -11,7 +11,7 @@ Checkout the [free online dictionary](https://foldoc.org/) of computing as a gre
 
 ### Familiarity with the command line
 You will need to use the command line to run antha.
-If using OS X or Linux and you’re not familiar with working on the command line, this tour offers a good introduction for navigating through the command line in unix/linux:
+If using OS X or Linux and you're not familiar with working on the command line, this tour offers a good introduction for navigating through the command line in unix/linux:
 
 1. Complete [Code academy working on the command line course Unit 1](https://www.codecademy.com/learn/learn-the-command-line) (2 hours) 
 
@@ -49,7 +49,7 @@ i. Structs/interfaces/methods
 
 ### Git and software project management
 Git is a useful tool for collaborative software development projects and offers a great way to deal with managing code merges and version control.
-Since antha is still in rapid development and we’re making changes on a weekly basis, you’ll need to use git for keeping up-to-date.
+Since antha is still in rapid development and we're making changes on a weekly basis, you'll need to use git for keeping up-to-date.
 
 3. [Code academy Git course unit 1](https://www.codecademy.com/learn/learn-git) (2 hours)
 

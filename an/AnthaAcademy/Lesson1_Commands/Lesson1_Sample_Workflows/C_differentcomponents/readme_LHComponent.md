@@ -1,12 +1,12 @@
 ### LHComponents:
 
-One of the key antha types which will typically be specified in the parameters file is the wtype.LHComponent
+One of the key antha types which will typically be specified in the parameters file is the wtype.Liquid
 
 LHComponents can be accessed in the parameters or bundle file in the following way:
 
 These are written as a string: e.g. 
 "Diluent":"water",
-“dnastock”:”gfpstock”,
+"dnastock":"gfpstock",
 
 Before a component can be used, currently, the concept of that component needs to be added to the factory.
 i.e. When we say the concept of a component we don't mean a specific sample of water, which would be called from an inventory instead, but any sample of water, i.e. which has the liquidhandling properties of water.

@@ -20,14 +20,14 @@ Data{}
 
 // Physical Inputs to this protocol with types
 Inputs {
-	Solution *LHComponent
-	Diluent  *LHComponent
-	OutPlate *LHPlate
+	Solution *Liquid
+	Diluent  *Liquid
+	OutPlate *Plate
 }
 
 // Physical outputs from this protocol with types
 Outputs {
-	Dilutions []*LHComponent
+	Dilutions []*Liquid
 }
 
 Requirements {
@@ -43,9 +43,9 @@ Setup {
 // for every input
 Steps {
 
-	var dilutions []*LHComponent
+	var dilutions []*Liquid
 
-	var aliquot *LHComponent
+	var aliquot *Liquid
 
 	// calculate solution volume
 

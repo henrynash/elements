@@ -25,15 +25,15 @@ Data {
 
 // Physical Inputs to this protocol with types
 Inputs {
-	Buffer    *LHComponent
-	Substrate *LHComponent
-	Enzyme    *LHComponent
-	OutPlate  *LHPlate
+	Buffer    *Liquid
+	Substrate *Liquid
+	Enzyme    *Liquid
+	OutPlate  *Plate
 }
 
 // Physical outputs from this protocol with types
 Outputs {
-	Reactions []*LHComponent
+	Reactions []*Liquid
 }
 
 Requirements {
@@ -47,12 +47,12 @@ Setup {
 // for every input
 Steps {
 
-	var reactions []*LHComponent
+	var reactions []*Liquid
 
 	for i := 0; i < NumberofReactions; i++ {
 		// creating this eachreaction slice and appending with each sample is the key to ensuring a reaction is made one at a time
 		// note that for each reaction this is reinitialised back to an empty slice
-		var eachreaction []*LHComponent
+		var eachreaction []*Liquid
 
 		bufferSample := mixer.SampleForTotalVolume(Buffer, TotalVolume)
 

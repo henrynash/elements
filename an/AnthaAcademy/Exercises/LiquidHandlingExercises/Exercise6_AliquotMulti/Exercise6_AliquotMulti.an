@@ -26,13 +26,13 @@ Data {
 
 // Physical inputs to this protocol
 Inputs {
-	InputSolutions []*wtype.LHComponent
+	InputSolutions []*wtype.Liquid
 }
 
 // Physical outputs to this protocol
 Outputs {
-	OutputSolutionsSlice []*LHComponent
-	OutputSolutionsMap   map[string][]*wtype.LHComponent // as a potentially more convenient output we can also return a map of the solutions using the name of the component as a key
+	OutputSolutionsSlice []*Liquid
+	OutputSolutionsMap   map[string][]*wtype.Liquid // as a potentially more convenient output we can also return a map of the solutions using the name of the component as a key
 }
 
 // Conditions to run on startup

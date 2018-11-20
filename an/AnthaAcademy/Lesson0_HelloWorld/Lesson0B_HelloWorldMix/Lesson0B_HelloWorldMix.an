@@ -26,17 +26,17 @@ Data {
 
 // Physical Inputs to this protocol with types
 Inputs {
-	PlateCanvas *LHPlate
+	PlateCanvas *Plate
 }
 
 // Physical outputs from this protocol with types
 Outputs {
 	// This time we might make some physical outputs as well as data outputs
-	// In Antha the standard type for a physical solution is an *LHComponent.
+	// In Antha the standard type for a physical solution is an *Liquid.
 	// This is shorthand for Liquid Handling Component
-	// This time we're making a physical LHComponent for each pixel in the image.
+	// This time we're making a physical Liquid for each pixel in the image.
 	// The [] indicates that this is a set of LHComponents rather than just one.
-	Pixels []*LHComponent
+	Pixels []*Liquid
 }
 
 Requirements {

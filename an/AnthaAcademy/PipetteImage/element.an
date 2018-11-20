@@ -42,12 +42,12 @@ Data {
 
 // Physical Inputs to this protocol with types
 Inputs {
-	OutPlate *LHPlate
+	OutPlate *Plate
 }
 
 // Physical outputs from this protocol with types
 Outputs {
-	Pixels []*LHComponent
+	Pixels []*Liquid
 }
 
 Requirements {
@@ -135,7 +135,7 @@ Steps {
 	}
 
 	// get components from factory
-	componentmap := make(map[string]*LHComponent, 0)
+	componentmap := make(map[string]*Liquid, 0)
 
 	if len(SubsetNames) > 0 {
 		colourtostringmap = image.MakeSubMapFromMap(colourtostringmap, SubsetNames)
@@ -153,7 +153,7 @@ Steps {
 
 	}
 
-	var solutions []*LHComponent
+	var solutions []*Liquid
 
 	counter := 0
 
@@ -163,8 +163,18 @@ Steps {
 
 	componentMap := image.ColourComponentMap()
 
+	var platePositions []string
+
+	for key := range positiontocolourmap {
+		platePositions = append(platePositions, key)
+	}
+
+	sort.Strings(platePositions)
+
 	// loop through the position to colour map pipeting the correct coloured protein into each well
-	for locationkey, colour := range positiontocolourmap {
+	for _, locationkey := range platePositions {
+
+		colour := positiontocolourmap[locationkey]
 
 		component := componentmap[colourtostringmap[colour]]
 

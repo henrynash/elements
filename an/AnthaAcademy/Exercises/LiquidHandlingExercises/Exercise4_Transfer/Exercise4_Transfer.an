@@ -22,13 +22,13 @@ Data{}
 
 // Physical inputs to this protocol
 Inputs {
-	InputSolutions []*wtype.LHComponent
-	OutPlate       *wtype.LHPlate
+	InputSolutions []*wtype.Liquid
+	OutPlate       *wtype.Plate
 }
 
 // Physical outputs to this protocol
 Outputs {
-	OutPutSolutions []*LHComponent
+	OutPutSolutions []*Liquid
 }
 
 // Conditions to run on startup

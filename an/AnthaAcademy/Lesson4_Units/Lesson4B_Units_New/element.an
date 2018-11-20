@@ -48,11 +48,10 @@ Steps {
 	value, unit := wunit.SplitValueAndUnit(VolumeWithUnitAsString)
 
 	// if an invalid unit is passed in to NewVolume the program will terminate and report an error.
-	// To fail more gracefully, it's possible to check the validity of some units using wunit.ValidMeasurementUnit
+	// To fail more gracefully, it's possible to check the validity of some units using wunit.GetGlobalUnitRegistry().AssertValidUnitForType
 	// If a valid measurement type and unit for that measurement type is passed in, the error returned is nil.
-	// https://godoc.org/github.com/antha-lang/antha/antha/anthalib/wunit#ValidConcentrationUnit
 
-	err := wunit.ValidMeasurementUnit("Volume", unit)
+	err := wunit.GetGlobalUnitRegistry().AssertValidUnitForType("Volume", unit)
 
 	if err != nil {
 		Errorf(err.Error())

@@ -34,12 +34,12 @@ Inputs {
 	// If we're going to sample all of the solution must have a defined volume
 	// so cannot be auto allocated by the Antha scheduler as before.
 	// We can get around this by wiring the output of a previous mix in to the Solution input.
-	Solution *LHComponent
+	Solution *Liquid
 }
 
 // Physical outputs from this protocol with types
 Outputs {
-	Sample *LHComponent
+	SampledLiquid *Liquid
 }
 
 Requirements {
@@ -57,7 +57,7 @@ Steps {
 
 	Status = "Not sampled anything"
 
-	// the SampleAll function samples the entire contents of the LHComponent
+	// the SampleAll function samples the entire contents of the Liquid
 	// so there's no need to specify the volume
 	// this if statement specifies that the SampleAll action will only be performed if SampleAll is set to true
 	// since if statements inherently evaluate truth statements and SampleAll is a boolean type
@@ -66,7 +66,7 @@ Steps {
 	// with just
 	// if Sampleall {}
 	if Sampleall == true {
-		Sample = mixer.SampleAll(Solution)
+		SampledLiquid = mixer.SampleAll(Solution)
 		Status = "Sampled everything"
 	}
 

@@ -20,17 +20,19 @@ Parameters {
 }
 
 // Data which is returned from this protocol, and data types
-Data{}
+Data {
+	SampleVol Volume
+}
 
 // Physical Inputs to this protocol with types
 Inputs {
-	Solution *LHComponent
-	Diluent  *LHComponent
+	Solution *wtype.Liquid
+	Diluent  *wtype.Liquid
 }
 
 // Physical outputs from this protocol with types
 Outputs {
-	DilutedSample *LHComponent
+	DilutedSample *wtype.Liquid
 }
 
 Requirements {
@@ -48,7 +50,7 @@ Steps {
 
 	// make empty slice of LHComponents (i.e. of length 0) ready to sequentially add all samples to
 	// See golangbook chapter 6 for more details on slices and arrays
-	var allsamples []*LHComponent
+	var allsamples []*wtype.Liquid
 
 	// SampleForTotalVolume will "top up" solution to the TotalVolume with Diluent.
 	// In this case it will still add diluent first but calculates the volume to add by substracting the volumes of subsequent components
@@ -67,13 +69,15 @@ Steps {
 	// For this we need to use one of the Mix functions
 	// therefore finally we use Mix to combine samples into a new component.
 	// Since allsamples are, erm, all samples the Mix command will transfer all of these to a new location.
-	// if the first solution was not a sample but an LHComponent with a fixed location,
+	// if the first solution was not a sample but an Liquid with a fixed location,
 	// the other samples would be mixed on top of it without moving.
 	// This is the first time we've mixed a slice of samples rather than just one.
 	// All of the Mix commands (Mix, MixInto, MixNamed) can take a variable number of LHComponents arguments to the function.
 	// These are known as variadic functions.
 	// By using the ... after the slice variable allsamples, each of the LHcomponents will be sequenitally used as arguments in the Mix command.
 	DilutedSample = Mix(allsamples...)
+
+	SampleVol = DilutedSample.Volume()
 
 	// Now we have an Antha element which will generate liquid handling instructions
 

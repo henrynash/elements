@@ -16,11 +16,11 @@
   "connections": [],
   "parameters": {
     "Datacrunch": {
-      "Km": "1M",
+      "Km": "1Mol",
       "Substrate": "tartrazine",
       "SubstrateConc": "100g/l",
       "SubstrateVol": "5ml",
-      "VMax": "0.1M/s"
+      "VMax": "0.1Mol/s"
     }
   },
   "processes": {

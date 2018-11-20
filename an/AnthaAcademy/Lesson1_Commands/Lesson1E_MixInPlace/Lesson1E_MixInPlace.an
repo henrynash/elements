@@ -11,10 +11,10 @@ import ()
 
 // Input parameters for this protocol (data)
 Parameters {
-	// Each LHComponent must have an LHPolicy specified which controls how a liquid
+	// Each Liquid must have an LHPolicy specified which controls how a liquid
 	// is handled (e.g. "water", "glycerol", "PostMix", "PreMix").
 	// The PolicyName lis a string which looks up the LHPolicy
-	// if a PolicyName is specified here the default mix policy of the Sample will be
+	// if a PolicyName is specified here the default mix policy of the SampledLiquid will be
 	// overridden.
 	OverrideMixingPolicy PolicyName
 }
@@ -26,14 +26,14 @@ Data {
 // Physical Inputs to this protocol with types
 Inputs {
 	// This protocol expects a sample to be passed in from a previous element.
-	// Wire in the output Sample from Lesson1A_Sample into here.
-	Sample                  *LHComponent
-	SolutionToMixSampleOnTo *LHComponent
+	// Wire in the output SampledLiquid from Lesson1A_Sample into here.
+	SampledLiquid           *Liquid
+	SolutionToMixSampleOnTo *Liquid
 }
 
 // Physical outputs from this protocol with types
 Outputs {
-	MixedSolution *LHComponent
+	MixedSolution *Liquid
 }
 
 Requirements {
@@ -54,12 +54,12 @@ Steps {
 	if OverrideMixingPolicy != "" {
 
 		// If a policy is specified, we'll attempt to assign the LHPolicy corresponding to PolicyName
-		// we'll do this using the SetPolicyName method available for the LHComponent type.
+		// we'll do this using the SetPolicyName method available for the Liquid type.
 
 		// The function returns an error to report back if the function executed successfully with the given input.
 		// If no error occurs, the error will be nil.
 		var err error
-		err = Sample.SetPolicyName(OverrideMixingPolicy)
+		err = SampledLiquid.SetPolicyName(OverrideMixingPolicy)
 		// In this case, if an unknown PolicyName is specified with OverrideMixingPolicy (e.g. bananas) an error will be returned.
 		// if a valid policy is specified the error will remain as nil.
 		// we can therefore evaluate if an error has occurred and in this case
@@ -75,10 +75,10 @@ Steps {
 	}
 
 	// Finally we mix Sample on to SolutionToMixSampleOnTo using the Mix command.
-	MixedSolution = Mix(SolutionToMixSampleOnTo, Sample)
-	// In this case, if SolutionToMixSampleOnTo is a solution with a defined location, Sample will be mixed on top of it.
+	MixedSolution = Mix(SolutionToMixSampleOnTo, SampledLiquid)
+	// In this case, if SolutionToMixSampleOnTo is a solution with a defined location, SampledLiquid will be mixed on top of it.
 	// If SolutionToMixSampleOnTo is also a sample, then first SolutionToMixSampleOnTo will be mixed to a new location,
-	// and then Sample will be mixed on top of SolutionToMixSampleOnTo.
+	// and then SampledLiquid will be mixed on top of SolutionToMixSampleOnTo.
 	// Since we're using Mix, the location to mix to will be decided by the Antha scheduler
 }
 

@@ -30,15 +30,15 @@ Data {
 
 // Physical Inputs to this protocol with types
 Inputs {
-	Buffer    *LHComponent
-	Substrate *LHComponent
-	Enzyme    *LHComponent
-	OutPlate  *LHPlate
+	Buffer    *Liquid
+	Substrate *Liquid
+	Enzyme    *Liquid
+	OutPlate  *Plate
 }
 
 // Physical outputs from this protocol with types
 Outputs {
-	Reactions []*LHComponent
+	Reactions []*Liquid
 }
 
 Requirements {
@@ -52,7 +52,7 @@ Setup {
 // for every input
 Steps {
 
-	var reactions []*LHComponent
+	var reactions []*Liquid
 
 	bufferVolume := wunit.SubtractVolumes(TotalVolume, wunit.AddVolumes(SubstrateVolume, EnzymeVolume))
 
