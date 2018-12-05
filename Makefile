@@ -7,10 +7,10 @@ PACKAGE=$(shell go list .)
 ELEMENT_PACKAGE=repos.antha.com/elements
 
 # Compile after downloading dependencies
-all: compile_with_deps fmt_json
+all: compile_with_deps fmt_json fmt_go
 
 # Compile using current state of working directories
-current: compile fmt_json
+current: compile fmt_json fmt_go
 
 clean:
 	rm -rf .staging
@@ -20,6 +20,9 @@ test: all
 
 fmt_json:
 	go run cmd/format-json/main.go -inPlace $(INPUT_DIRS)
+	
+fmt_go:
+	gofmt -w $(INPUT_DIRS)
 
 compile:
 	rm -rf "vendor/$(ELEMENT_PACKAGE)"
